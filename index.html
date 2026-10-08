@@ -456,13 +456,20 @@
             }
         }
 
-        function exportPDF() {
+       function exportPDF() {
             if (items.length === 0) {
                 alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
                 return;
             }
 
+            // Aggiorna i dati anagrafici e la tabella
             renderTable();
+
+            // Piccola pausa per consentire al browser di completare il rendering prima di aprire la stampa
+            setTimeout(() => {
+                window.print();
+            }, 100);
+        }
 
             const client = document.getElementById('clientName').value || 'Cliente';
             const element = document.getElementById('pdfContent');
