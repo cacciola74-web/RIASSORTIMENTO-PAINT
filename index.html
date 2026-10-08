@@ -137,13 +137,14 @@
 
             <!-- Box Anteprima / Miniatura Prodotto -->
             <div id="previewBox" class="mb-4 p-3 bg-slate-50 border border-slate-200 rounded-lg hidden flex items-center space-x-4">
-                <div class="w-16 h-16 bg-white border rounded flex items-center justify-center overflow-hidden shadow-sm flex-shrink-0">
-                    <img id="previewImage" src="" alt="Anteprima" class="object-cover w-full h-full hidden">
-                    <i id="previewIcon" class="fa-solid fa-shirt text-slate-300 text-2xl"></i>
+                <div class="w-20 h-20 bg-white border rounded flex items-center justify-center overflow-hidden shadow-sm flex-shrink-0">
+                    <img id="previewImage" src="" alt="Anteprima" class="object-cover w-full h-full hidden" onerror="handleImageError(this)">
+                    <i id="previewIcon" class="fa-solid fa-shirt text-slate-300 text-3xl"></i>
                 </div>
                 <div>
                     <p id="previewTitle" class="text-xs font-bold text-slate-800"></p>
-                    <p id="previewDetail" class="text-xs text-slate-500"></p>
+                    <p id="previewDetail" class="text-xs text-indigo-600 font-semibold mt-1"></p>
+                    <p class="text-[10px] text-slate-400 mt-1">Carica l'immagine in <code class="bg-slate-200 px-1 rounded">img/</code> per attivarne la miniatura.</p>
                 </div>
             </div>
 
@@ -243,8 +244,8 @@
             { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 4-6 Anni (CM5654)', code: 'CM5654-4/6', price: 8.90, category: 'baby_animals', label: 'Accappatoio Junior 4-6 Anni - Cod. CM5654 - € 8,90' },
             { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 6-8 Anni (CM5654)', code: 'CM5654-6/8', price: 8.90, category: 'baby_animals', label: 'Accappatoio Junior 6-8 Anni - Cod. CM5654 - € 8,90' },
 
-            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Set 1+1 Junior 30x50+50x90 (BB0361)', code: 'BB0361', price: 3.80, category: 'baby_animals', label: 'Set 1+1 Junior 30x50+50x90 CM - Cod. BB0361 - € 3,80' },
-            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Telo Bagno 70x140 CM (BE0093)', code: 'BE0093', price: 5.40, category: 'baby_animals', label: 'Telo Bagno 70x140 CM - Cod. BE0093 - € 5,40' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Set 1+1 Junior 30x50+50x90 (BB0361)', code: 'BB0361', price: 3.80, category: 'baby_animals_set', label: 'Set 1+1 Junior 30x50+50x90 CM - Cod. BB0361 - € 3,80' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Telo Bagno 70x140 CM (BE0093)', code: 'BE0093', price: 5.40, category: 'baby_animals_set', label: 'Telo Bagno 70x140 CM - Cod. BE0093 - € 5,40' },
 
             // --- LINEA WIMBLEDON ---
             { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto S (BA0010)', code: 'BA0010-S', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto S - Cod. BA0010 - € 18,50' },
@@ -261,14 +262,14 @@
             { line: 'WIMBLEDON', group: 'WIMBLEDON: TELO BAGNO', name: 'WIMBLEDON - Telo Bagno 100x180 CM (BE0049)', code: 'BE0049', price: 10.90, category: 'wimbledon_telo', label: 'Telo Bagno 100x180 CM - Cod. BE0049 - € 10,90' },
 
             // --- LINEA GLAMOUR ---
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto S (BA0041)', code: 'BA0041-S', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto S - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto M (BA0041)', code: 'BA0041-M', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto M - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto L (BA0041)', code: 'BA0041-L', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto L - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XL (BA0041)', code: 'BA0041-XL', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XL - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXL (BA0041)', code: 'BA0041-XXL', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XXL - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXXL (BA0041)', code: 'BA0041-3XL', price: 15.55, category: 'glamour_accappatoio_3xl', label: 'Accappatoio Adulto XXXL - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Set 1+1 40x60/60x110 (BB0189)', code: 'BB0189', price: 4.90, category: 'glamour_set', label: 'Set 1+1 (Asciugamano + Ospite) - Cod. BB0189 - € 4,90 (-11%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Telo Bagno 100x150 (BE0044)', code: 'BE0044', price: 8.51, category: 'glamour_set', label: 'Telo Bagno 100x150 - Cod. BE0044 - € 8,51 (-14%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto S (BA0041)', code: 'BA0041-S', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto S - Cod. BA0041 - € 15,55' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto M (BA0041)', code: 'BA0041-M', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto M - Cod. BA0041 - € 15,55' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto L (BA0041)', code: 'BA0041-L', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto L - Cod. BA0041 - € 15,55' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XL (BA0041)', code: 'BA0041-XL', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XL - Cod. BA0041 - € 15,55' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXL (BA0041)', code: 'BA0041-XXL', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XXL - Cod. BA0041 - € 15,55' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXXL (BA0041)', code: 'BA0041-3XL', price: 15.55, category: 'glamour_accappatoio_3xl', label: 'Accappatoio Adulto XXXL - Cod. BA0041 - € 15,55' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Set 1+1 40x60/60x110 (BB0189)', code: 'BB0189', price: 4.90, category: 'glamour_set', label: 'Set 1+1 (Asciugamano + Ospite) - Cod. BB0189 - € 4,90' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Telo Bagno 100x150 (BE0044)', code: 'BE0044', price: 8.51, category: 'glamour_set', label: 'Telo Bagno 100x150 - Cod. BE0044 - € 8,51' },
             { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Tappeto Bagno 50x80 (AX0250)', code: 'AX0250', price: 4.20, category: 'glamour_tappeto', label: 'Tappeto Bagno 50x80 - Cod. AX0250 - € 4,20' },
 
             // --- LINEA PAINT ---
@@ -296,31 +297,28 @@
             { line: 'PAINT', group: 'PAINT: COPPIA FEDERE', name: 'Coppia Federe 50X80 (LM0068)', code: 'LM0068', price: 7.50, category: 'standard', label: 'Coppia Federe 50X80 - Cod. LM0068 - € 7,50' }
         ];
 
-        // --- COLORI LINEA PAINT ---
-        const standardColors = ["0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA", "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE", "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO", "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA", "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO", "2501 LOTO", "1201 BORDEAUX"];
+        // --- COLORI CON CODICI DAL CATALOGO UFFICIALE ---
+        const standardColors = ["0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA", "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE", "3301 CELESTE", "1401 C. DA ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO", "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA", "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO", "2501 LOTO", "1201 BORDEAUX", "3201 PRUGNA"];
         const franceseColors = ["0101 BIANCO", "0301 NEW TORTORA", "0501 PERLA", "0601 ACCIAIO", "1501 DENIM", "1001 MALVA"];
-        const kingColors = ["0101 BIANCO", "0201 AVORIO", "0301 NEW TORTORA", "0501 PERLA", "1401 C. ZUCCHERO", "2701 MUSCHIO", "1001 MALVA"];
-        const quiltColors = ["0101 AVORIO/GRIGIO PERLA", "0201 TORTORA/AVORIO", "0301 CAMMELLO/GLACÉ", "0401 ACCIAIO/NEW TORTORA", "0501 CARBONE/CAMMELLO", "0601 C. DA ZUCCHERO/DENIM", "0701 MUSCHIO/TURCHESE", "0801 LOTO/MALVA", "0901 CAROTA/NEW TORTORA", "1001 BORDEAUX/GLACÉ"];
+        const kingColors = ["0101 BIANCO", "0201 AVORIO", "0301 NEW TORTORA", "0501 PERLA", "1401 C. DA ZUCCHERO", "2701 MUSCHIO", "1001 MALVA"];
+        const quiltColors = ["0101 AVORIO/PERLA", "0201 TORTORA/AVORIO", "0301 CAMMELLO/GLACÉ", "0401 ACCIAIO/NEW TORTORA", "0501 CARBONE/CAMMELLO", "0601 C. DA ZUCCHERO/DENIM", "0701 MUSCHIO/TURCHESE", "0801 LOTO/MALVA", "0901 CAROTA/NEW TORTORA", "1001 BORDEAUX/GLACÉ"];
 
-        // --- COLORI LINEA GLAMOUR ---
-        const glamourSetColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "1101 RUGGINO", "0501 ROSA", "1201 BORDEAUX", "0801 MALVA", "1301 AMETISTA"];
+        const glamourSetColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "1101 RUGGINE", "0501 ROSA", "1201 BORDEAUX", "0801 MALVA", "1301 AMETISTA"];
         const glamourAccappatoioColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "0501 ROSA", "0801 MALVA", "1201 BORDEAUX"];
         const glamourAccappatoio3XLColors = ["0106 BIANCO", "1506 AVORIO", "0306 TORTORA", "0406 GRIGIO SCURO", "1006 BLU SCURO", "0706 VERDE"];
-        const glamourTappetoColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0701 VERDE", "0801 MALVA", "1101 RUGGINO"];
+        const glamourTappetoColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0701 VERDE", "0801 MALVA", "1101 RUGGINE"];
 
-        // --- COLORI LINEA WIMBLEDON ---
         const wimbledonAdultoColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
         const wimbledonJuniorColors = ["1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1501 MALVA"];
         const wimbledonTeloColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
 
-        // --- VARIANTI LINEA BABY ANIMALS ---
         const babyAnimalsColors = ["SHARK", "SHEEP", "RABBIT", "DINO", "UNICORN", "GIRAFFE"];
+        const babyAnimalsSetColors = ["0101 SHARK", "0104 SHEEP", "0107 RABBIT", "0110 DINO", "0108 UNICORN", "0109 GIRAFFE"];
 
         let items = [];
 
         document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
 
-        // Inizializza tutti i prodotti all'avvio
         populateItems('ALL');
 
         function onLineChange() {
@@ -386,207 +384,4 @@
             else if (category === 'glamour_accappatoio') colorsToLoad = glamourAccappatoioColors;
             else if (category === 'glamour_accappatoio_3xl') colorsToLoad = glamourAccappatoio3XLColors;
             else if (category === 'glamour_tappeto') colorsToLoad = glamourTappetoColors;
-            else if (category === 'wimbledon_adulto') colorsToLoad = wimbledonAdultoColors;
-            else if (category === 'wimbledon_junior') colorsToLoad = wimbledonJuniorColors;
-            else if (category === 'wimbledon_telo') colorsToLoad = wimbledonTeloColors;
-            else if (category === 'baby_animals') colorsToLoad = babyAnimalsColors;
-            
-            colorsToLoad.forEach(col => {
-                const opt = document.createElement('option');
-                opt.value = col;
-                opt.textContent = col;
-                colorSelect.appendChild(opt);
-            });
-
-            updatePreview();
-        }
-
-        function updatePreview() {
-            const select = document.getElementById('itemSelect');
-            const colorSelect = document.getElementById('itemColor');
-            const previewBox = document.getElementById('previewBox');
-
-            if (!select.value) {
-                previewBox.classList.add('hidden');
-                return;
-            }
-
-            const articleName = select.value;
-            const color = colorSelect.value || 'Nessuna variante selezionata';
-
-            document.getElementById('previewTitle').innerText = articleName;
-            document.getElementById('previewDetail').innerText = `Variante: ${color}`;
-            previewBox.classList.remove('hidden');
-        }
-
-        function addItem() {
-            const select = document.getElementById('itemSelect');
-            const selectedOption = select.options[select.selectedIndex];
-            
-            if (!select.value) {
-                alert("Seleziona un articolo prima di aggiungerlo.");
-                return;
-            }
-
-            const code = selectedOption.getAttribute('data-code');
-            const articleName = selectedOption.value;
-            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
-            const color = document.getElementById('itemColor').value;
-            const qty = parseInt(document.getElementById('itemQty').value) || 0;
-
-            if (!color) {
-                alert("Seleziona la variante colore dell'articolo.");
-                return;
-            }
-            if (qty <= 0) {
-                alert("Inserisci una quantità valida (almeno 1 pz).");
-                return;
-            }
-
-            items.push({
-                code: code,
-                article: articleName,
-                color: color,
-                qty: qty,
-                price: price,
-                total: price * qty
-            });
-
-            document.getElementById('itemColor').value = '';
-            document.getElementById('itemQty').value = '1';
-            document.getElementById('previewBox').classList.add('hidden');
-
-            renderTable();
-        }
-
-        function removeItem(index) {
-            items.splice(index, 1);
-            renderTable();
-        }
-
-        function renderTable() {
-            const tbody = document.getElementById('orderTableBody');
-            
-            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
-            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
-            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
-
-            if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
-                document.getElementById('totalPieces').innerText = "0";
-                document.getElementById('grandTotal').innerText = "€ 0,00";
-                return;
-            }
-
-            let html = '';
-            let totalQty = 0;
-            let grandTotal = 0;
-
-            items.forEach((item, index) => {
-                totalQty += item.qty;
-                grandTotal += item.total;
-                html += `
-                    <tr class="border-b hover:bg-slate-50">
-                        <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
-                        <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
-                        <td class="py-2.5 px-3 font-medium">${item.color}</td>
-                        <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
-                        <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
-                        <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
-                        <td class="py-2.5 px-3 text-center no-print">
-                            <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            tbody.innerHTML = html;
-            document.getElementById('totalPieces').innerText = totalQty;
-            document.getElementById('grandTotal').innerText = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
-        }
-
-        function buildOrderSummaryText() {
-            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
-            const city = document.getElementById('clientCity').value || '-';
-            const vat = document.getElementById('clientVat').value || '-';
-            
-            let summary = `*ORDINE RIVIERA BASIC*\n`;
-            summary += `----------------------------------\n`;
-            summary += `*Cliente:* ${client}\n`;
-            summary += `*Città:* ${city}\n`;
-            summary += `*P.IVA/SDI:* ${vat}\n`;
-            summary += `*Data:* ${new Date().toLocaleDateString('it-IT')}\n`;
-            summary += `----------------------------------\n`;
-            summary += `*ARTICOLI IN ORDINE:*\n\n`;
-
-            let totalPz = 0;
-            let totalEuro = 0;
-
-            items.forEach(i => {
-                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo: € ${i.price.toFixed(2).replace('.', ',')} | Tot: € ${i.total.toFixed(2).replace('.', ',')}\n\n`;
-                totalPz += i.qty;
-                totalEuro += i.total;
-            });
-
-            summary += `----------------------------------\n`;
-            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
-            summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
-
-            return summary;
-        }
-
-        function sendWhatsApp() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
-                return;
-            }
-            const text = encodeURIComponent(buildOrderSummaryText());
-            const phone = "393392822146";
-            window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`, '_blank');
-        }
-
-        function sendEmail() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
-                return;
-            }
-            const client = document.getElementById('clientName').value || 'Cliente';
-            const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
-            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
-            const email = "cacciola74@gmail.com";
-            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-        }
-
-        function resetForm() {
-            if (confirm("Vuoi azzerare l'ordine corrente?")) {
-                items = [];
-                document.getElementById('clientName').value = '';
-                document.getElementById('clientCity').value = '';
-                document.getElementById('clientVat').value = '';
-                document.getElementById('lineSelect').value = 'ALL';
-                populateItems('ALL');
-                renderTable();
-            }
-        }
-
-        function exportPDF() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
-                return;
-            }
-
-            renderTable();
-
-            setTimeout(function() {
-                window.print();
-            }, 100);
-        }
-
-        document.getElementById('clientName').addEventListener('input', renderTable);
-        document.getElementById('clientCity').addEventListener('input', renderTable);
-        document.getElementById('clientVat').addEventListener('input', renderTable);
-    </script>
-</body>
-</html>
+            else if (category === 'wimbledon_adulto') colorsToLoad
