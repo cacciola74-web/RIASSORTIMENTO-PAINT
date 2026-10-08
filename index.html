@@ -268,27 +268,37 @@
 
         document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
 
-        function onItemChange() {
-            const select = document.getElementById('itemSelect');
-            const selectedOption = select.options[select.selectedIndex];
-            const price = selectedOption.getAttribute('data-price') || "0.00";
-            const category = selectedOption.getAttribute('data-category');
+       function onItemChange() {
+        const select = document.getElementById('itemSelect');
+        const selectedOption = select.options[select.selectedIndex];
+        const colorSelect = document.getElementById('itemColor');
 
-            document.getElementById('itemPriceInput').value = price ? `€ ${parseFloat(price).toFixed(2).replace('.', ',')}` : '';
-
-            const colorSelect = document.getElementById('itemColor');
-            colorSelect.innerHTML = '<option value="">-- Seleziona Variante --</option>';
-
-            if (!category) return;
-
-            const colorsToLoad = category === 'quilt' ? quiltColors : standardColors;
-            colorsToLoad.forEach(col => {
-                const opt = document.createElement('option');
-                opt.value = col;
-                opt.innerText = col;
-                colorSelect.appendChild(opt);
-            });
+        // Se l'utente seleziona l'opzione vuota "-- Seleziona Articolo --"
+        if (!select.value || select.selectedIndex === 0) {
+            document.getElementById('itemPriceInput').value = '';
+            colorSelect.innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
+            return;
         }
+
+        // Recupera prezzo e categoria dall'opzione scelta
+        const price = selectedOption.getAttribute('data-price') || "0.00";
+        const category = selectedOption.getAttribute('data-category');
+
+        // Imposta il prezzo unitario
+        document.getElementById('itemPriceInput').value = `€ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
+
+        // Pulisce e popola il menu delle varianti colore
+        colorSelect.innerHTML = '<option value="">-- Seleziona Variante --</option>';
+
+        const colorsToLoad = (category === 'quilt') ? quiltColors : standardColors;
+        
+        colorsToLoad.forEach(col => {
+            const opt = document.createElement('option');
+            opt.value = col;
+            opt.textContent = col;
+            colorSelect.appendChild(opt);
+        });
+    }
 
         function addItem() {
             const select = document.getElementById('itemSelect');
