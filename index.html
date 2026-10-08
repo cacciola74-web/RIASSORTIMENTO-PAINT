@@ -154,4 +154,339 @@
                 <div>
                     <label class="block text-xs font-medium text-slate-600 mb-1">Variante / Variante Colore</label>
                     <select id="itemColor" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                        <option value="">-- Seleziona Prima
+                        <option value="">-- Seleziona Prima l'Articolo --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Quantità (Pezzi) *</label>
+                    <input type="number" id="itemQty" min="1" value="1" class="w-full text-sm font-semibold border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Prezzo Unitario €</label>
+                    <input type="text" id="itemPriceInput" readonly class="w-full text-sm font-bold bg-slate-100 border border-slate-300 rounded-lg p-2.5 text-slate-700">
+                </div>
+                <div class="flex items-end">
+                    <button onclick="addItem()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm transition">
+                        <i class="fa-solid fa-plus mr-1"></i> Aggiungi all'Ordine
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabella Ordine / Anteprima Stampa -->
+        <div id="pdfContent" class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+            <!-- Testata PDF -->
+            <div class="flex justify-between items-start border-b pb-4 mb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-indigo-900">RIVIERA BASIC</h2>
+                    <p class="text-sm font-semibold text-slate-600">PAINT - Copia Commissione / Riassortimento</p>
+                </div>
+                <div class="text-right text-xs text-slate-500">
+                    <p id="docDate"></p>
+                </div>
+            </div>
+
+            <!-- Dati Cliente per PDF -->
+            <div class="mb-6 bg-slate-50 p-3 rounded border border-slate-200 text-xs grid grid-cols-3 gap-2">
+                <div><strong>Cliente:</strong> <span id="pdfClientName">-</span></div>
+                <div><strong>Città:</strong> <span id="pdfClientCity">-</span></div>
+                <div><strong>P.IVA/SDI:</strong> <span id="pdfClientVat">-</span></div>
+            </div>
+
+            <!-- Tabella Articoli -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-700 border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-800 uppercase font-semibold border-b">
+                            <th class="py-2.5 px-3">Codice</th>
+                            <th class="py-2.5 px-3">Articolo / Descrizione</th>
+                            <th class="py-2.5 px-3">Variante Colore</th>
+                            <th class="py-2.5 px-3 text-center">PZ</th>
+                            <th class="py-2.5 px-3 text-right">Prezzo Unit.</th>
+                            <th class="py-2.5 px-3 text-right">Totale €</th>
+                            <th class="py-2.5 px-3 text-center no-print">Azione</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody">
+                        <tr>
+                            <td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Totali -->
+            <div class="mt-6 border-t pt-4 flex flex-col items-end text-xs space-y-1">
+                <div class="flex justify-between w-48">
+                    <span class="text-slate-600">Totale Pezzi:</span>
+                    <span id="totalPieces" class="font-bold text-slate-800">0</span>
+                </div>
+                <div class="flex justify-between w-48 text-sm pt-2 border-t">
+                    <span class="font-bold text-slate-800">Totale Netto:</span>
+                    <span id="grandTotal" class="font-bold text-indigo-700">€ 0,00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Azioni Finale (WhatsApp, Email, PDF) -->
+        <div class="flex flex-wrap gap-3 justify-end no-print">
+            <button onclick="sendWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Invia via WhatsApp
+            </button>
+            <button onclick="sendEmail()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+                <i class="fa-solid fa-envelope text-lg mr-2"></i> Invia via Email
+            </button>
+            <button onclick="exportPDF()" class="bg-slate-700 hover:bg-slate-800 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+                <i class="fa-solid fa-file-pdf text-lg mr-2"></i> Scarica / Stampa PDF
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        const standardColors = [
+            "0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA",
+            "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE",
+            "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO",
+            "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA",
+            "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO",
+            "2501 LOTO", "1201 BORDEAUX"
+        ];
+
+        // COLORI PER PIAZZA E MEZZA FRANCESE
+        const franceseColors = [
+            "0101 BIANCO", 
+            "0301 NEW TORTORA", 
+            "0501 PERLA", 
+            "0601 ACCIAIO", 
+            "1501 DENIM", 
+            "1001 MALVA"
+        ];
+
+        // COLORI PER KING SIZE (COMPLETO E SOTTO)
+        const kingColors = [
+            "0101 BIANCO",
+            "0201 AVORIO",
+            "0301 NEW TORTORA",
+            "0501 PERLA",
+            "1401 C. ZUCCHERO",
+            "2701 MUSCHIO",
+            "1001 MALVA"
+        ];
+
+        const quiltColors = [
+            "0101 AVORIO/GRIGIO PERLA", "0201 TORTORA/AVORIO", "0301 CAMMELLO/GLACÉ",
+            "0401 ACCIAIO/NEW TORTORA", "0501 CARBONE/CAMMELLO", "0601 C. DA ZUCCHERO/DENIM",
+            "0701 MUSCHIO/TURCHESE", "0801 LOTO/MALVA", "0901 CAROTA/NEW TORTORA", "1001 BORDEAUX/GLACÉ"
+        ];
+
+        let items = [];
+
+        document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
+
+        function onItemChange() {
+            const select = document.getElementById('itemSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            const colorSelect = document.getElementById('itemColor');
+
+            if (!select.value || select.selectedIndex === 0) {
+                document.getElementById('itemPriceInput').value = '';
+                colorSelect.innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
+                return;
+            }
+
+            const price = selectedOption.getAttribute('data-price') || "0.00";
+            const category = selectedOption.getAttribute('data-category');
+
+            document.getElementById('itemPriceInput').value = `€ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
+            colorSelect.innerHTML = '<option value="">-- Seleziona Variante --</option>';
+
+            let colorsToLoad = standardColors;
+            
+            if (category === 'quilt') {
+                colorsToLoad = quiltColors;
+            } else if (category === 'francese') {
+                colorsToLoad = franceseColors;
+            } else if (category === 'king') {
+                colorsToLoad = kingColors;
+            }
+            
+            colorsToLoad.forEach(col => {
+                const opt = document.createElement('option');
+                opt.value = col;
+                opt.textContent = col;
+                colorSelect.appendChild(opt);
+            });
+        }
+
+        function addItem() {
+            const select = document.getElementById('itemSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (!select.value) {
+                alert("Seleziona un articolo prima di aggiungerlo.");
+                return;
+            }
+
+            const code = selectedOption.getAttribute('data-code');
+            const articleName = selectedOption.value;
+            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
+            const color = document.getElementById('itemColor').value;
+            const qty = parseInt(document.getElementById('itemQty').value) || 0;
+
+            if (!color) {
+                alert("Seleziona la variante colore dell'articolo.");
+                return;
+            }
+            if (qty <= 0) {
+                alert("Inserisci una quantità valida (almeno 1 pz).");
+                return;
+            }
+
+            items.push({
+                code: code,
+                article: articleName,
+                color: color,
+                qty: qty,
+                price: price,
+                total: price * qty
+            });
+
+            document.getElementById('itemColor').value = '';
+            document.getElementById('itemQty').value = '1';
+
+            renderTable();
+        }
+
+        function removeItem(index) {
+            items.splice(index, 1);
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('orderTableBody');
+            
+            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
+            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
+            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
+                document.getElementById('totalPieces').innerText = "0";
+                document.getElementById('grandTotal').innerText = "€ 0,00";
+                return;
+            }
+
+            let html = '';
+            let totalQty = 0;
+            let grandTotal = 0;
+
+            items.forEach((item, index) => {
+                totalQty += item.qty;
+                grandTotal += item.total;
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
+                        <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
+                        <td class="py-2.5 px-3 font-medium">${item.color}</td>
+                        <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
+                        <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-center no-print">
+                            <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            document.getElementById('totalPieces').innerText = totalQty;
+            document.getElementById('grandTotal').innerText = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
+        }
+
+        function buildOrderSummaryText() {
+            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
+            const city = document.getElementById('clientCity').value || '-';
+            const vat = document.getElementById('clientVat').value || '-';
+            
+            let summary = `*ORDINE RIVIERA BASIC - LINEA PAINT*\n`;
+            summary += `----------------------------------\n`;
+            summary += `*Cliente:* ${client}\n`;
+            summary += `*Città:* ${city}\n`;
+            summary += `*P.IVA/SDI:* ${vat}\n`;
+            summary += `*Data:* ${new Date().toLocaleDateString('it-IT')}\n`;
+            summary += `----------------------------------\n`;
+            summary += `*ARTICOLI IN ORDINE:*\n\n`;
+
+            let totalPz = 0;
+            let totalEuro = 0;
+
+            items.forEach(i => {
+                summary += `• [${i.code}] ${i.article}\n  Colore: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo: € ${i.price.toFixed(2).replace('.', ',')} | Tot: € ${i.total.toFixed(2).replace('.', ',')}\n\n`;
+                totalPz += i.qty;
+                totalEuro += i.total;
+            });
+
+            summary += `----------------------------------\n`;
+            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
+            summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
+
+            return summary;
+        }
+
+        function sendWhatsApp() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                return;
+            }
+            const text = encodeURIComponent(buildOrderSummaryText());
+            const phone = "393392822146";
+            window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`, '_blank');
+        }
+
+        function sendEmail() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                return;
+            }
+            const client = document.getElementById('clientName').value || 'Cliente';
+            const subject = encodeURIComponent(`Ordine Riviera Paint - ${client}`);
+            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
+            const email = "cacciola74@gmail.com";
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        }
+
+        function resetForm() {
+            if (confirm("Vuoi azzerare l'ordine corrente?")) {
+                items = [];
+                document.getElementById('clientName').value = '';
+                document.getElementById('clientCity').value = '';
+                document.getElementById('clientVat').value = '';
+                renderTable();
+            }
+        }
+
+        function exportPDF() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
+                return;
+            }
+
+            renderTable();
+
+            setTimeout(function() {
+                window.print();
+            }, 100);
+        }
+
+        document.getElementById('clientName').addEventListener('input', renderTable);
+        document.getElementById('clientCity').addEventListener('input', renderTable);
+        document.getElementById('clientVat').addEventListener('input', renderTable);
+    </script>
+</body>
+</html>
