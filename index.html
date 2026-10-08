@@ -1,1 +1,288 @@
-<!-- Riviera Order App --> 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Ordini - Riviera Basic (Linea PAINT)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12">
+
+    <!-- Header / Navbar -->
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50 no-print">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
+                <p class="text-xs text-indigo-200">Linea PAINT - Modulo Ordini</p>
+            </div>
+            <button onclick="resetForm()" class="text-xs bg-indigo-800 hover:bg-indigo-700 px-3 py-2 rounded transition">
+                <i class="fa-solid fa-rotate-left mr-1"></i> Nuovo Ordine
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 mt-6 space-y-6">
+
+        <!-- Dati Cliente -->
+        <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
+            <h2 class="text-base font-semibold text-slate-700 mb-4 border-b pb-2 flex items-center">
+                <i class="fa-solid fa-user-tag text-indigo-600 mr-2"></i> Dati Anagrafici Cliente
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Ragione Sociale / Cliente *</label>
+                    <input type="text" id="clientName" placeholder="Es. Rossi Home" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Città / Località</label>
+                    <input type="text" id="clientCity" placeholder="Es. Catania" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Partita IVA / Cod. Fiscale</label>
+                    <input type="text" id="clientVat" placeholder="IT0123456789" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+            </div>
+        </section>
+
+        <!-- Inserimento Articolo -->
+        <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
+            <h2 class="text-base font-semibold text-slate-700 mb-4 border-b pb-2 flex items-center">
+                <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Aggiungi Articolo (Quantità Libera)
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Seleziona Articolo</label>
+                    <select id="itemSelect" onchange="updatePrice()" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        <option value="">-- Scegli Articolo --</option>
+                        <option value="Trapunta Singola" data-price="35.00">Trapunta Singola - € 35,00</option>
+                        <option value="Trapunta Matrimoniale" data-price="55.00">Trapunta Matrimoniale - € 55,00</option>
+                        <option value="Completo Lenzuola Singolo" data-price="18.50">Completo Lenzuola Singolo - € 18,50</option>
+                        <option value="Completo Lenzuola Matrimoniale" data-price="28.00">Completo Lenzuola Matrimoniale - € 28,00</option>
+                        <option value="Copripiumino Matrimoniale" data-price="32.00">Copripiumino Matrimoniale - € 32,00</option>
+                        <option value="Tris Spugna Bagno" data-price="15.00">Tris Spugna Bagno - € 15,00</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Variante / Colore</label>
+                    <input type="text" id="itemColor" placeholder="Es. Blu, Ocra, Salvia" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Quantità (PZ) *</label>
+                    <input type="number" id="itemQty" min="1" value="1" placeholder="Q.tà" class="w-full text-sm font-semibold border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <div class="text-xs text-slate-500">
+                    Prezzo Unitario: <span id="priceDisplay" class="font-bold text-slate-700">€ 0,00</span>
+                </div>
+                <button onclick="addItem()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm px-5 py-2.5 rounded-lg shadow-sm transition">
+                    <i class="fa-solid fa-plus mr-1"></i> Aggiungi all'Ordine
+                </button>
+            </div>
+        </section>
+
+        <!-- Tabella Ordine / Anteprima Stampa -->
+        <div id="pdfContent" class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+            <!-- Testata PDF -->
+            <div class="flex justify-between items-start border-b pb-4 mb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-indigo-900">RIVIERA BASIC</h2>
+                    <p class="text-sm font-semibold text-slate-600">Linea PAINT - Conferma d'Ordine</p>
+                </div>
+                <div class="text-right text-xs text-slate-500">
+                    <p id="docDate"></p>
+                </div>
+            </div>
+
+            <!-- Dati Cliente per PDF -->
+            <div class="mb-6 bg-slate-50 p-3 rounded border border-slate-200 text-xs grid grid-cols-2 gap-2">
+                <div><strong>Cliente:</strong> <span id="pdfClientName">-</span></div>
+                <div><strong>Città:</strong> <span id="pdfClientCity">-</span></div>
+                <div><strong>P.IVA/CF:</strong> <span id="pdfClientVat">-</span></div>
+            </div>
+
+            <!-- Tabella Articoli -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-700 border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-800 uppercase font-semibold border-b">
+                            <th class="py-2.5 px-3">Articolo</th>
+                            <th class="py-2.5 px-3">Variante/Colore</th>
+                            <th class="py-2.5 px-3 text-center">PZ</th>
+                            <th class="py-2.5 px-3 text-right">Prezzo Unit.</th>
+                            <th class="py-2.5 px-3 text-right">Totale €</th>
+                            <th class="py-2.5 px-3 text-center no-print">Azione</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody">
+                        <tr>
+                            <td colspan="6" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Totali -->
+            <div class="mt-6 border-t pt-4 flex flex-col items-end text-xs space-y-1">
+                <div class="flex justify-between w-48">
+                    <span class="text-slate-600">Totale Pezzi:</span>
+                    <span id="totalPieces" class="font-bold text-slate-800">0</span>
+                </div>
+                <div class="flex justify-between w-48 text-sm pt-2 border-t">
+                    <span class="font-bold text-slate-800">Totale Netto:</span>
+                    <span id="grandTotal" class="font-bold text-indigo-700">€ 0,00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Azioni Finale -->
+        <div class="flex justify-end space-x-3 no-print">
+            <button onclick="exportPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-6 py-3 rounded-lg shadow transition flex items-center">
+                <i class="fa-solid fa-file-pdf text-base mr-2"></i> Scarica PDF Ordine
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        let items = [];
+
+        document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
+
+        function updatePrice() {
+            const select = document.getElementById('itemSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            const price = selectedOption.getAttribute('data-price') || "0.00";
+            document.getElementById('priceDisplay').innerText = `€ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
+        }
+
+        function addItem() {
+            const select = document.getElementById('itemSelect');
+            const articleName = select.value;
+            const price = parseFloat(select.options[select.selectedIndex]?.getAttribute('data-price') || 0);
+            const color = document.getElementById('itemColor').value.trim() || 'Standard';
+            const qty = parseInt(document.getElementById('itemQty').value) || 0;
+
+            if (!articleName) {
+                alert("Seleziona un articolo prima di aggiungerlo.");
+                return;
+            }
+            if (qty <= 0) {
+                alert("Inserisci una quantità valida (almeno 1 pz).");
+                return;
+            }
+
+            items.push({
+                article: articleName,
+                color: color,
+                qty: qty,
+                price: price,
+                total: price * qty
+            });
+
+            // Svuota campino variante e qty
+            document.getElementById('itemColor').value = '';
+            document.getElementById('itemQty').value = '1';
+
+            renderTable();
+        }
+
+        function removeItem(index) {
+            items.splice(index, 1);
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('orderTableBody');
+            
+            // Sync Dati Anagrafici
+            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
+            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
+            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
+                document.getElementById('totalPieces').innerText = "0";
+                document.getElementById('grandTotal').innerText = "€ 0,00";
+                return;
+            }
+
+            let html = '';
+            let totalQty = 0;
+            let grandTotal = 0;
+
+            items.forEach((item, index) => {
+                totalQty += item.qty;
+                grandTotal += item.total;
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
+                        <td class="py-2.5 px-3">${item.color}</td>
+                        <td class="py-2.5 px-3 text-center font-bold">${item.qty}</td>
+                        <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-center no-print">
+                            <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            document.getElementById('totalPieces').innerText = totalQty;
+            document.getElementById('grandTotal').innerText = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
+        }
+
+        function resetForm() {
+            if (confirm("Vuoi azzerare l'ordine corrente?")) {
+                items = [];
+                document.getElementById('clientName').value = '';
+                document.getElementById('clientCity').value = '';
+                document.getElementById('clientVat').value = '';
+                renderTable();
+            }
+        }
+
+        function exportPDF() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di esportare il PDF.");
+                return;
+            }
+
+            renderTable();
+
+            const client = document.getElementById('clientName').value || 'Cliente';
+            const element = document.getElementById('pdfContent');
+            const opt = {
+                margin:       10,
+                filename:     `Ordine_Riviera_${client.replace(/\s+/g, '_')}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // Live binding dei dati cliente
+        document.getElementById('clientName').addEventListener('input', renderTable);
+        document.getElementById('clientCity').addEventListener('input', renderTable);
+        document.getElementById('clientVat').addEventListener('input', renderTable);
+    </script>
+</body>
+</html>
