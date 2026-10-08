@@ -62,9 +62,14 @@
                 <h1 class="text-xl font-bold tracking-wide"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
                 <p class="text-xs text-indigo-200">Modulo Riassortimento Ordini - PAINT, GLAMOUR, WIMBLEDON & BABY ANIMALS</p>
             </div>
-            <button onclick="resetForm()" class="text-xs bg-indigo-800 hover:bg-indigo-700 px-3 py-2 rounded transition">
-                <i class="fa-solid fa-rotate-left mr-1"></i> Nuovo Ordine
-            </button>
+            <div class="flex items-center space-x-2">
+                <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded transition flex items-center">
+                    <i class="fa-solid fa-file-pdf mr-1.5"></i> Catalogo PDF
+                </a>
+                <button onclick="resetForm()" class="text-xs bg-indigo-800 hover:bg-indigo-700 px-3 py-2 rounded transition">
+                    <i class="fa-solid fa-rotate-left mr-1"></i> Nuovo Ordine
+                </button>
+            </div>
         </div>
     </header>
 
@@ -93,9 +98,14 @@
 
         <!-- Inserimento Articolo -->
         <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
-            <h2 class="text-base font-semibold text-slate-700 mb-4 border-b pb-2 flex items-center">
-                <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Seleziona Prodotto dal Copia Commissione
-            </h2>
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h2 class="text-base font-semibold text-slate-700 flex items-center">
+                    <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Seleziona Prodotto dal Copia Commissione
+                </h2>
+                <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs text-indigo-600 font-bold hover:underline flex items-center">
+                    <i class="fa-solid fa-book-open mr-1"></i> Apri Catalogo Continuativo
+                </a>
+            </div>
 
             <!-- SELETTORE LINEA -->
             <div class="mb-4 bg-indigo-50 p-3 rounded-lg border border-indigo-100">
@@ -119,9 +129,21 @@
 
                 <div>
                     <label class="block text-xs font-medium text-slate-600 mb-1">3. Variante / Personaggio / Colore</label>
-                    <select id="itemColor" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <select id="itemColor" onchange="updatePreview()" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                         <option value="">-- Seleziona Prima l'Articolo --</option>
                     </select>
+                </div>
+            </div>
+
+            <!-- Box Anteprima / Miniatura Prodotto -->
+            <div id="previewBox" class="mb-4 p-3 bg-slate-50 border border-slate-200 rounded-lg hidden flex items-center space-x-4">
+                <div class="w-16 h-16 bg-white border rounded flex items-center justify-center overflow-hidden shadow-sm flex-shrink-0">
+                    <img id="previewImage" src="" alt="Anteprima" class="object-cover w-full h-full hidden">
+                    <i id="previewIcon" class="fa-solid fa-shirt text-slate-300 text-2xl"></i>
+                </div>
+                <div>
+                    <p id="previewTitle" class="text-xs font-bold text-slate-800"></p>
+                    <p id="previewDetail" class="text-xs text-slate-500"></p>
                 </div>
             </div>
 
@@ -262,4 +284,309 @@
             { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1+1/2P (LE0624)', code: 'LE0624', price: 39.90, category: 'quilt', label: 'Quilt Double Trapuntato 1+1/2P - Cod. LE0624 - € 39,90' },
             { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1P (LE0625)', code: 'LE0625', price: 34.90, category: 'quilt', label: 'Quilt Double Trapuntato 1P - Cod. LE0625 - € 34,90' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 2P (LP0001)', code: 'LP0001', price: 13.50, category: 'standard', label: 'Lenzuolo Sopra 2P - Cod. LP0001 - € 13,50' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)', code: 'LP0003', price: 12.90, category: 'francese', label: 'Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P (LP0002)', code: 'LP0002', price: 11.50, category: 'standard', label: 'Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1P (LP0004)', code: 'LP0004', price: 9.90, category: 'standard', label: 'Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)', code: 'LQ0002', price: 11.50, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P (LQ0058)', code: 'LQ0058', price: 10.50, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)', code: 'LQ0054', price: 13.50, category: 'king', label: 'Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)', code: 'LQ0004', price: 10.30, category: 'francese', label: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)', code: 'LQ0003', price: 9.90, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1P (LQ0005)', code: 'LQ0005', price: 7.90, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90' },
+            { line: 'PAINT', group: 'PAINT: COPPIA FEDERE', name: 'Coppia Federe 50X80 (LM0068)', code: 'LM0068', price: 7.50, category: 'standard', label: 'Coppia Federe 50X80 - Cod. LM0068 - € 7,50' }
+        ];
+
+        // --- COLORI LINEA PAINT ---
+        const standardColors = ["0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA", "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE", "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO", "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA", "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO", "2501 LOTO", "1201 BORDEAUX"];
+        const franceseColors = ["0101 BIANCO", "0301 NEW TORTORA", "0501 PERLA", "0601 ACCIAIO", "1501 DENIM", "1001 MALVA"];
+        const kingColors = ["0101 BIANCO", "0201 AVORIO", "0301 NEW TORTORA", "0501 PERLA", "1401 C. ZUCCHERO", "2701 MUSCHIO", "1001 MALVA"];
+        const quiltColors = ["0101 AVORIO/GRIGIO PERLA", "0201 TORTORA/AVORIO", "0301 CAMMELLO/GLACÉ", "0401 ACCIAIO/NEW TORTORA", "0501 CARBONE/CAMMELLO", "0601 C. DA ZUCCHERO/DENIM", "0701 MUSCHIO/TURCHESE", "0801 LOTO/MALVA", "0901 CAROTA/NEW TORTORA", "1001 BORDEAUX/GLACÉ"];
+
+        // --- COLORI LINEA GLAMOUR ---
+        const glamourSetColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "1101 RUGGINO", "0501 ROSA", "1201 BORDEAUX", "0801 MALVA", "1301 AMETISTA"];
+        const glamourAccappatoioColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "0501 ROSA", "0801 MALVA", "1201 BORDEAUX"];
+        const glamourAccappatoio3XLColors = ["0106 BIANCO", "1506 AVORIO", "0306 TORTORA", "0406 GRIGIO SCURO", "1006 BLU SCURO", "0706 VERDE"];
+        const glamourTappetoColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0701 VERDE", "0801 MALVA", "1101 RUGGINO"];
+
+        // --- COLORI LINEA WIMBLEDON ---
+        const wimbledonAdultoColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
+        const wimbledonJuniorColors = ["1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1501 MALVA"];
+        const wimbledonTeloColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
+
+        // --- VARIANTI LINEA BABY ANIMALS ---
+        const babyAnimalsColors = ["SHARK", "SHEEP", "RABBIT", "DINO", "UNICORN", "GIRAFFE"];
+
+        let items = [];
+
+        document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
+
+        // Inizializza tutti i prodotti all'avvio
+        populateItems('ALL');
+
+        function onLineChange() {
+            const selectedLine = document.getElementById('lineSelect').value;
+            populateItems(selectedLine);
+        }
+
+        function populateItems(filterLine) {
+            const itemSelect = document.getElementById('itemSelect');
+            itemSelect.innerHTML = '<option value="">-- Seleziona Articolo --</option>';
+            document.getElementById('itemPriceInput').value = '';
+            document.getElementById('itemColor').innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
+            document.getElementById('previewBox').classList.add('hidden');
+
+            const filteredProducts = filterLine === 'ALL' 
+                ? productsData 
+                : productsData.filter(p => p.line === filterLine);
+
+            const groups = [...new Set(filteredProducts.map(p => p.group))];
+
+            groups.forEach(grp => {
+                const optGroup = document.createElement('optgroup');
+                optGroup.label = `--- ${grp} ---`;
+
+                filteredProducts.filter(p => p.group === grp).forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.name;
+                    opt.textContent = p.label;
+                    opt.setAttribute('data-code', p.code);
+                    opt.setAttribute('data-price', p.price);
+                    opt.setAttribute('data-category', p.category);
+                    optGroup.appendChild(opt);
+                });
+
+                itemSelect.appendChild(optGroup);
+            });
+        }
+
+        function onItemChange() {
+            const select = document.getElementById('itemSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            const colorSelect = document.getElementById('itemColor');
+
+            if (!select.value || select.selectedIndex === 0) {
+                document.getElementById('itemPriceInput').value = '';
+                colorSelect.innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
+                document.getElementById('previewBox').classList.add('hidden');
+                return;
+            }
+
+            const price = selectedOption.getAttribute('data-price') || "0.00";
+            const category = selectedOption.getAttribute('data-category');
+
+            document.getElementById('itemPriceInput').value = `€ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
+            colorSelect.innerHTML = '<option value="">-- Seleziona Variante --</option>';
+
+            let colorsToLoad = standardColors;
+            
+            if (category === 'quilt') colorsToLoad = quiltColors;
+            else if (category === 'francese') colorsToLoad = franceseColors;
+            else if (category === 'king') colorsToLoad = kingColors;
+            else if (category === 'glamour_set') colorsToLoad = glamourSetColors;
+            else if (category === 'glamour_accappatoio') colorsToLoad = glamourAccappatoioColors;
+            else if (category === 'glamour_accappatoio_3xl') colorsToLoad = glamourAccappatoio3XLColors;
+            else if (category === 'glamour_tappeto') colorsToLoad = glamourTappetoColors;
+            else if (category === 'wimbledon_adulto') colorsToLoad = wimbledonAdultoColors;
+            else if (category === 'wimbledon_junior') colorsToLoad = wimbledonJuniorColors;
+            else if (category === 'wimbledon_telo') colorsToLoad = wimbledonTeloColors;
+            else if (category === 'baby_animals') colorsToLoad = babyAnimalsColors;
+            
+            colorsToLoad.forEach(col => {
+                const opt = document.createElement('option');
+                opt.value = col;
+                opt.textContent = col;
+                colorSelect.appendChild(opt);
+            });
+
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const select = document.getElementById('itemSelect');
+            const colorSelect = document.getElementById('itemColor');
+            const previewBox = document.getElementById('previewBox');
+
+            if (!select.value) {
+                previewBox.classList.add('hidden');
+                return;
+            }
+
+            const articleName = select.value;
+            const color = colorSelect.value || 'Nessuna variante selezionata';
+
+            document.getElementById('previewTitle').innerText = articleName;
+            document.getElementById('previewDetail').innerText = `Variante: ${color}`;
+            previewBox.classList.remove('hidden');
+        }
+
+        function addItem() {
+            const select = document.getElementById('itemSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (!select.value) {
+                alert("Seleziona un articolo prima di aggiungerlo.");
+                return;
+            }
+
+            const code = selectedOption.getAttribute('data-code');
+            const articleName = selectedOption.value;
+            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
+            const color = document.getElementById('itemColor').value;
+            const qty = parseInt(document.getElementById('itemQty').value) || 0;
+
+            if (!color) {
+                alert("Seleziona la variante colore dell'articolo.");
+                return;
+            }
+            if (qty <= 0) {
+                alert("Inserisci una quantità valida (almeno 1 pz).");
+                return;
+            }
+
+            items.push({
+                code: code,
+                article: articleName,
+                color: color,
+                qty: qty,
+                price: price,
+                total: price * qty
+            });
+
+            document.getElementById('itemColor').value = '';
+            document.getElementById('itemQty').value = '1';
+            document.getElementById('previewBox').classList.add('hidden');
+
+            renderTable();
+        }
+
+        function removeItem(index) {
+            items.splice(index, 1);
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('orderTableBody');
+            
+            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
+            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
+            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
+                document.getElementById('totalPieces').innerText = "0";
+                document.getElementById('grandTotal').innerText = "€ 0,00";
+                return;
+            }
+
+            let html = '';
+            let totalQty = 0;
+            let grandTotal = 0;
+
+            items.forEach((item, index) => {
+                totalQty += item.qty;
+                grandTotal += item.total;
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
+                        <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
+                        <td class="py-2.5 px-3 font-medium">${item.color}</td>
+                        <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
+                        <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-center no-print">
+                            <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            document.getElementById('totalPieces').innerText = totalQty;
+            document.getElementById('grandTotal').innerText = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
+        }
+
+        function buildOrderSummaryText() {
+            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
+            const city = document.getElementById('clientCity').value || '-';
+            const vat = document.getElementById('clientVat').value || '-';
+            
+            let summary = `*ORDINE RIVIERA BASIC*\n`;
+            summary += `----------------------------------\n`;
+            summary += `*Cliente:* ${client}\n`;
+            summary += `*Città:* ${city}\n`;
+            summary += `*P.IVA/SDI:* ${vat}\n`;
+            summary += `*Data:* ${new Date().toLocaleDateString('it-IT')}\n`;
+            summary += `----------------------------------\n`;
+            summary += `*ARTICOLI IN ORDINE:*\n\n`;
+
+            let totalPz = 0;
+            let totalEuro = 0;
+
+            items.forEach(i => {
+                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo: € ${i.price.toFixed(2).replace('.', ',')} | Tot: € ${i.total.toFixed(2).replace('.', ',')}\n\n`;
+                totalPz += i.qty;
+                totalEuro += i.total;
+            });
+
+            summary += `----------------------------------\n`;
+            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
+            summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
+
+            return summary;
+        }
+
+        function sendWhatsApp() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                return;
+            }
+            const text = encodeURIComponent(buildOrderSummaryText());
+            const phone = "393392822146";
+            window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`, '_blank');
+        }
+
+        function sendEmail() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                return;
+            }
+            const client = document.getElementById('clientName').value || 'Cliente';
+            const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
+            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
+            const email = "cacciola74@gmail.com";
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        }
+
+        function resetForm() {
+            if (confirm("Vuoi azzerare l'ordine corrente?")) {
+                items = [];
+                document.getElementById('clientName').value = '';
+                document.getElementById('clientCity').value = '';
+                document.getElementById('clientVat').value = '';
+                document.getElementById('lineSelect').value = 'ALL';
+                populateItems('ALL');
+                renderTable();
+            }
+        }
+
+        function exportPDF() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
+                return;
+            }
+
+            renderTable();
+
+            setTimeout(function() {
+                window.print();
+            }, 100);
+        }
+
+        document.getElementById('clientName').addEventListener('input', renderTable);
+        document.getElementById('clientCity').addEventListener('input', renderTable);
+        document.getElementById('clientVat').addEventListener('input', renderTable);
+    </script>
+</body>
+</html>
