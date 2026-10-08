@@ -14,13 +14,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        @media print {
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            body { background: white !important; padding: 0 !important; }
-            #pdfContent { border: none !important; shadow: none !important; padding: 0 !important; }
+    @media print {
+        /* Nasconde i pulsanti, la testata e i form di input */
+        header, section, .no-print { 
+            display: none !important; 
         }
-    </style>
+        
+        body { 
+            background: #ffffff !important; 
+            color: #000000 !important;
+            padding: 0 !important; 
+            margin: 0 !important;
+        }
+        
+        #pdfContent { 
+            display: block !important;
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 10px !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+        }
+
+        th, td {
+            border-bottom: 1px solid #cbd5e1 !important;
+            padding: 6px 4px !important;
+        }
+    }
+</style>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12">
 
@@ -426,12 +455,16 @@
         }
 
         function exportPDF() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
-                return;
-            }
+        if (items.length === 0) {
+            alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
+            return;
+        }
 
-            renderTable();
+        renderTable();
+
+        // Apre direttamente la finestra di stampa nativa di iOS/Safari
+        window.print();
+    }
 
             const client = document.getElementById('clientName').value || 'Cliente';
             const element = document.getElementById('pdfContent');
