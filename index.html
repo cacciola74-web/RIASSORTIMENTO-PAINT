@@ -1,0 +1,418 @@
+<!-- Header -->
+<header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50 no-print">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div>
+            <h1 class="text-xl font-bold tracking-wide"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
+            <p class="text-xs text-indigo-200">Linea PAINT - Modulo Riassortimento Ordini</p>
+        </div>
+        <button onclick="resetForm()" class="text-xs bg-indigo-800 hover:bg-indigo-700 px-3 py-2 rounded transition">
+            <i class="fa-solid fa-rotate-left mr-1"></i> Nuovo Ordine
+        </button>
+    </div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 mt-6 space-y-6">
+
+    <!-- Dati Cliente -->
+    <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
+        <h2 class="text-base font-semibold text-slate-700 mb-4 border-b pb-2 flex items-center">
+            <i class="fa-solid fa-user-tag text-indigo-600 mr-2"></i> Dati Anagrafici Cliente
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <label class="block text-xs font-medium text-slate-600 mb-1">Ragione Sociale / Cliente *</label>
+                <input type="text" id="clientName" placeholder="Es. Rossi Home" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-medium text-slate-600 mb-1">Città / Località</label>
+                <input type="text" id="clientCity" placeholder="Es. Catania" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-medium text-slate-600 mb-1">P.IVA / Cod. Univoco / SDI</label>
+                <input type="text" id="clientVat" placeholder="IT0123456789" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+        </div>
+    </section>
+
+    <!-- Inserimento Articolo -->
+    <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
+        <h2 class="text-base font-semibold text-slate-700 mb-4 border-b pb-2 flex items-center">
+            <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Seleziona Prodotto dal Copia Commissione
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="md:col-span-2">
+                <label class="block text-xs font-medium text-slate-600 mb-1">Articolo - Misura - Codice - Listino</label>
+                <select id="itemSelect" onchange="onItemChange()" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <option value="">-- Seleziona Articolo --</option>
+                    
+                    <!-- COMPLETO LETTO -->
+                    <optgroup label="COMPLETO LETTO">
+                        <option value="Completo Letto 2P (LN0506)" data-code="LN0506" data-price="29.90" data-category="standard">Completo Letto 2P - Cod. LN0506 - € 29,90</option>
+                        <option value="Completo Letto KING SIZE (LN1862)" data-code="LN1862" data-price="33.50" data-category="standard">Completo Letto KING SIZE - Cod. LN1862 - € 33,50</option>
+                        <option value="Completo Letto 1+1/2P FRANCESE (LN0508)" data-code="LN0508" data-price="28.50" data-category="standard">Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50</option>
+                        <option value="Completo Letto 1+1/2P (LN0507)" data-code="LN0507" data-price="23.90" data-category="standard">Completo Letto 1+1/2P - Cod. LN0507 - € 23,90</option>
+                        <option value="Completo Letto 1P (LN0509)" data-code="LN0509" data-price="19.90" data-category="standard">Completo Letto 1P - Cod. LN0509 - € 19,90</option>
+                    </optgroup>
+<!-- PARURE COPRIPIUMINO -->
+                    <optgroup label="PARURE COPRIPIUMINO">
+                        <option value="Parure Copripiumino 2P (LF0179)" data-code="LF0179" data-price="30.90" data-category="standard">Parure Copripiumino 2P - Cod. LF0179 - € 30,90</option>
+                        <option value="Parure Copripiumino 1+1/2P (LF0180)" data-code="LF0180" data-price="26.90" data-category="standard">Parure Copripiumino 1+1/2P - Cod. LF0180 - € 26,90</option>
+                        <option value="Parure Copripiumino 1P (LF0181)" data-code="LF0181" data-price="20.90" data-category="standard">Parure Copripiumino 1P - Cod. LF0181 - € 20,90</option>
+                    </optgroup>
+
+                    <!-- QUILT DOUBLE TRAPUNTATO -->
+                    <optgroup label="QUILT DOUBLE TRAPUNTATO">
+                        <option value="Quilt Double Trapuntato 2P (LE0607)" data-code="LE0607" data-price="44.90" data-category="quilt">Quilt Double Trapuntato 2P - Cod. LE0607 - € 44,90</option>
+                        <option value="Quilt Double Trapuntato 1+1/2P (LE0624)" data-code="LE0624" data-price="39.90" data-category="quilt">Quilt Double Trapuntato 1+1/2P - Cod. LE0624 - € 39,90</option>
+                        <option value="Quilt Double Trapuntato 1P (LE0625)" data-code="LE0625" data-price="34.90" data-category="quilt">Quilt Double Trapuntato 1P - Cod. LE0625 - € 34,90</option>
+                    </optgroup>
+
+                    <!-- LENZUOLO SOPRA -->
+                    <optgroup label="LENZUOLO SOPRA">
+                        <option value="Lenzuolo Sopra 2P (LP0001)" data-code="LP0001" data-price="13.50" data-category="standard">Lenzuolo Sopra 2P - Cod. LP0001 - € 13,50</option>
+                        <option value="Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)" data-code="LP0003" data-price="12.90" data-category="standard">Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90</option>
+                        <option value="Lenzuolo Sopra 1+1/2P (LP0002)" data-code="LP0002" data-price="11.50" data-category="standard">Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50</option>
+                        <option value="Lenzuolo Sopra 1P (LP0004)" data-code="LP0004" data-price="9.90" data-category="standard">Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90</option>
+                    </optgroup>
+
+                    <!-- LENZUOLO SOTTO CON ANGOLI -->
+                    <optgroup label="LENZUOLO SOTTO CON ANGOLI">
+                        <option value="Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)" data-code="LQ0002" data-price="11.50" data-category="standard">Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50</option>
+                        <option value="Lenzuolo Sotto c/Angoli 2P (LQ0058)" data-code="LQ0058" data-price="10.50" data-category="standard">Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50</option>
+                        <option value="Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)" data-code="LQ0054" data-price="13.50" data-category="standard">Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50</option>
+                        <option value="Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)" data-code="LQ0004" data-price="10.30" data-category="standard">Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30</option>
+                        <option value="Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)" data-code="LQ0003" data-price="9.90" data-category="standard">Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90</option>
+                        <option value="Lenzuolo Sotto c/Angoli 1P (LQ0005)" data-code="LQ0005" data-price="7.90" data-category="standard">Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90</option>
+                    </optgroup>
+
+                    <!-- COPPIA FEDERE -->
+                    <optgroup label="COPPIA FEDERE">
+                        <option value="Coppia Federe 50X80 (LM0068)" data-code="LM0068" data-price="7.50" data-category="standard">Coppia Federe 50X80 - Cod. LM0068 - € 7,50</option>
+                    </optgroup>
+                </select>
+</div>
+
+            <div>
+                <label class="block text-xs font-medium text-slate-600 mb-1">Variante / Variante Colore</label>
+                <select id="itemColor" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <option value="">-- Seleziona Prima l'Articolo --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+                <label class="block text-xs font-medium text-slate-600 mb-1">Quantità (Pezzi) *</label>
+                <input type="number" id="itemQty" min="1" value="1" class="w-full text-sm font-semibold border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-medium text-slate-600 mb-1">Prezzo Unitario €</label>
+                <input type="text" id="itemPriceInput" readonly class="w-full text-sm font-bold bg-slate-100 border border-slate-300 rounded-lg p-2.5 text-slate-700">
+            </div>
+            <div class="flex items-end">
+                <button onclick="addItem()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm transition">
+                    <i class="fa-solid fa-plus mr-1"></i> Aggiungi all'Ordine
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabella Ordine / Anteprima Stampa -->
+    <div id="pdfContent" class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+        <!-- Testata PDF -->
+        <div class="flex justify-between items-start border-b pb-4 mb-4">
+            <div>
+                <h2 class="text-2xl font-bold text-indigo-900">RIVIERA BASIC</h2>
+                <p class="text-sm font-semibold text-slate-600">PAINT - Copia Commissione / Riassortimento</p>
+            </div>
+            <div class="text-right text-xs text-slate-500">
+                <p id="docDate"></p>
+            </div>
+        </div>
+
+        <!-- Dati Cliente per PDF -->
+        <div class="mb-6 bg-slate-50 p-3 rounded border border-slate-200 text-xs grid grid-cols-3 gap-2">
+            <div><strong>Cliente:</strong> <span id="pdfClientName">-</span></div>
+            <div><strong>Città:</strong> <span id="pdfClientCity">-</span></div>
+            <div><strong>P.IVA/SDI:</strong> <span id="pdfClientVat">-</span></div>
+        </div>
+
+        <!-- Tabella Articoli -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-700 border-collapse">
+                <thead>
+                    <tr class="bg-slate-100 text-slate-800 uppercase font-semibold border-b">
+                        <th class="py-2.5 px-3">Codice</th>
+                        <th class="py-2.5 px-3">Articolo / Descrizione</th>
+                        <th class="py-2.5 px-3">Variante Colore</th>
+                        <th class="py-2.5 px-3 text-center">PZ</th>
+                        <th class="py-2.5 px-3 text-right">Prezzo Unit.</th>
+                        <th class="py-2.5 px-3 text-right">Totale €</th>
+                        <th class="py-2.5 px-3 text-center no-print">Azione</th>
+                    </tr>
+                </thead>
+                <tbody id="orderTableBody">
+                    <tr>
+                        <td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Totali -->
+        <div class="mt-6 border-t pt-4 flex flex-col items-end text-xs space-y-1">
+            <div class="flex justify-between w-48">
+                <span class="text-slate-600">Totale Pezzi:</span>
+                <span id="totalPieces" class="font-bold text-slate-800">0</span>
+            </div>
+            <div class="flex justify-between w-48 text-sm pt-2 border-t">
+<span class="font-bold text-slate-800">Totale Netto:</span>
+                <span id="grandTotal" class="font-bold text-indigo-700">€ 0,00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Azioni Finale (WhatsApp, Email, PDF) -->
+    <div class="flex flex-wrap gap-3 justify-end no-print">
+        <button onclick="sendWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+            <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Invia via WhatsApp
+        </button>
+        <button onclick="sendEmail()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+            <i class="fa-solid fa-envelope text-lg mr-2"></i> Invia via Email
+        </button>
+        <button onclick="exportPDF()" class="bg-slate-700 hover:bg-slate-800 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+            <i class="fa-solid fa-file-pdf text-lg mr-2"></i> Scarica / Stampa PDF
+        </button>
+    </div>
+
+</main>
+
+<script>
+    const standardColors = [
+        "0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA",
+        "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE",
+        "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO",
+        "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA",
+        "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO",
+        "2501 LOTO", "1201 BORDEAUX"
+    ];
+
+    const quiltColors = [
+        "0101 AVORIO/GRIGIO PERLA", "0201 TORTORA/AVORIO", "0301 CAMMELLO/GLACÉ",
+        "0401 ACCIAIO/NEW TORTORA", "0501 CARBONE/CAMMELLO", "0601 C. DA ZUCCHERO/DENIM",
+        "0701 MUSCHIO/TURCHESE", "0801 LOTO/MALVA", "0901 CAROTA/NEW TORTORA", "1001 BORDEAUX/GLACÉ"
+    ];
+
+    let items = [];
+
+    document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
+
+    function onItemChange() {
+        const select = document.getElementById('itemSelect');
+        const selectedOption = select.options[select.selectedIndex];
+        const price = selectedOption.getAttribute('data-price') || "0.00";
+        const category = selectedOption.getAttribute('data-category');
+
+        document.getElementById('itemPriceInput').value = price ? `€ ${parseFloat(price).toFixed(2).replace('.', ',')}` : '';
+
+        const colorSelect = document.getElementById('itemColor');
+        colorSelect.innerHTML = '<option value="">-- Seleziona Variante --</option>';
+
+        if (!category) return;
+
+        const colorsToLoad = category === 'quilt' ? quiltColors : standardColors;
+        colorsToLoad.forEach(col => {
+            const opt = document.createElement('option');
+            opt.value = col;
+            opt.innerText = col;
+            colorSelect.appendChild(opt);
+        });
+    }
+
+    function addItem() {
+        const select = document.getElementById('itemSelect');
+        const selectedOption = select.options[select.selectedIndex];
+        
+        if (!select.value) {
+            alert("Seleziona un articolo prima di aggiungerlo.");
+            return;
+        }
+
+        const code = selectedOption.getAttribute('data-code');
+        const articleName = selectedOption.value;
+        const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
+        const color = document.getElementById('itemColor').value;
+        const qty = parseInt(document.getElementById('itemQty').value) || 0;
+
+        if (!color) {
+            alert("Seleziona la variante colore dell'articolo.");
+            return;
+        }
+        if (qty <= 0) {
+            alert("Inserisci una quantità valida (almeno 1 pz).");
+            return;
+        }
+
+        items.push({
+            code: code,
+            article: articleName,
+            color: color,
+            qty: qty,
+            price: price,
+            total: price * qty
+        });
+document.getElementById('itemColor').value = '';
+        document.getElementById('itemQty').value = '1';
+
+        renderTable();
+    }
+
+    function removeItem(index) {
+        items.splice(index, 1);
+        renderTable();
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('orderTableBody');
+        
+        document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
+        document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
+        document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
+
+        if (items.length === 0) {
+            tbody.innerHTML =xt-slate-700 mb-4 border-b pb-2 flex items-center">
+            <i class="fa-solid fa-cart-plus text-indigo-60
+            document.getElementById('totalPieces').innerText = "0";
+            document.getElementById('grandTotal').innerText = "€ 0,00";
+            return;
+        }
+
+        let html = '';
+        let totalQty = 0;
+        let grandTotal = 0;
+
+        items.forEach((item, index) => {
+            totalQty += item.qty;
+            grandTotal += item.total;
+            html += `
+                <tr class="border-b hover:bg-slate-50">
+                    <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
+                    <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
+                    <td class="py-2.5 px-3 font-medium">${item.color}</td>
+                    <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
+                    <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
+                    <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
+                    <td class="py-2.5 px-3 text-center no-print">
+                        <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML = html;
+        document.getElementById('totalPieces').innerText = totalQty;
+        document.getElementById('grandTotal').innerText =
+                <input type="text" id="clientCi
+    }
+
+    function buildOrderSummaryText() {
+        const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
+        const city = document.getElementById('clientCity').value || '-';
+        const vat = document.getElementById('clientVat').value || '-';
+        
+        let summary = class="text-xs text-indigo-200">Linea PAI
+        summary +=ader class="bg-indigo-900 text-white sha
+        summary +=ader class="bg-indigo-900 
+        summary +=ader class="bg-indigo-
+        summary +=ader class="bg-indigo-900
+        summary +=ader class="bg-indigo-900 text-white shadow-lg sticky t
+        summary +=ader class="bg-indigo-900 text-white sha
+        summary +=ader class="bg-indigo-900 tex
+
+        let totalPz = 0;
+        let totalEuro = 0;
+
+        items.forEach(i => {
+            summary +=ass="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div>
+            <h1 class="text-xl font-bold tracking-wide"><i class="fa-solid fa-palette mr-2"></i
+            totalPz += i.qty;
+            totalEuro += i.total;
+        });
+
+        summary +=   <div class="max-w-5xl mx-auto px-4 py
+        summary +=ader class="bg-indigo-900 text-w
+        summary +=ader class="bg-indigo-900 text-white shadow-lg sticky top-0 z-5
+
+        return summary;
+    }
+
+    function sendWhatsApp() {
+        if (items.length === 0) {
+            alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+            return;
+        }
+        const text = encodeURIComponent(buildOrderSummaryText());
+        const phone = "393392822146";
+        window.open(`https://api.whatsapp.
+com/send?phone=${phone}&text=${text}`, '_blank');
+    }
+
+    function sendEmail() {
+        if (items.length === 0) {
+            alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+            return;
+        }
+        const client = document.getElementById('clientName').value || 'Cliente';
+        const subject = encodeURIComponent(`Ordine Riviera Paint - ${client}`);
+        const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
+        const email = "cacciola74@gmail.com";
+        window.location.href =-center">
+            <i class="fa-solid fa-user-ta
+    }
+
+    function resetForm() {
+        if (confirm("Vuoi azzerare l'ordine corrente?")) {
+            items = [];
+            document.getElementById('clientName').value = '';
+            document.getElementById('clientCity').value = '';
+            document.getElementById('clientVat').value = '';
+            renderTable();
+        }
+    }
+
+    function exportPDF() {
+        if (items.length === 0) {
+            alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
+            return;
+        }
+
+        renderTable();
+
+        const client = document.getElementById('clientName').value || 'Cliente';
+        const element = document.getElementById('pdfContent');
+        const opt = {
+            margin:       8,
+            filename:     shadow-md no-print border border-slate-200">
+        <h2 c
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        try {
+            html2pdf().set(opt).from(element).save().catch(err => {
+                window.print();
+            });
+        } catch (e) {
+            window.print();
+        }
+    }
+
+    document.getElementById('clientName').addEventListener('input', renderTable);
+    document.getElementById('clientCity').addEventListener('input', renderTable);
+    document.getElementById('clientVat').addEventListener('input', renderTable);
+</script>
