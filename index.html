@@ -384,4 +384,226 @@
             else if (category === 'glamour_accappatoio') colorsToLoad = glamourAccappatoioColors;
             else if (category === 'glamour_accappatoio_3xl') colorsToLoad = glamourAccappatoio3XLColors;
             else if (category === 'glamour_tappeto') colorsToLoad = glamourTappetoColors;
-            else if (category === 'wimbledon_adulto') colorsToLoad
+            else if (category === 'wimbledon_adulto') colorsToLoad = wimbledonAdultoColors;
+            else if (category === 'wimbledon_junior') colorsToLoad = wimbledonJuniorColors;
+            else if (category === 'wimbledon_telo') colorsToLoad = wimbledonTeloColors;
+            else if (category === 'baby_animals') colorsToLoad = babyAnimalsColors;
+            else if (category === 'baby_animals_set') colorsToLoad = babyAnimalsSetColors;
+            
+            colorsToLoad.forEach(col => {
+                const opt = document.createElement('option');
+                opt.value = col;
+                opt.textContent = col;
+                colorSelect.appendChild(opt);
+            });
+
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const select = document.getElementById('itemSelect');
+            const colorSelect = document.getElementById('itemColor');
+            const previewBox = document.getElementById('previewBox');
+            const previewImage = document.getElementById('previewImage');
+            const previewIcon = document.getElementById('previewIcon');
+
+            if (!select.value) {
+                previewBox.classList.add('hidden');
+                return;
+            }
+
+            const articleName = select.value;
+            const color = colorSelect.value || 'Nessuna variante selezionata';
+
+            document.getElementById('previewTitle').innerText = articleName;
+            document.getElementById('previewDetail').innerText = `Variante: ${color}`;
+            previewBox.classList.remove('hidden');
+
+            if (colorSelect.value) {
+                // Prende il codice numerico o nome variante per cercare l'immagine in img/
+                let imageKey = color.split(' ')[0].toLowerCase().replace('/', '-');
+                previewImage.src = `img/${imageKey}.jpg`;
+                previewImage.classList.remove('hidden');
+                previewIcon.classList.add('hidden');
+            } else {
+                previewImage.classList.add('hidden');
+                previewIcon.classList.remove('hidden');
+            }
+        }
+
+        function handleImageError(img) {
+            img.classList.add('hidden');
+            document.getElementById('previewIcon').classList.remove('hidden');
+        }
+
+        function addItem() {
+            const select = document.getElementById('itemSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (!select.value) {
+                alert("Seleziona un articolo prima di aggiungerlo.");
+                return;
+            }
+
+            const code = selectedOption.getAttribute('data-code');
+            const articleName = selectedOption.value;
+            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
+            const color = document.getElementById('itemColor').value;
+            const qty = parseInt(document.getElementById('itemQty').value) || 0;
+
+            if (!color) {
+                alert("Seleziona la variante colore dell'articolo.");
+                return;
+            }
+            if (qty <= 0) {
+                alert("Inserisci una quantità valida (almeno 1 pz).");
+                return;
+            }
+
+            items.push({
+                code: code,
+                article: articleName,
+                color: color,
+                qty: qty,
+                price: price,
+                total: price * qty
+            });
+
+            document.getElementById('itemColor').value = '';
+            document.getElementById('itemQty').value = '1';
+            document.getElementById('previewBox').classList.add('hidden');
+
+            renderTable();
+        }
+
+        function removeItem(index) {
+            items.splice(index, 1);
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('orderTableBody');
+            
+            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
+            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
+            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
+                document.getElementById('totalPieces').innerText = "0";
+                document.getElementById('grandTotal').innerText = "€ 0,00";
+                return;
+            }
+
+            let html = '';
+            let totalQty = 0;
+            let grandTotal = 0;
+
+            items.forEach((item, index) => {
+                totalQty += item.qty;
+                grandTotal += item.total;
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
+                        <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
+                        <td class="py-2.5 px-3 font-medium">${item.color}</td>
+                        <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
+                        <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-center no-print">
+                            <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            document.getElementById('totalPieces').innerText = totalQty;
+            document.getElementById('grandTotal').innerText = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
+        }
+
+        function buildOrderSummaryText() {
+            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
+            const city = document.getElementById('clientCity').value || '-';
+            const vat = document.getElementById('clientVat').value || '-';
+            
+            let summary = `*ORDINE RIVIERA BASIC*\n`;
+            summary += `----------------------------------\n`;
+            summary += `*Cliente:* ${client}\n`;
+            summary += `*Città:* ${city}\n`;
+            summary += `*P.IVA/SDI:* ${vat}\n`;
+            summary += `*Data:* ${new Date().toLocaleDateString('it-IT')}\n`;
+            summary += `----------------------------------\n`;
+            summary += `*ARTICOLI IN ORDINE:*\n\n`;
+
+            let totalPz = 0;
+            let totalEuro = 0;
+
+            items.forEach(i => {
+                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo: € ${i.price.toFixed(2).replace('.', ',')} | Tot: € ${i.total.toFixed(2).replace('.', ',')}\n\n`;
+                totalPz += i.qty;
+                totalEuro += i.total;
+            });
+
+            summary += `----------------------------------\n`;
+            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
+            summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
+
+            return summary;
+        }
+
+        function sendWhatsApp() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                return;
+            }
+            const text = encodeURIComponent(buildOrderSummaryText());
+            const phone = "393392822146";
+            window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`, '_blank');
+        }
+
+        function sendEmail() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                return;
+            }
+            const client = document.getElementById('clientName').value || 'Cliente';
+            const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
+            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
+            const email = "cacciola74@gmail.com";
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        }
+
+        function resetForm() {
+            if (confirm("Vuoi azzerare l'ordine corrente?")) {
+                items = [];
+                document.getElementById('clientName').value = '';
+                document.getElementById('clientCity').value = '';
+                document.getElementById('clientVat').value = '';
+                document.getElementById('lineSelect').value = 'ALL';
+                populateItems('ALL');
+                renderTable();
+            }
+        }
+
+        function exportPDF() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
+                return;
+            }
+
+            renderTable();
+
+            setTimeout(function() {
+                window.print();
+            }, 100);
+        }
+
+        document.getElementById('clientName').addEventListener('input', renderTable);
+        document.getElementById('clientCity').addEventListener('input', renderTable);
+        document.getElementById('clientVat').addEventListener('input', renderTable);
+    </script>
+</body>
+</html>
