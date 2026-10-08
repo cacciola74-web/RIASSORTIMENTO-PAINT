@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestione Ordini - Riviera Basic (Linea PAINT)</title>
-    <!-- Tailwind CSS -->
+    <title>Riviera Basic - Linea PAINT | Modulo Ordini</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- html2pdf.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         @media print {
@@ -19,12 +16,12 @@
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12">
 
-    <!-- Header / Navbar -->
+    <!-- Header -->
     <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50 no-print">
         <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
             <div>
                 <h1 class="text-xl font-bold tracking-wide"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
-                <p class="text-xs text-indigo-200">Linea PAINT - Modulo Ordini</p>
+                <p class="text-xs text-indigo-200">Linea PAINT - Modulo Riassortimento Ordini</p>
             </div>
             <button onclick="resetForm()" class="text-xs bg-indigo-800 hover:bg-indigo-700 px-3 py-2 rounded transition">
                 <i class="fa-solid fa-rotate-left mr-1"></i> Nuovo Ordine
@@ -49,7 +46,7 @@
                     <input type="text" id="clientCity" placeholder="Es. Catania" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Partita IVA / Cod. Fiscale</label>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Partita IVA / Cod. Fiscale / Codice Univoco</label>
                     <input type="text" id="clientVat" placeholder="IT0123456789" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
             </div>
@@ -58,39 +55,85 @@
         <!-- Inserimento Articolo -->
         <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
             <h2 class="text-base font-semibold text-slate-700 mb-4 border-b pb-2 flex items-center">
-                <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Aggiungi Articolo (Quantità Libera)
+                <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Seleziona Prodotto dal Copia Commissione
             </h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Seleziona Articolo</label>
-                    <select id="itemSelect" onchange="updatePrice()" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                        <option value="">-- Scegli Articolo --</option>
-                        <option value="Trapunta Singola" data-price="35.00">Trapunta Singola - € 35,00</option>
-                        <option value="Trapunta Matrimoniale" data-price="55.00">Trapunta Matrimoniale - € 55,00</option>
-                        <option value="Completo Lenzuola Singolo" data-price="18.50">Completo Lenzuola Singolo - € 18,50</option>
-                        <option value="Completo Lenzuola Matrimoniale" data-price="28.00">Completo Lenzuola Matrimoniale - € 28,00</option>
-                        <option value="Copripiumino Matrimoniale" data-price="32.00">Copripiumino Matrimoniale - € 32,00</option>
-                        <option value="Tris Spugna Bagno" data-price="15.00">Tris Spugna Bagno - € 15,00</option>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Articolo - Misura - Codice - Listino</label>
+                    <select id="itemSelect" onchange="onItemChange()" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        <option value="">-- Seleziona Articolo --</option>
+                        
+                        <!-- COMPLETO LETTO -->
+                        <optgroup label="COMPLETO LETTO">
+                            <option value="Completo Letto 2P (LN0506)" data-code="LN0506" data-price="29.90" data-category="standard">Completo Letto 2P - Cod. LN0506 - € 29,90</option>
+                            <option value="Completo Letto KING SIZE (LN1862)" data-code="LN1862" data-price="33.50" data-category="standard">Completo Letto KING SIZE - Cod. LN1862 - € 33,50</option>
+                            <option value="Completo Letto 1+1/2P FRANCESE (LN0508)" data-code="LN0508" data-price="28.50" data-category="standard">Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50</option>
+                            <option value="Completo Letto 1+1/2P (LN0507)" data-code="LN0507" data-price="23.90" data-category="standard">Completo Letto 1+1/2P - Cod. LN0507 - € 23,90</option>
+                            <option value="Completo Letto 1P (LN0509)" data-code="LN0509" data-price="19.90" data-category="standard">Completo Letto 1P - Cod. LN0509 - € 19,90</option>
+                        </optgroup>
+
+                        <!-- PARURE COPRIPIUMINO -->
+                        <optgroup label="PARURE COPRIPIUMINO">
+                            <option value="Parure Copripiumino 2P (LF0179)" data-code="LF0179" data-price="30.90" data-category="standard">Parure Copripiumino 2P - Cod. LF0179 - € 30,90</option>
+                            <option value="Parure Copripiumino 1+1/2P (LF0180)" data-code="LF0180" data-price="26.90" data-category="standard">Parure Copripiumino 1+1/2P - Cod. LF0180 - € 26,90</option>
+                            <option value="Parure Copripiumino 1P (LF0181)" data-code="LF0181" data-price="20.90" data-category="standard">Parure Copripiumino 1P - Cod. LF0181 - € 20,90</option>
+                        </optgroup>
+
+                        <!-- QUILT DOUBLE TRAPUNTATO -->
+                        <optgroup label="QUILT DOUBLE TRAPUNTATO">
+                            <option value="Quilt Double Trapuntato 2P (LE0607)" data-code="LE0607" data-price="44.90" data-category="quilt">Quilt Double Trapuntato 2P - Cod. LE0607 - € 44,90</option>
+                            <option value="Quilt Double Trapuntato 1+1/2P (LE0624)" data-code="LE0624" data-price="39.90" data-category="quilt">Quilt Double Trapuntato 1+1/2P - Cod. LE0624 - € 39,90</option>
+                            <option value="Quilt Double Trapuntato 1P (LE0625)" data-code="LE0625" data-price="34.90" data-category="quilt">Quilt Double Trapuntato 1P - Cod. LE0625 - € 34,90</option>
+                        </optgroup>
+
+                        <!-- LENZUOLO SOPRA -->
+                        <optgroup label="LENZUOLO SOPRA">
+                            <option value="Lenzuolo Sopra 2P (LP0001)" data-code="LP0001" data-price="13.50" data-category="standard">Lenzuolo Sopra 2P - Cod. LP0001 - € 13,50</option>
+                            <option value="Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)" data-code="LP0003" data-price="12.90" data-category="standard">Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90</option>
+                            <option value="Lenzuolo Sopra 1+1/2P (LP0002)" data-code="LP0002" data-price="11.50" data-category="standard">Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50</option>
+                            <option value="Lenzuolo Sopra 1P (LP0004)" data-code="LP0004" data-price="9.90" data-category="standard">Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90</option>
+                        </optgroup>
+
+                        <!-- LENZUOLO SOTTO CON ANGOLI -->
+                        <optgroup label="LENZUOLO SOTTO CON ANGOLI">
+                            <option value="Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)" data-code="LQ0002" data-price="11.50" data-category="standard">Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50</option>
+                            <option value="Lenzuolo Sotto c/Angoli 2P (LQ0058)" data-code="LQ0058" data-price="10.50" data-category="standard">Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50</option>
+                            <option value="Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)" data-code="LQ0054" data-price="13.50" data-category="standard">Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50</option>
+                            <option value="Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)" data-code="LQ0004" data-price="10.30" data-category="standard">Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30</option>
+                            <option value="Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)" data-code="LQ0003" data-price="9.90" data-category="standard">Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90</option>
+                            <option value="Lenzuolo Sotto c/Angoli 1P (LQ0005)" data-code="LQ0005" data-price="7.90" data-category="standard">Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90</option>
+                        </optgroup>
+
+                        <!-- COPPIA FEDERE -->
+                        <optgroup label="COPPIA FEDERE">
+                            <option value="Coppia Federe 50X80 (LM0068)" data-code="LM0068" data-price="7.50" data-category="standard">Coppia Federe 50X80 - Cod. LM0068 - € 7,50</option>
+                        </optgroup>
                     </select>
                 </div>
+
                 <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Variante / Colore</label>
-                    <input type="text" id="itemColor" placeholder="Es. Blu, Ocra, Salvia" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Quantità (PZ) *</label>
-                    <input type="number" id="itemQty" min="1" value="1" placeholder="Q.tà" class="w-full text-sm font-semibold border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Variante / Variante Colore</label>
+                    <select id="itemColor" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        <option value="">-- Seleziona Prima l'Articolo --</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="flex justify-between items-center pt-2">
-                <div class="text-xs text-slate-500">
-                    Prezzo Unitario: <span id="priceDisplay" class="font-bold text-slate-700">€ 0,00</span>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Quantità (Pezzi) *</label>
+                    <input type="number" id="itemQty" min="1" value="1" class="w-full text-sm font-semibold border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
-                <button onclick="addItem()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm px-5 py-2.5 rounded-lg shadow-sm transition">
-                    <i class="fa-solid fa-plus mr-1"></i> Aggiungi all'Ordine
-                </button>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Prezzo Unitario €</label>
+                    <input type="text" id="itemPriceInput" readonly class="w-full text-sm font-bold bg-slate-100 border border-slate-300 rounded-lg p-2.5 text-slate-700">
+                </div>
+                <div class="flex items-end">
+                    <button onclick="addItem()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm transition">
+                        <i class="fa-solid fa-plus mr-1"></i> Aggiungi all'Ordine
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -100,7 +143,7 @@
             <div class="flex justify-between items-start border-b pb-4 mb-4">
                 <div>
                     <h2 class="text-2xl font-bold text-indigo-900">RIVIERA BASIC</h2>
-                    <p class="text-sm font-semibold text-slate-600">Linea PAINT - Conferma d'Ordine</p>
+                    <p class="text-sm font-semibold text-slate-600">PAINT - Copia Commissione / Riassortimento</p>
                 </div>
                 <div class="text-right text-xs text-slate-500">
                     <p id="docDate"></p>
@@ -108,7 +151,7 @@
             </div>
 
             <!-- Dati Cliente per PDF -->
-            <div class="mb-6 bg-slate-50 p-3 rounded border border-slate-200 text-xs grid grid-cols-2 gap-2">
+            <div class="mb-6 bg-slate-50 p-3 rounded border border-slate-200 text-xs grid grid-cols-3 gap-2">
                 <div><strong>Cliente:</strong> <span id="pdfClientName">-</span></div>
                 <div><strong>Città:</strong> <span id="pdfClientCity">-</span></div>
                 <div><strong>P.IVA/CF:</strong> <span id="pdfClientVat">-</span></div>
@@ -119,8 +162,9 @@
                 <table class="w-full text-left text-xs text-slate-700 border-collapse">
                     <thead>
                         <tr class="bg-slate-100 text-slate-800 uppercase font-semibold border-b">
-                            <th class="py-2.5 px-3">Articolo</th>
-                            <th class="py-2.5 px-3">Variante/Colore</th>
+                            <th class="py-2.5 px-3">Codice</th>
+                            <th class="py-2.5 px-3">Articolo / Descrizione</th>
+                            <th class="py-2.5 px-3">Variante Colore</th>
                             <th class="py-2.5 px-3 text-center">PZ</th>
                             <th class="py-2.5 px-3 text-right">Prezzo Unit.</th>
                             <th class="py-2.5 px-3 text-right">Totale €</th>
@@ -129,7 +173,7 @@
                     </thead>
                     <tbody id="orderTableBody">
                         <tr>
-                            <td colspan="6" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td>
+                            <td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -158,26 +202,72 @@
     </main>
 
     <script>
+        // Color Lists from official paper sheets
+        const standardColors = [
+            "0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA",
+            "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE",
+            "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO",
+            "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA",
+            "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO",
+            "2501 LOTO", "1201 BORDEAUX"
+        ];
+
+        const quiltColors = [
+            "0101 AVORIO/GRIGIO PERLA",
+            "0201 TORTORA/AVORIO",
+            "0301 CAMMELLO/GLACÉ",
+            "0401 ACCIAIO/NEW TORTORA",
+            "0501 CARBONE/CAMMELLO",
+            "0601 C. DA ZUCCHERO/DENIM",
+            "0701 MUSCHIO/TURCHESE",
+            "0801 LOTO/MALVA",
+            "0901 CAROTA/NEW TORTORA",
+            "1001 BORDEAUX/GLACÉ"
+        ];
+
         let items = [];
 
         document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
 
-        function updatePrice() {
+        function onItemChange() {
             const select = document.getElementById('itemSelect');
             const selectedOption = select.options[select.selectedIndex];
             const price = selectedOption.getAttribute('data-price') || "0.00";
-            document.getElementById('priceDisplay').innerText = `€ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
+            const category = selectedOption.getAttribute('data-category');
+
+            document.getElementById('itemPriceInput').value = price ? `€ ${parseFloat(price).toFixed(2).replace('.', ',')}` : '';
+
+            const colorSelect = document.getElementById('itemColor');
+            colorSelect.innerHTML = '<option value="">-- Seleziona Variante --</option>';
+
+            if (!category) return;
+
+            const colorsToLoad = category === 'quilt' ? quiltColors : standardColors;
+            colorsToLoad.forEach(col => {
+                const opt = document.createElement('option');
+                opt.value = col;
+                opt.innerText = col;
+                colorSelect.appendChild(opt);
+            });
         }
 
         function addItem() {
             const select = document.getElementById('itemSelect');
-            const articleName = select.value;
-            const price = parseFloat(select.options[select.selectedIndex]?.getAttribute('data-price') || 0);
-            const color = document.getElementById('itemColor').value.trim() || 'Standard';
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (!select.value) {
+                alert("Seleziona un articolo prima di aggiungerlo.");
+                return;
+            }
+
+            const code = selectedOption.getAttribute('data-code');
+            const articleName = selectedOption.value;
+            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
+            const color = document.getElementById('itemColor').value;
             const qty = parseInt(document.getElementById('itemQty').value) || 0;
 
-            if (!articleName) {
-                alert("Seleziona un articolo prima di aggiungerlo.");
+            if (!color) {
+                alert("Seleziona la variante colore dell'articolo.");
                 return;
             }
             if (qty <= 0) {
@@ -186,6 +276,7 @@
             }
 
             items.push({
+                code: code,
                 article: articleName,
                 color: color,
                 qty: qty,
@@ -193,7 +284,7 @@
                 total: price * qty
             });
 
-            // Svuota campino variante e qty
+            // Reset selection fields
             document.getElementById('itemColor').value = '';
             document.getElementById('itemQty').value = '1';
 
@@ -208,13 +299,12 @@
         function renderTable() {
             const tbody = document.getElementById('orderTableBody');
             
-            // Sync Dati Anagrafici
             document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
             document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
             document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
 
             if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
                 document.getElementById('totalPieces').innerText = "0";
                 document.getElementById('grandTotal').innerText = "€ 0,00";
                 return;
@@ -229,9 +319,10 @@
                 grandTotal += item.total;
                 html += `
                     <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
                         <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
-                        <td class="py-2.5 px-3">${item.color}</td>
-                        <td class="py-2.5 px-3 text-center font-bold">${item.qty}</td>
+                        <td class="py-2.5 px-3 font-medium">${item.color}</td>
+                        <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
                         <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
                         <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
                         <td class="py-2.5 px-3 text-center no-print">
@@ -269,8 +360,8 @@
             const client = document.getElementById('clientName').value || 'Cliente';
             const element = document.getElementById('pdfContent');
             const opt = {
-                margin:       10,
-                filename:     `Ordine_Riviera_${client.replace(/\s+/g, '_')}.pdf`,
+                margin:       8,
+                filename:     `Ordine_Riviera_Paint_${client.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -279,7 +370,6 @@
             html2pdf().set(opt).from(element).save();
         }
 
-        // Live binding dei dati cliente
         document.getElementById('clientName').addEventListener('input', renderTable);
         document.getElementById('clientCity').addEventListener('input', renderTable);
         document.getElementById('clientVat').addEventListener('input', renderTable);
