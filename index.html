@@ -13,12 +13,43 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
+   <style>
         @media print {
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            body { background: white !important; padding: 0 !important; }
-            #pdfContent { border: none !important; shadow: none !important; padding: 0 !important; }
+            /* Nasconde gli elementi di interfaccia, filtri e pulsanti */
+            header, section, .no-print { 
+                display: none !important; 
+            }
+            
+            body, html { 
+                background: #ffffff !important; 
+                color: #000000 !important;
+                padding: 0 !important; 
+                margin: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+            }
+            
+            #pdfContent { 
+                display: block !important;
+                visibility: visible !important;
+                position: static !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 10px !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+
+            table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+            }
+
+            th, td {
+                border-bottom: 1px solid #cbd5e1 !important;
+                padding: 6px 4px !important;
+                color: #000000 !important;
+            }
         }
     </style>
 </head>
