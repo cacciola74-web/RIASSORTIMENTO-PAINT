@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @media print {
-            /* Nasconde gli elementi dell'interfaccia */
             header, section, .no-print, button, select, input { 
                 display: none !important; 
             }
@@ -139,7 +138,7 @@
                         <optgroup label="LENZUOLO SOTTO CON ANGOLI">
                             <option value="Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)" data-code="LQ0002" data-price="11.50" data-category="standard">Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50</option>
                             <option value="Lenzuolo Sotto c/Angoli 2P (LQ0058)" data-code="LQ0058" data-price="10.50" data-category="standard">Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50</option>
-                            <option value="Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)" data-code="LQ0054" data-price="13.50" data-category="standard">Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50</option>
+                            <option value="Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)" data-code="LQ0054" data-price="13.50" data-category="king">Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50</option>
                             <option value="Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)" data-code="LQ0004" data-price="10.30" data-category="francese">Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30</option>
                             <option value="Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)" data-code="LQ0003" data-price="9.90" data-category="standard">Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90</option>
                             <option value="Lenzuolo Sotto c/Angoli 1P (LQ0005)" data-code="LQ0005" data-price="7.90" data-category="standard">Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90</option>
@@ -257,13 +256,24 @@
             "2501 LOTO", "1201 BORDEAUX"
         ];
 
-        // LISTA COLORI SPECIFICA PER PIAZZA E MEZZA FRANCESE
+        // COLORI PER PIAZZA E MEZZA FRANCESE
         const franceseColors = [
             "0101 BIANCO", 
             "0301 NEW TORTORA", 
             "0501 PERLA", 
             "0601 ACCIAIO", 
             "1501 DENIM", 
+            "1001 MALVA"
+        ];
+
+        // COLORI PER LENZUOLO SOTTO KING SIZE
+        const kingColors = [
+            "0101 BIANCO",
+            "0201 AVORIO",
+            "0301 NEW TORTORA",
+            "0501 PERLA",
+            "1401 C. ZUCCHERO",
+            "2701 MUSCHIO",
             "1001 MALVA"
         ];
 
@@ -300,6 +310,8 @@
                 colorsToLoad = quiltColors;
             } else if (category === 'francese') {
                 colorsToLoad = franceseColors;
+            } else if (category === 'king') {
+                colorsToLoad = kingColors;
             }
             
             colorsToLoad.forEach(col => {
