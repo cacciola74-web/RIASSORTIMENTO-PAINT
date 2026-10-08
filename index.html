@@ -60,7 +60,7 @@
         <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
             <div>
                 <h1 class="text-xl font-bold tracking-wide"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
-                <p class="text-xs text-indigo-200">Modulo Riassortimento Ordini - Linee PAINT & GLAMOUR</p>
+                <p class="text-xs text-indigo-200">Modulo Riassortimento Ordini - PAINT, GLAMOUR & WIMBLEDON</p>
             </div>
             <button onclick="resetForm()" class="text-xs bg-indigo-800 hover:bg-indigo-700 px-3 py-2 rounded transition">
                 <i class="fa-solid fa-rotate-left mr-1"></i> Nuovo Ordine
@@ -104,12 +104,13 @@
                     <option value="ALL">-- Mostra Tutte le Linee --</option>
                     <option value="PAINT">LINEA PAINT (Letto / Tessile Casa)</option>
                     <option value="GLAMOUR">LINEA GLAMOUR (Bagno / Accappatoi)</option>
+                    <option value="WIMBLEDON">LINEA WIMBLEDON (Bagno / Accappatoi / Junior)</option>
                 </select>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-medium text-slate-600 mb-1">2. Articolo - Misura - Codice - Prezzo Scontato</label>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">2. Articolo - Misura - Codice - Prezzo Unitario</label>
                     <select id="itemSelect" onchange="onItemChange()" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                         <option value="">-- Seleziona Articolo --</option>
                     </select>
@@ -146,7 +147,7 @@
             <div class="flex justify-between items-start border-b pb-4 mb-4">
                 <div>
                     <h2 class="text-2xl font-bold text-indigo-900">RIVIERA BASIC</h2>
-                    <p class="text-sm font-semibold text-slate-600">PAINT & GLAMOUR - Copia Commissione / Riassortimento</p>
+                    <p class="text-sm font-semibold text-slate-600">PAINT, GLAMOUR & WIMBLEDON - Copia Commissione / Riassortimento</p>
                 </div>
                 <div class="text-right text-xs text-slate-500">
                     <p id="docDate"></p>
@@ -213,7 +214,21 @@
     <script>
         // DATI CATALOGO PRODOTTI
         const productsData = [
-            // GLAMOUR
+            // --- LINEA WIMBLEDON ---
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto S (BA0010)', code: 'BA0010-S', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto S - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto M (BA0010)', code: 'BA0010-M', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto M - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto L (BA0010)', code: 'BA0010-L', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto L - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto XL (BA0010)', code: 'BA0010-XL', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto XL - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto XXL (BA0010)', code: 'BA0010-XXL', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto XXL - Cod. BA0010 - € 18,50' },
+
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 6-8 Anni (BA0021)', code: 'BA0021-6/8', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 6-8 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 8-10 Anni (BA0021)', code: 'BA0021-8/10', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 8-10 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 10-12 Anni (BA0021)', code: 'BA0021-10/12', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 10-12 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 12-14 Anni (BA0021)', code: 'BA0021-12/14', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 12-14 Anni - Cod. BA0021 - € 14,90' },
+
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: TELO BAGNO', name: 'WIMBLEDON - Telo Bagno 100x180 CM (BE0049)', code: 'BE0049', price: 10.90, category: 'wimbledon_telo', label: 'Telo Bagno 100x180 CM - Cod. BE0049 - € 10,90' },
+
+            // --- LINEA GLAMOUR ---
             { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto S (BA0041)', code: 'BA0041-S', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto S - Cod. BA0041 - € 15,55 (-8%)' },
             { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto M (BA0041)', code: 'BA0041-M', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto M - Cod. BA0041 - € 15,55 (-8%)' },
             { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto L (BA0041)', code: 'BA0041-L', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto L - Cod. BA0041 - € 15,55 (-8%)' },
@@ -224,57 +239,53 @@
             { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Telo Bagno 100x150 (BE0044)', code: 'BE0044', price: 8.51, category: 'glamour_set', label: 'Telo Bagno 100x150 - Cod. BE0044 - € 8,51 (-14%)' },
             { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Tappeto Bagno 50x80 (AX0250)', code: 'AX0250', price: 4.20, category: 'glamour_tappeto', label: 'Tappeto Bagno 50x80 - Cod. AX0250 - € 4,20' },
 
-            // PAINT - COMPLETO LETTO
+            // --- LINEA PAINT ---
             { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 2P (LN0506)', code: 'LN0506', price: 29.90, category: 'standard', label: 'Completo Letto 2P - Cod. LN0506 - € 29,90' },
             { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto KING SIZE (LN1862)', code: 'LN1862', price: 33.50, category: 'king', label: 'Completo Letto KING SIZE - Cod. LN1862 - € 33,50' },
             { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P FRANCESE (LN0508)', code: 'LN0508', price: 28.50, category: 'francese', label: 'Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50' },
             { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P (LN0507)', code: 'LN0507', price: 23.90, category: 'standard', label: 'Completo Letto 1+1/2P - Cod. LN0507 - € 23,90' },
             { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1P (LN0509)', code: 'LN0509', price: 19.90, category: 'standard', label: 'Completo Letto 1P - Cod. LN0509 - € 19,90' },
-
-            // PAINT - PARURE COPRIPIUMINO
             { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 2P (LF0179)', code: 'LF0179', price: 30.90, category: 'standard', label: 'Parure Copripiumino 2P - Cod. LF0179 - € 30,90' },
             { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1+1/2P (LF0180)', code: 'LF0180', price: 26.90, category: 'standard', label: 'Parure Copripiumino 1+1/2P - Cod. LF0180 - € 26,90' },
             { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1P (LF0181)', code: 'LF0181', price: 20.90, category: 'standard', label: 'Parure Copripiumino 1P - Cod. LF0181 - € 20,90' },
-
-            // PAINT - QUILT
             { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 2P (LE0607)', code: 'LE0607', price: 44.90, category: 'quilt', label: 'Quilt Double Trapuntato 2P - Cod. LE0607 - € 44,90' },
             { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1+1/2P (LE0624)', code: 'LE0624', price: 39.90, category: 'quilt', label: 'Quilt Double Trapuntato 1+1/2P - Cod. LE0624 - € 39,90' },
             { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1P (LE0625)', code: 'LE0625', price: 34.90, category: 'quilt', label: 'Quilt Double Trapuntato 1P - Cod. LE0625 - € 34,90' },
-
-            // PAINT - LENZUOLO SOPRA
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 2P (LP0001)', code: 'LP0001', price: 13.50, category: 'standard', label: 'Lenzuolo Sopra 2P - Cod. LP0001 - € 13,50' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)', code: 'LP0003', price: 12.90, category: 'francese', label: 'Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P (LP0002)', code: 'LP0002', price: 11.50, category: 'standard', label: 'Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1P (LP0004)', code: 'LP0004', price: 9.90, category: 'standard', label: 'Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90' },
-
-            // PAINT - LENZUOLO SOTTO
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)', code: 'LQ0002', price: 11.50, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P (LQ0058)', code: 'LQ0058', price: 10.50, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)', code: 'LQ0054', price: 13.50, category: 'king', label: 'Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)', code: 'LQ0004', price: 10.30, category: 'francese', label: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)', code: 'LQ0003', price: 9.90, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1P (LQ0005)', code: 'LQ0005', price: 7.90, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90' },
-
-            // PAINT - FEDERE
             { line: 'PAINT', group: 'PAINT: COPPIA FEDERE', name: 'Coppia Federe 50X80 (LM0068)', code: 'LM0068', price: 7.50, category: 'standard', label: 'Coppia Federe 50X80 - Cod. LM0068 - € 7,50' }
         ];
 
-        // COLORI
+        // --- COLORI LINEA PAINT ---
         const standardColors = ["0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA", "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE", "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO", "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA", "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO", "2501 LOTO", "1201 BORDEAUX"];
         const franceseColors = ["0101 BIANCO", "0301 NEW TORTORA", "0501 PERLA", "0601 ACCIAIO", "1501 DENIM", "1001 MALVA"];
         const kingColors = ["0101 BIANCO", "0201 AVORIO", "0301 NEW TORTORA", "0501 PERLA", "1401 C. ZUCCHERO", "2701 MUSCHIO", "1001 MALVA"];
         const quiltColors = ["0101 AVORIO/GRIGIO PERLA", "0201 TORTORA/AVORIO", "0301 CAMMELLO/GLACÉ", "0401 ACCIAIO/NEW TORTORA", "0501 CARBONE/CAMMELLO", "0601 C. DA ZUCCHERO/DENIM", "0701 MUSCHIO/TURCHESE", "0801 LOTO/MALVA", "0901 CAROTA/NEW TORTORA", "1001 BORDEAUX/GLACÉ"];
-        
+
+        // --- COLORI LINEA GLAMOUR ---
         const glamourSetColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "1101 RUGGINO", "0501 ROSA", "1201 BORDEAUX", "0801 MALVA", "1301 AMETISTA"];
         const glamourAccappatoioColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "0501 ROSA", "0801 MALVA", "1201 BORDEAUX"];
         const glamourAccappatoio3XLColors = ["0106 BIANCO", "1506 AVORIO", "0306 TORTORA", "0406 GRIGIO SCURO", "1006 BLU SCURO", "0706 VERDE"];
         const glamourTappetoColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0701 VERDE", "0801 MALVA", "1101 RUGGINO"];
 
+        // --- COLORI LINEA WIMBLEDON ---
+        const wimbledonAdultoColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
+        const wimbledonJuniorColors = ["1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1501 MALVA"];
+        const wimbledonTeloColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
+
         let items = [];
 
         document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
 
-        // Inizializza i prodotti
+        // Inizializza tutti i prodotti all'avvio
         populateItems('ALL');
 
         function onLineChange() {
@@ -338,6 +349,9 @@
             else if (category === 'glamour_accappatoio') colorsToLoad = glamourAccappatoioColors;
             else if (category === 'glamour_accappatoio_3xl') colorsToLoad = glamourAccappatoio3XLColors;
             else if (category === 'glamour_tappeto') colorsToLoad = glamourTappetoColors;
+            else if (category === 'wimbledon_adulto') colorsToLoad = wimbledonAdultoColors;
+            else if (category === 'wimbledon_junior') colorsToLoad = wimbledonJuniorColors;
+            else if (category === 'wimbledon_telo') colorsToLoad = wimbledonTeloColors;
             
             colorsToLoad.forEach(col => {
                 const opt = document.createElement('option');
@@ -439,7 +453,7 @@
             const city = document.getElementById('clientCity').value || '-';
             const vat = document.getElementById('clientVat').value || '-';
             
-            let summary = `*ORDINE RIVIERA BASIC - PAINT & GLAMOUR*\n`;
+            let summary = `*ORDINE RIVIERA BASIC - PAINT, GLAMOUR & WIMBLEDON*\n`;
             summary += `----------------------------------\n`;
             summary += `*Cliente:* ${client}\n`;
             summary += `*Città:* ${city}\n`;
