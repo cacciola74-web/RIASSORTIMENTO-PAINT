@@ -4,21 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riviera Basic - Linea PAINT | Modulo Ordini</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#312e81">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Riviera Ordini">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2972/2972531.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         @media print {
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            body { background: white !important; padding: 0 !important; }
-            #pdfContent { border: none !important; shadow: none !important; padding: 0 !important; }
+            /* Nasconde gli elementi dell'interfaccia */
+            header, section, .no-print, button, select, input { 
+                display: none !important; 
+            }
+            
+            html, body { 
+                background: #ffffff !important; 
+                color: #000000 !important;
+                padding: 0 !important; 
+                margin: 0 !important;
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
+            }
+            
+            #pdfContent { 
+                display: block !important;
+                visibility: visible !important;
+                position: relative !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 15px !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: #ffffff !important;
+            }
+
+            #pdfContent table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                background: #ffffff !important;
+            }
+
+            #pdfContent th, 
+            #pdfContent td {
+                border-bottom: 1px solid #cbd5e1 !important;
+                padding: 8px 4px !important;
+                color: #000000 !important;
+            }
+
+            #pdfContent tr {
+                page-break-inside: avoid !important;
+            }
         }
     </style>
 </head>
@@ -76,7 +108,7 @@
                         <optgroup label="COMPLETO LETTO">
                             <option value="Completo Letto 2P (LN0506)" data-code="LN0506" data-price="29.90" data-category="standard">Completo Letto 2P - Cod. LN0506 - € 29,90</option>
                             <option value="Completo Letto KING SIZE (LN1862)" data-code="LN1862" data-price="33.50" data-category="standard">Completo Letto KING SIZE - Cod. LN1862 - € 33,50</option>
-                            <option value="Completo Letto 1+1/2P FRANCESE (LN0508)" data-code="LN0508" data-price="28.50" data-category="standard">Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50</option>
+                            <option value="Completo Letto 1+1/2P FRANCESE (LN0508)" data-code="LN0508" data-price="28.50" data-category="francese">Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50</option>
                             <option value="Completo Letto 1+1/2P (LN0507)" data-code="LN0507" data-price="23.90" data-category="standard">Completo Letto 1+1/2P - Cod. LN0507 - € 23,90</option>
                             <option value="Completo Letto 1P (LN0509)" data-code="LN0509" data-price="19.90" data-category="standard">Completo Letto 1P - Cod. LN0509 - € 19,90</option>
                         </optgroup>
@@ -98,7 +130,7 @@
                         <!-- LENZUOLO SOPRA -->
                         <optgroup label="LENZUOLO SOPRA">
                             <option value="Lenzuolo Sopra 2P (LP0001)" data-code="LP0001" data-price="13.50" data-category="standard">Lenzuolo Sopra 2P - Cod. LP0001 - € 13,50</option>
-                            <option value="Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)" data-code="LP0003" data-price="12.90" data-category="standard">Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90</option>
+                            <option value="Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)" data-code="LP0003" data-price="12.90" data-category="francese">Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90</option>
                             <option value="Lenzuolo Sopra 1+1/2P (LP0002)" data-code="LP0002" data-price="11.50" data-category="standard">Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50</option>
                             <option value="Lenzuolo Sopra 1P (LP0004)" data-code="LP0004" data-price="9.90" data-category="standard">Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90</option>
                         </optgroup>
@@ -108,7 +140,7 @@
                             <option value="Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)" data-code="LQ0002" data-price="11.50" data-category="standard">Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50</option>
                             <option value="Lenzuolo Sotto c/Angoli 2P (LQ0058)" data-code="LQ0058" data-price="10.50" data-category="standard">Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50</option>
                             <option value="Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)" data-code="LQ0054" data-price="13.50" data-category="standard">Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50</option>
-                            <option value="Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)" data-code="LQ0004" data-price="10.30" data-category="standard">Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30</option>
+                            <option value="Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)" data-code="LQ0004" data-price="10.30" data-category="francese">Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30</option>
                             <option value="Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)" data-code="LQ0003" data-price="9.90" data-category="standard">Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90</option>
                             <option value="Lenzuolo Sotto c/Angoli 1P (LQ0005)" data-code="LQ0005" data-price="7.90" data-category="standard">Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90</option>
                         </optgroup>
@@ -216,10 +248,6 @@
     </main>
 
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-
         const standardColors = [
             "0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA",
             "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE",
@@ -227,6 +255,16 @@
             "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA",
             "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO",
             "2501 LOTO", "1201 BORDEAUX"
+        ];
+
+        // LISTA COLORI SPECIFICA PER PIAZZA E MEZZA FRANCESE
+        const franceseColors = [
+            "0101 BIANCO", 
+            "0301 NEW TORTORA", 
+            "0501 PERLA", 
+            "0601 ACCIAIO", 
+            "1501 DENIM", 
+            "1001 MALVA"
         ];
 
         const quiltColors = [
@@ -242,21 +280,32 @@
         function onItemChange() {
             const select = document.getElementById('itemSelect');
             const selectedOption = select.options[select.selectedIndex];
+            const colorSelect = document.getElementById('itemColor');
+
+            if (!select.value || select.selectedIndex === 0) {
+                document.getElementById('itemPriceInput').value = '';
+                colorSelect.innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
+                return;
+            }
+
             const price = selectedOption.getAttribute('data-price') || "0.00";
             const category = selectedOption.getAttribute('data-category');
 
-            document.getElementById('itemPriceInput').value = price ? `€ ${parseFloat(price).toFixed(2).replace('.', ',')}` : '';
-
-            const colorSelect = document.getElementById('itemColor');
+            document.getElementById('itemPriceInput').value = `€ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
             colorSelect.innerHTML = '<option value="">-- Seleziona Variante --</option>';
 
-            if (!category) return;
-
-            const colorsToLoad = category === 'quilt' ? quiltColors : standardColors;
+            let colorsToLoad = standardColors;
+            
+            if (category === 'quilt') {
+                colorsToLoad = quiltColors;
+            } else if (category === 'francese') {
+                colorsToLoad = franceseColors;
+            }
+            
             colorsToLoad.forEach(col => {
                 const opt = document.createElement('option');
                 opt.value = col;
-                opt.innerText = col;
+                opt.textContent = col;
                 colorSelect.appendChild(opt);
             });
         }
@@ -353,41 +402,26 @@
             const city = document.getElementById('clientCity').value || '-';
             const vat = document.getElementById('clientVat').value || '-';
             
-            let summary = `*ORDINE RIVIERA BASIC - LINEA PAINT*
-`;
-            summary += `----------------------------------
-`;
-            summary += `*Cliente:* ${client}
-`;
-            summary += `*Città:* ${city}
-`;
-            summary += `*P.IVA/SDI:* ${vat}
-`;
-            summary += `*Data:* ${new Date().toLocaleDateString('it-IT')}
-`;
-            summary += `----------------------------------
-`;
-            summary += `*ARTICOLI IN ORDINE:*
-
-`;
+            let summary = `*ORDINE RIVIERA BASIC - LINEA PAINT*\n`;
+            summary += `----------------------------------\n`;
+            summary += `*Cliente:* ${client}\n`;
+            summary += `*Città:* ${city}\n`;
+            summary += `*P.IVA/SDI:* ${vat}\n`;
+            summary += `*Data:* ${new Date().toLocaleDateString('it-IT')}\n`;
+            summary += `----------------------------------\n`;
+            summary += `*ARTICOLI IN ORDINE:*\n\n`;
 
             let totalPz = 0;
             let totalEuro = 0;
 
             items.forEach(i => {
-                summary += `• [${i.code}] ${i.article}
-  Colore: ${i.color}
-  Q.tà: ${i.qty} pz | Prezzo: € ${i.price.toFixed(2).replace('.', ',')} | Tot: € ${i.total.toFixed(2).replace('.', ',')}
-
-`;
+                summary += `• [${i.code}] ${i.article}\n  Colore: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo: € ${i.price.toFixed(2).replace('.', ',')} | Tot: € ${i.total.toFixed(2).replace('.', ',')}\n\n`;
                 totalPz += i.qty;
                 totalEuro += i.total;
             });
 
-            summary += `----------------------------------
-`;
-            summary += `*TOTALE PEZZI:* ${totalPz}
-`;
+            summary += `----------------------------------\n`;
+            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
             summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
 
             return summary;
@@ -433,23 +467,9 @@
 
             renderTable();
 
-            const client = document.getElementById('clientName').value || 'Cliente';
-            const element = document.getElementById('pdfContent');
-            const opt = {
-                margin:       8,
-                filename:     `Ordine_Riviera_Paint_${client.replace(/\s+/g, '_')}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            try {
-                html2pdf().set(opt).from(element).save().catch(err => {
-                    window.print();
-                });
-            } catch (e) {
+            setTimeout(function() {
                 window.print();
-            }
+            }, 100);
         }
 
         document.getElementById('clientName').addEventListener('input', renderTable);
