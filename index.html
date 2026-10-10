@@ -236,7 +236,7 @@
     </main>
 
     <script>
-        // DATI CATALOGO PRODOTTI (CON PREIMBALLI / MULTIPLI)
+        // DATI CATALOGO PRODOTTI
         const productsData = [
             // --- LINEA BABY ANIMALS ---
             { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 0-2 Anni (CM5654)', code: 'CM5654-0/2', price: 8.90, pack: 1, category: 'baby_animals', label: 'Accappatoio Junior 0-2 Anni - Cod. CM5654 - € 8,90' },
@@ -273,26 +273,26 @@
             { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Tappeto Bagno 50x80 (AX0250)', code: 'AX0250', price: 4.20, pack: 1, category: 'glamour_tappeto', label: 'Tappeto Bagno 50x80 - Cod. AX0250 - € 4,20' },
 
             // --- LINEA PAINT ---
-            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 2P (LN0506)', code: 'LN0506', price: 29.90, pack: 2, category: 'standard', label: 'Completo Letto 2P - Cod. LN0506 - € 29,90' },
-            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto KING SIZE (LN1862)', code: 'LN1862', price: 33.50, pack: 2, category: 'king', label: 'Completo Letto KING SIZE - Cod. LN1862 - € 33,50' },
-            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P FRANCESE (LN0508)', code: 'LN0508', price: 28.50, pack: 2, category: 'francese', label: 'Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50' },
-            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P (LN0507)', code: 'LN0507', price: 23.90, pack: 2, category: 'standard', label: 'Completo Letto 1+1/2P - Cod. LN0507 - € 23,90' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 2P (LN0506)', code: 'LN0506', price: 29.90, pack: 1, category: 'standard', label: 'Completo Letto 2P - Cod. LN0506 - € 29,90' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto KING SIZE (LN1862)', code: 'LN1862', price: 33.50, pack: 1, category: 'king', label: 'Completo Letto KING SIZE - Cod. LN1862 - € 33,50' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P FRANCESE (LN0508)', code: 'LN0508', price: 28.50, pack: 1, category: 'francese', label: 'Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P (LN0507)', code: 'LN0507', price: 23.90, pack: 1, category: 'standard', label: 'Completo Letto 1+1/2P - Cod. LN0507 - € 23,90' },
             { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1P (LN0509)', code: 'LN0509', price: 19.90, pack: 2, category: 'standard', label: 'Completo Letto 1P - Cod. LN0509 - € 19,90' },
-            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 2P (LF0179)', code: 'LF0179', price: 30.90, pack: 2, category: 'standard', label: 'Parure Copripiumino 2P - Cod. LF0179 - € 30,90' },
-            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1+1/2P (LF0180)', code: 'LF0180', price: 26.90, pack: 2, category: 'standard', label: 'Parure Copripiumino 1+1/2P - Cod. LF0180 - € 26,90' },
-            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1P (LF0181)', code: 'LF0181', price: 20.90, pack: 2, category: 'standard', label: 'Parure Copripiumino 1P - Cod. LF0181 - € 20,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 2P (LF0179)', code: 'LF0179', price: 30.90, pack: 1, category: 'standard', label: 'Parure Copripiumino 2P - Cod. LF0179 - € 30,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1+1/2P (LF0180)', code: 'LF0180', price: 26.90, pack: 1, category: 'standard', label: 'Parure Copripiumino 1+1/2P - Cod. LF0180 - € 26,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1P (LF0181)', code: 'LF0181', price: 20.90, pack: 1, category: 'standard', label: 'Parure Copripiumino 1P - Cod. LF0181 - € 20,90' },
             { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 2P (LE0607)', code: 'LE0607', price: 44.90, pack: 2, category: 'quilt', label: 'Quilt Double Trapuntato 2P - Cod. LE0607 - € 44,90' },
-            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1+1/2P (LE0624)', code: 'LE0624', price: 39.90, pack: 2, category: 'quilt', label: 'Quilt Double Trapuntato 1+1/2P - Cod. LE0624 - € 39,90' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1+1/2P (LE0624)', code: 'LE0624', price: 39.90, pack: 1, category: 'quilt', label: 'Quilt Double Trapuntato 1+1/2P - Cod. LE0624 - € 39,90' },
             { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1P (LE0625)', code: 'LE0625', price: 34.90, pack: 2, category: 'quilt', label: 'Quilt Double Trapuntato 1P - Cod. LE0625 - € 34,90' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 2P (LP0001)', code: 'LP0001', price: 13.50, pack: 2, category: 'standard', label: 'Lenzuolo Sopra 2P - Cod. LP0001 - € 13,50' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)', code: 'LP0003', price: 12.90, pack: 2, category: 'francese', label: 'Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P (LP0002)', code: 'LP0002', price: 11.50, pack: 2, category: 'standard', label: 'Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1P (LP0004)', code: 'LP0004', price: 9.90, pack: 2, category: 'standard', label: 'Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)', code: 'LP0003', price: 12.90, pack: 1, category: 'francese', label: 'Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P (LP0002)', code: 'LP0002', price: 11.50, pack: 1, category: 'standard', label: 'Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1P (LP0004)', code: 'LP0004', price: 9.90, pack: 1, category: 'standard', label: 'Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)', code: 'LQ0002', price: 11.50, pack: 2, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P (LQ0058)', code: 'LQ0058', price: 10.50, pack: 2, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)', code: 'LQ0054', price: 13.50, pack: 2, category: 'king', label: 'Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)', code: 'LQ0004', price: 10.30, pack: 2, category: 'francese', label: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)', code: 'LQ0003', price: 9.90, pack: 2, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)', code: 'LQ0004', price: 10.30, pack: 1, category: 'francese', label: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)', code: 'LQ0003', price: 9.90, pack: 1, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90' },
             { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1P (LQ0005)', code: 'LQ0005', price: 7.90, pack: 2, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90' },
             { line: 'PAINT', group: 'PAINT: COPPIA FEDERE', name: 'Coppia Federe 50X80 (LM0068)', code: 'LM0068', price: 7.50, pack: 2, category: 'standard', label: 'Coppia Federe 50X80 - Cod. LM0068 - € 7,50' },
 
