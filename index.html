@@ -55,15 +55,12 @@
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12">
 
-    <!-- Header con Data, Orario e Rappresentante -->
+    <!-- Header -->
     <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50 no-print">
         <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-black tracking-wider"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
-                <p class="text-xs text-indigo-100 mt-1 font-medium">
-                    <span id="headerDateTime" class="bg-indigo-950 px-2 py-0.5 rounded border border-indigo-700">Caricamento data/ora...</span>
-                    <span class="ml-2 font-bold text-white">| Rappresentante Cacciola Daniele</span>
-                </p>
+                <h1 class="text-xl font-bold tracking-wide"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
+                <p class="text-xs text-indigo-200">Modulo Riassortimento Ordini - PAINT, GLAMOUR, WIMBLEDON, BABY ANIMALS & ACCESSORI LETTO</p>
             </div>
             <div class="flex items-center space-x-2">
                 <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded transition flex items-center">
@@ -105,14 +102,9 @@
                 <h2 class="text-base font-semibold text-slate-700 flex items-center">
                     <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Seleziona Prodotto e Compila Varianti
                 </h2>
-                <div class="flex items-center space-x-3">
-                    <button onclick="populateItems('ALL')" class="text-xs text-indigo-700 font-semibold hover:underline">
-                        <i class="fa-solid fa-arrows-rotate mr-1"></i>Ricarica Articoli
-                    </button>
-                    <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs text-indigo-600 font-bold hover:underline flex items-center">
-                        <i class="fa-solid fa-book-open mr-1"></i> Apri Catalogo
-                    </a>
-                </div>
+                <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs text-indigo-600 font-bold hover:underline flex items-center">
+                    <i class="fa-solid fa-book-open mr-1"></i> Apri Catalogo Continuativo
+                </a>
             </div>
 
             <!-- SELETTORE LINEA -->
@@ -180,7 +172,7 @@
             <div class="flex justify-between items-start border-b pb-4 mb-4">
                 <div>
                     <h2 class="text-2xl font-bold text-indigo-900">RIVIERA BASIC</h2>
-                    <p class="text-sm font-semibold text-slate-600">Rappresentante Cacciola Daniele - Copia Commissione / Riassortimento</p>
+                    <p class="text-sm font-semibold text-slate-600">PAINT, GLAMOUR, WIMBLEDON, BABY ANIMALS & ACCESSORI LETTO - Copia Commissione / Riassortimento</p>
                 </div>
                 <div class="text-right text-xs text-slate-500">
                     <p id="docDate"></p>
@@ -365,47 +357,49 @@
             { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Copriguanciale 3D 50x80 (LM0074)', code: 'LM0074', price: 5.40, pack: 12, category: 'bianco_only', label: 'Copriguanciale 3D 50x80 - Cod. LM0074 - € 5,40 (Preimb. 12 pz)' }
         ];
 
-        // COLORI
+        // --- COLORI LINEA PAINT ---
         const standardColors = ["0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA", "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE", "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO", "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA", "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO", "2501 LOTO", "1201 BORDEAUX"];
         const franceseColors = ["0101 BIANCO", "0301 NEW TORTORA", "0501 PERLA", "0601 ACCIAIO", "1501 DENIM", "1001 MALVA"];
         const kingColors = ["0101 BIANCO", "0201 AVORIO", "0301 NEW TORTORA", "0501 PERLA", "1401 C. ZUCCHERO", "2701 MUSCHIO", "1001 MALVA"];
         const quiltColors = ["0101 AVORIO/GRIGIO PERLA", "0201 TORTORA/AVORIO", "0301 CAMMELLO/GLACÉ", "0401 ACCIAIO/NEW TORTORA", "0501 CARBONE/CAMMELLO", "0601 C. DA ZUCCHERO/DENIM", "0701 MUSCHIO/TURCHESE", "0801 LOTO/MALVA", "0901 CAROTA/NEW TORTORA", "1001 BORDEAUX/GLACÉ"];
+
+        // --- COLORI LINEA GLAMOUR ---
         const glamourSetColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "1101 RUGGINO", "0501 ROSA", "1201 BORDEAUX", "0801 MALVA", "1301 AMETISTA"];
         const glamourAccappatoioColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "0501 ROSA", "0801 MALVA", "1201 BORDEAUX"];
         const glamourAccappatoio3XLColors = ["0106 BIANCO", "1506 AVORIO", "0306 TORTORA", "0406 GRIGIO SCURO", "1006 BLU SCURO", "0706 VERDE"];
         const glamourTappetoColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0701 VERDE", "0801 MALVA", "1101 RUGGINO"];
+
+        // --- COLORI LINEA WIMBLEDON ---
         const wimbledonAdultoColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
         const wimbledonJuniorColors = ["1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1501 MALVA"];
         const wimbledonTeloColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
+
+        // --- VARIANTI LINEA BABY ANIMALS ---
         const babyAnimalsColors = ["SHARK", "SHEEP", "RABBIT", "DINO", "UNICORN", "GIRAFFE"];
+
+        // --- VARIANTI ACCESSORI LETTO ---
         const biancoOnlyColors = ["0101 BIANCO"];
         const avorioOnlyColors = ["0101 AVORIO"];
 
         let items = [];
 
-        // FUNZIONE OLOGIO E DATA
-        function updateDateTime() {
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('it-IT');
-            const timeStr = now.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            
-            const headerEl = document.getElementById('headerDateTime');
-            const docEl = document.getElementById('docDate');
-            
-            if (headerEl) headerEl.innerText = `Data: ${dateStr} - Ore:${timeStr}`;
-            if (docEl) docEl.innerText = `Data: ${dateStr} Ore:${timeStr}`;
+        document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
+
+        // Inizializza tutti i prodotti all'avvio
+        populateItems('ALL');
+
+        function onLineChange() {
+            const selectedLine = document.getElementById('lineSelect').value;
+            populateItems(selectedLine);
         }
 
-        // POPOLAMENTO ARTICOLI
         function populateItems(filterLine) {
             const itemSelect = document.getElementById('itemSelect');
-            if(!itemSelect) return;
-            
             itemSelect.innerHTML = '<option value="">-- Seleziona Articolo --</option>';
             document.getElementById('itemPriceInput').value = '';
             document.getElementById('variantsContainer').classList.add('hidden');
 
-            const filteredProducts = (filterLine === 'ALL' || !filterLine)
+            const filteredProducts = filterLine === 'ALL' 
                 ? productsData 
                 : productsData.filter(p => p.line === filterLine);
 
@@ -428,28 +422,6 @@
 
                 itemSelect.appendChild(optGroup);
             });
-        }
-
-        function initPage() {
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            populateItems('ALL');
-
-            document.getElementById('clientName').addEventListener('input', renderTable);
-            document.getElementById('clientCity').addEventListener('input', renderTable);
-            document.getElementById('clientVat').addEventListener('input', renderTable);
-        }
-
-        document.addEventListener('DOMContentLoaded', initPage);
-        window.onload = function() {
-            if (document.getElementById('itemSelect').options.length <= 1) {
-                populateItems('ALL');
-            }
-        };
-
-        function onLineChange() {
-            const selectedLine = document.getElementById('lineSelect').value;
-            populateItems(selectedLine);
         }
 
         function onItemChange() {
@@ -496,4 +468,212 @@
             colorsToLoad.forEach((col, idx) => {
                 html += `
                     <tr class="border-b hover:bg-slate-50">
-                        <td class="py-2 px-3
+                        <td class="py-2 px-3 font-medium text-slate-800">${col}</td>
+                        <td class="py-2 px-3 text-center">
+                            <input type="number" data-color="${col}" min="0" step="${pack}" placeholder="" class="variant-qty-input w-28 text-center text-sm font-bold border border-slate-300 rounded p-1.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none" onkeydown="handleVariantKeydown(event, ${idx})">
+                        </td>
+                    </tr>
+                `;
+            });
+
+            variantsTableBody.innerHTML = html;
+            variantsContainer.classList.remove('hidden');
+        }
+
+        function handleVariantKeydown(event, currentIndex) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.variant-qty-input');
+                const nextInput = inputs[currentIndex + 1];
+                if (nextInput) {
+                    nextInput.focus();
+                    nextInput.select();
+                } else {
+                    addMultiVariantItems();
+                }
+            }
+        }
+
+        function addMultiVariantItems() {
+            const select = document.getElementById('itemSelect');
+            if (!select.value || select.selectedIndex === 0) return;
+
+            const selectedOption = select.options[select.selectedIndex];
+            const code = selectedOption.getAttribute('data-code');
+            const articleName = selectedOption.value;
+            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
+            const pack = parseInt(selectedOption.getAttribute('data-pack') || 1);
+
+            const qtyInputs = document.querySelectorAll('.variant-qty-input');
+            let addedCount = 0;
+
+            qtyInputs.forEach(input => {
+                if (input.value === "" || input.value === null) return;
+                let qty = parseInt(input.value) || 0;
+                const color = input.getAttribute('data-color');
+
+                if (qty > 0) {
+                    // Validazione e correzione multipli
+                    if (qty < pack) {
+                        alert(`La quantità per la variante "${color}" è inferiore al minimo stabilito (${pack} pz). Regolata al minimo.`);
+                        qty = pack;
+                    } else if (qty % pack !== 0) {
+                        qty = Math.ceil(qty / pack) * pack;
+                        alert(`La quantità per la variante "${color}" è stata adeguata al multiplo di imballo (${pack} pz): ${qty} pz.`);
+                    }
+
+                    items.push({
+                        code: code,
+                        article: articleName,
+                        color: color,
+                        qty: qty,
+                        price: price,
+                        total: price * qty
+                    });
+
+                    addedCount++;
+                    input.value = ""; // Reset campo vuoto
+                }
+            });
+
+            if (addedCount === 0) {
+                alert("Inserisci almeno una quantità maggiore di zero su una variante.");
+                return;
+            }
+
+            renderTable();
+            alert("Articoli aggiunti correttamente all'ordine!");
+        }
+
+        function removeItem(index) {
+            items.splice(index, 1);
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('orderTableBody');
+            
+            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
+            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
+            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
+                document.getElementById('totalPieces').innerText = "0";
+                document.getElementById('grandTotal').innerText = "€ 0,00";
+                return;
+            }
+
+            let html = '';
+            let totalQty = 0;
+            let grandTotal = 0;
+
+            items.forEach((item, index) => {
+                totalQty += item.qty;
+                grandTotal += item.total;
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
+                        <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
+                        <td class="py-2.5 px-3 font-medium">${item.color}</td>
+                        <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
+                        <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-center no-print">
+                            <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            document.getElementById('totalPieces').innerText = totalQty;
+            document.getElementById('grandTotal').innerText = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
+        }
+
+        function buildOrderSummaryText() {
+            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
+            const city = document.getElementById('clientCity').value || '-';
+            const vat = document.getElementById('clientVat').value || '-';
+            
+            let summary = `*ORDINE RIVIERA BASIC*\n`;
+            summary += `----------------------------------\n`;
+            summary += `*Cliente:* ${client}\n`;
+            summary += `*Città:* ${city}\n`;
+            summary += `*P.IVA/SDI:* ${vat}\n`;
+            summary += `*Data:* ${new Date().toLocaleDateString('it-IT')}\n`;
+            summary += `----------------------------------\n`;
+            summary += `*ARTICOLI IN ORDINE:*\n\n`;
+
+            let totalPz = 0;
+            let totalEuro = 0;
+
+            items.forEach(i => {
+                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo: € ${i.price.toFixed(2).replace('.', ',')} | Tot: € ${i.total.toFixed(2).replace('.', ',')}\n\n`;
+                totalPz += i.qty;
+                totalEuro += i.total;
+            });
+
+            summary += `----------------------------------\n`;
+            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
+            summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
+
+            return summary;
+        }
+
+        function sendWhatsApp() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                return;
+            }
+            const text = encodeURIComponent(buildOrderSummaryText());
+            const phone = "393392822146";
+            window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`, '_blank');
+        }
+
+        function sendEmail() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'email.");
+                return;
+            }
+            const client = document.getElementById('clientName').value || 'Cliente';
+            const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
+            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
+            const email = "cacciola74@gmail.com";
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        }
+
+        function resetForm() {
+            if (confirm("Vuoi azzerare l'ordine corrente?")) {
+                items = [];
+                document.getElementById('clientName').value = '';
+                document.getElementById('clientCity').value = '';
+                document.getElementById('clientVat').value = '';
+                document.getElementById('lineSelect').value = 'ALL';
+                populateItems('ALL');
+                document.getElementById('variantsContainer').classList.add('hidden');
+                renderTable();
+            }
+        }
+
+        function exportPDF() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
+                return;
+            }
+
+            renderTable();
+
+            setTimeout(function() {
+                window.print();
+            }, 100);
+        }
+
+        document.getElementById('clientName').addEventListener('input', renderTable);
+        document.getElementById('clientCity').addEventListener('input', renderTable);
+        document.getElementById('clientVat').addEventListener('input', renderTable);
+    </script>
+</body>
+</html>
