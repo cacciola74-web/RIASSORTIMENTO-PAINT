@@ -150,8 +150,8 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Quantità (Pezzi) *</label>
-                    <input type="number" id="itemQty" min="1" value="1" class="w-full text-sm font-semibold border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <label class="block text-xs font-medium text-slate-600 mb-1" id="qtyLabel">Quantità (Pezzi) *</label>
+                    <input type="number" id="itemQty" min="1" step="1" value="1" class="w-full text-sm font-semibold border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-slate-600 mb-1">Prezzo Unitario Netto €</label>
@@ -236,124 +236,124 @@
     </main>
 
     <script>
-        // DATI CATALOGO PRODOTTI
+        // DATI CATALOGO PRODOTTI (CON PREIMBALLI / MULTIPLI)
         const productsData = [
             // --- LINEA BABY ANIMALS ---
-            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 0-2 Anni (CM5654)', code: 'CM5654-0/2', price: 8.90, category: 'baby_animals', label: 'Accappatoio Junior 0-2 Anni - Cod. CM5654 - € 8,90' },
-            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 2-4 Anni (CM5654)', code: 'CM5654-2/4', price: 8.90, category: 'baby_animals', label: 'Accappatoio Junior 2-4 Anni - Cod. CM5654 - € 8,90' },
-            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 4-6 Anni (CM5654)', code: 'CM5654-4/6', price: 8.90, category: 'baby_animals', label: 'Accappatoio Junior 4-6 Anni - Cod. CM5654 - € 8,90' },
-            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 6-8 Anni (CM5654)', code: 'CM5654-6/8', price: 8.90, category: 'baby_animals', label: 'Accappatoio Junior 6-8 Anni - Cod. CM5654 - € 8,90' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 0-2 Anni (CM5654)', code: 'CM5654-0/2', price: 8.90, pack: 1, category: 'baby_animals', label: 'Accappatoio Junior 0-2 Anni - Cod. CM5654 - € 8,90' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 2-4 Anni (CM5654)', code: 'CM5654-2/4', price: 8.90, pack: 1, category: 'baby_animals', label: 'Accappatoio Junior 2-4 Anni - Cod. CM5654 - € 8,90' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 4-6 Anni (CM5654)', code: 'CM5654-4/6', price: 8.90, pack: 1, category: 'baby_animals', label: 'Accappatoio Junior 4-6 Anni - Cod. CM5654 - € 8,90' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 6-8 Anni (CM5654)', code: 'CM5654-6/8', price: 8.90, pack: 1, category: 'baby_animals', label: 'Accappatoio Junior 6-8 Anni - Cod. CM5654 - € 8,90' },
 
-            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Set 1+1 Junior 30x50+50x90 (BB0361)', code: 'BB0361', price: 3.80, category: 'baby_animals', label: 'Set 1+1 Junior 30x50+50x90 CM - Cod. BB0361 - € 3,80' },
-            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Telo Bagno 70x140 CM (BE0093)', code: 'BE0093', price: 5.40, category: 'baby_animals', label: 'Telo Bagno 70x140 CM - Cod. BE0093 - € 5,40' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Set 1+1 Junior 30x50+50x90 (BB0361)', code: 'BB0361', price: 3.80, pack: 1, category: 'baby_animals', label: 'Set 1+1 Junior 30x50+50x90 CM - Cod. BB0361 - € 3,80' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Telo Bagno 70x140 CM (BE0093)', code: 'BE0093', price: 5.40, pack: 1, category: 'baby_animals', label: 'Telo Bagno 70x140 CM - Cod. BE0093 - € 5,40' },
 
             // --- LINEA WIMBLEDON ---
-            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto S (BA0010)', code: 'BA0010-S', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto S - Cod. BA0010 - € 18,50' },
-            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto M (BA0010)', code: 'BA0010-M', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto M - Cod. BA0010 - € 18,50' },
-            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto L (BA0010)', code: 'BA0010-L', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto L - Cod. BA0010 - € 18,50' },
-            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto XL (BA0010)', code: 'BA0010-XL', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto XL - Cod. BA0010 - € 18,50' },
-            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto XXL (BA0010)', code: 'BA0010-XXL', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto XXL - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto S (BA0010)', code: 'BA0010-S', price: 18.50, pack: 1, category: 'wimbledon_adulto', label: 'Accappatoio Adulto S - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto M (BA0010)', code: 'BA0010-M', price: 18.50, pack: 1, category: 'wimbledon_adulto', label: 'Accappatoio Adulto M - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto L (BA0010)', code: 'BA0010-L', price: 18.50, pack: 1, category: 'wimbledon_adulto', label: 'Accappatoio Adulto L - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto XL (BA0010)', code: 'BA0010-XL', price: 18.50, pack: 1, category: 'wimbledon_adulto', label: 'Accappatoio Adulto XL - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto XXL (BA0010)', code: 'BA0010-XXL', price: 18.50, pack: 1, category: 'wimbledon_adulto', label: 'Accappatoio Adulto XXL - Cod. BA0010 - € 18,50' },
 
-            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 6-8 Anni (BA0021)', code: 'BA0021-6/8', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 6-8 Anni - Cod. BA0021 - € 14,90' },
-            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 8-10 Anni (BA0021)', code: 'BA0021-8/10', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 8-10 Anni - Cod. BA0021 - € 14,90' },
-            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 10-12 Anni (BA0021)', code: 'BA0021-10/12', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 10-12 Anni - Cod. BA0021 - € 14,90' },
-            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 12-14 Anni (BA0021)', code: 'BA0021-12/14', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 12-14 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 6-8 Anni (BA0021)', code: 'BA0021-6/8', price: 14.90, pack: 1, category: 'wimbledon_junior', label: 'Accappatoio Junior 6-8 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 8-10 Anni (BA0021)', code: 'BA0021-8/10', price: 14.90, pack: 1, category: 'wimbledon_junior', label: 'Accappatoio Junior 8-10 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 10-12 Anni (BA0021)', code: 'BA0021-10/12', price: 14.90, pack: 1, category: 'wimbledon_junior', label: 'Accappatoio Junior 10-12 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 12-14 Anni (BA0021)', code: 'BA0021-12/14', price: 14.90, pack: 1, category: 'wimbledon_junior', label: 'Accappatoio Junior 12-14 Anni - Cod. BA0021 - € 14,90' },
 
-            { line: 'WIMBLEDON', group: 'WIMBLEDON: TELO BAGNO', name: 'WIMBLEDON - Telo Bagno 100x180 CM (BE0049)', code: 'BE0049', price: 10.90, category: 'wimbledon_telo', label: 'Telo Bagno 100x180 CM - Cod. BE0049 - € 10,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: TELO BAGNO', name: 'WIMBLEDON - Telo Bagno 100x180 CM (BE0049)', code: 'BE0049', price: 10.90, pack: 1, category: 'wimbledon_telo', label: 'Telo Bagno 100x180 CM - Cod. BE0049 - € 10,90' },
 
             // --- LINEA GLAMOUR ---
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto S (BA0041)', code: 'BA0041-S', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto S - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto M (BA0041)', code: 'BA0041-M', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto M - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto L (BA0041)', code: 'BA0041-L', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto L - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XL (BA0041)', code: 'BA0041-XL', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XL - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXL (BA0041)', code: 'BA0041-XXL', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XXL - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXXL (BA0041)', code: 'BA0041-3XL', price: 15.55, category: 'glamour_accappatoio_3xl', label: 'Accappatoio Adulto XXXL - Cod. BA0041 - € 15,55 (-8%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Set 1+1 40x60/60x110 (BB0189)', code: 'BB0189', price: 4.90, category: 'glamour_set', label: 'Set 1+1 (Asciugamano + Ospite) - Cod. BB0189 - € 4,90 (-11%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Telo Bagno 100x150 (BE0044)', code: 'BE0044', price: 8.51, category: 'glamour_set', label: 'Telo Bagno 100x150 - Cod. BE0044 - € 8,51 (-14%)' },
-            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Tappeto Bagno 50x80 (AX0250)', code: 'AX0250', price: 4.20, category: 'glamour_tappeto', label: 'Tappeto Bagno 50x80 - Cod. AX0250 - € 4,20' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto S (BA0041)', code: 'BA0041-S', price: 15.55, pack: 1, category: 'glamour_accappatoio', label: 'Accappatoio Adulto S - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto M (BA0041)', code: 'BA0041-M', price: 15.55, pack: 1, category: 'glamour_accappatoio', label: 'Accappatoio Adulto M - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto L (BA0041)', code: 'BA0041-L', price: 15.55, pack: 1, category: 'glamour_accappatoio', label: 'Accappatoio Adulto L - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XL (BA0041)', code: 'BA0041-XL', price: 15.55, pack: 1, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XL - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXL (BA0041)', code: 'BA0041-XXL', price: 15.55, pack: 1, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XXL - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXXL (BA0041)', code: 'BA0041-3XL', price: 15.55, pack: 1, category: 'glamour_accappatoio_3xl', label: 'Accappatoio Adulto XXXL - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Set 1+1 40x60/60x110 (BB0189)', code: 'BB0189', price: 4.90, pack: 1, category: 'glamour_set', label: 'Set 1+1 (Asciugamano + Ospite) - Cod. BB0189 - € 4,90 (-11%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Telo Bagno 100x150 (BE0044)', code: 'BE0044', price: 8.51, pack: 1, category: 'glamour_set', label: 'Telo Bagno 100x150 - Cod. BE0044 - € 8,51 (-14%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Tappeto Bagno 50x80 (AX0250)', code: 'AX0250', price: 4.20, pack: 1, category: 'glamour_tappeto', label: 'Tappeto Bagno 50x80 - Cod. AX0250 - € 4,20' },
 
             // --- LINEA PAINT ---
-            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 2P (LN0506)', code: 'LN0506', price: 29.90, category: 'standard', label: 'Completo Letto 2P - Cod. LN0506 - € 29,90' },
-            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto KING SIZE (LN1862)', code: 'LN1862', price: 33.50, category: 'king', label: 'Completo Letto KING SIZE - Cod. LN1862 - € 33,50' },
-            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P FRANCESE (LN0508)', code: 'LN0508', price: 28.50, category: 'francese', label: 'Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50' },
-            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P (LN0507)', code: 'LN0507', price: 23.90, category: 'standard', label: 'Completo Letto 1+1/2P - Cod. LN0507 - € 23,90' },
-            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1P (LN0509)', code: 'LN0509', price: 19.90, category: 'standard', label: 'Completo Letto 1P - Cod. LN0509 - € 19,90' },
-            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 2P (LF0179)', code: 'LF0179', price: 30.90, category: 'standard', label: 'Parure Copripiumino 2P - Cod. LF0179 - € 30,90' },
-            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1+1/2P (LF0180)', code: 'LF0180', price: 26.90, category: 'standard', label: 'Parure Copripiumino 1+1/2P - Cod. LF0180 - € 26,90' },
-            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1P (LF0181)', code: 'LF0181', price: 20.90, category: 'standard', label: 'Parure Copripiumino 1P - Cod. LF0181 - € 20,90' },
-            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 2P (LE0607)', code: 'LE0607', price: 44.90, category: 'quilt', label: 'Quilt Double Trapuntato 2P - Cod. LE0607 - € 44,90' },
-            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1+1/2P (LE0624)', code: 'LE0624', price: 39.90, category: 'quilt', label: 'Quilt Double Trapuntato 1+1/2P - Cod. LE0624 - € 39,90' },
-            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1P (LE0625)', code: 'LE0625', price: 34.90, category: 'quilt', label: 'Quilt Double Trapuntato 1P - Cod. LE0625 - € 34,90' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 2P (LP0001)', code: 'LP0001', price: 13.50, category: 'standard', label: 'Lenzuolo Sopra 2P - Cod. LP0001 - € 13,50' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)', code: 'LP0003', price: 12.90, category: 'francese', label: 'Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P (LP0002)', code: 'LP0002', price: 11.50, category: 'standard', label: 'Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1P (LP0004)', code: 'LP0004', price: 9.90, category: 'standard', label: 'Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)', code: 'LQ0002', price: 11.50, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P (LQ0058)', code: 'LQ0058', price: 10.50, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)', code: 'LQ0054', price: 13.50, category: 'king', label: 'Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)', code: 'LQ0004', price: 10.30, category: 'francese', label: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)', code: 'LQ0003', price: 9.90, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90' },
-            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1P (LQ0005)', code: 'LQ0005', price: 7.90, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90' },
-            { line: 'PAINT', group: 'PAINT: COPPIA FEDERE', name: 'Coppia Federe 50X80 (LM0068)', code: 'LM0068', price: 7.50, category: 'standard', label: 'Coppia Federe 50X80 - Cod. LM0068 - € 7,50' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 2P (LN0506)', code: 'LN0506', price: 29.90, pack: 2, category: 'standard', label: 'Completo Letto 2P - Cod. LN0506 - € 29,90' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto KING SIZE (LN1862)', code: 'LN1862', price: 33.50, pack: 2, category: 'king', label: 'Completo Letto KING SIZE - Cod. LN1862 - € 33,50' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P FRANCESE (LN0508)', code: 'LN0508', price: 28.50, pack: 2, category: 'francese', label: 'Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P (LN0507)', code: 'LN0507', price: 23.90, pack: 2, category: 'standard', label: 'Completo Letto 1+1/2P - Cod. LN0507 - € 23,90' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1P (LN0509)', code: 'LN0509', price: 19.90, pack: 2, category: 'standard', label: 'Completo Letto 1P - Cod. LN0509 - € 19,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 2P (LF0179)', code: 'LF0179', price: 30.90, pack: 2, category: 'standard', label: 'Parure Copripiumino 2P - Cod. LF0179 - € 30,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1+1/2P (LF0180)', code: 'LF0180', price: 26.90, pack: 2, category: 'standard', label: 'Parure Copripiumino 1+1/2P - Cod. LF0180 - € 26,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1P (LF0181)', code: 'LF0181', price: 20.90, pack: 2, category: 'standard', label: 'Parure Copripiumino 1P - Cod. LF0181 - € 20,90' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 2P (LE0607)', code: 'LE0607', price: 44.90, pack: 2, category: 'quilt', label: 'Quilt Double Trapuntato 2P - Cod. LE0607 - € 44,90' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1+1/2P (LE0624)', code: 'LE0624', price: 39.90, pack: 2, category: 'quilt', label: 'Quilt Double Trapuntato 1+1/2P - Cod. LE0624 - € 39,90' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1P (LE0625)', code: 'LE0625', price: 34.90, pack: 2, category: 'quilt', label: 'Quilt Double Trapuntato 1P - Cod. LE0625 - € 34,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 2P (LP0001)', code: 'LP0001', price: 13.50, pack: 2, category: 'standard', label: 'Lenzuolo Sopra 2P - Cod. LP0001 - € 13,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)', code: 'LP0003', price: 12.90, pack: 2, category: 'francese', label: 'Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P (LP0002)', code: 'LP0002', price: 11.50, pack: 2, category: 'standard', label: 'Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1P (LP0004)', code: 'LP0004', price: 9.90, pack: 2, category: 'standard', label: 'Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)', code: 'LQ0002', price: 11.50, pack: 2, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P (LQ0058)', code: 'LQ0058', price: 10.50, pack: 2, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)', code: 'LQ0054', price: 13.50, pack: 2, category: 'king', label: 'Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)', code: 'LQ0004', price: 10.30, pack: 2, category: 'francese', label: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)', code: 'LQ0003', price: 9.90, pack: 2, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1P (LQ0005)', code: 'LQ0005', price: 7.90, pack: 2, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90' },
+            { line: 'PAINT', group: 'PAINT: COPPIA FEDERE', name: 'Coppia Federe 50X80 (LM0068)', code: 'LM0068', price: 7.50, pack: 2, category: 'standard', label: 'Coppia Federe 50X80 - Cod. LM0068 - € 7,50' },
 
             // --- LINEA ACCESSORI LETTO ---
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 175x200 (LH0005)', code: 'LH0005', price: 19.90, category: 'bianco_only', label: 'Coprimaterasso Sanitario 175x200 - Cod. LH0005 - € 19,90' },
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 125x200 (LH0006)', code: 'LH0006', price: 16.90, category: 'bianco_only', label: 'Coprimaterasso Sanitario 125x200 - Cod. LH0006 - € 16,90' },
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 90x200 (LH0007)', code: 'LH0007', price: 12.90, category: 'bianco_only', label: 'Coprimaterasso Sanitario 90x200 - Cod. LH0007 - € 12,90' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 175x200 (LH0005)', code: 'LH0005', price: 19.90, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Sanitario 175x200 - Cod. LH0005 - € 19,90 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 125x200 (LH0006)', code: 'LH0006', price: 16.90, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Sanitario 125x200 - Cod. LH0006 - € 16,90 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 90x200 (LH0007)', code: 'LH0007', price: 12.90, pack: 6, category: 'bianco_only', label: 'Coprimaterasso Sanitario 90x200 - Cod. LH0007 - € 12,90 (Preimb. 6 pz)' },
 
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SPUGNA JERSEY', name: 'Coprimaterasso Spugna Jersey 175x200 (LH0008)', code: 'LH0008', price: 13.50, category: 'bianco_only', label: 'Coprimaterasso Spugna Jersey 175x200 - Cod. LH0008 - € 13,50' },
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SPUGNA JERSEY', name: 'Coprimaterasso Spugna Jersey 125x200 (LH0009)', code: 'LH0009', price: 11.50, category: 'bianco_only', label: 'Coprimaterasso Spugna Jersey 125x200 - Cod. LH0009 - € 11,50' },
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SPUGNA JERSEY', name: 'Coprimaterasso Spugna Jersey 90x200 (LH0010)', code: 'LH0010', price: 9.50, category: 'bianco_only', label: 'Coprimaterasso Spugna Jersey 90x200 - Cod. LH0010 - € 9,50' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SPUGNA JERSEY', name: 'Coprimaterasso Spugna Jersey 175x200 (LH0008)', code: 'LH0008', price: 13.50, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Spugna Jersey 175x200 - Cod. LH0008 - € 13,50 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SPUGNA JERSEY', name: 'Coprimaterasso Spugna Jersey 125x200 (LH0009)', code: 'LH0009', price: 11.50, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Spugna Jersey 125x200 - Cod. LH0009 - € 11,50 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SPUGNA JERSEY', name: 'Coprimaterasso Spugna Jersey 90x200 (LH0010)', code: 'LH0010', price: 9.50, pack: 6, category: 'bianco_only', label: 'Coprimaterasso Spugna Jersey 90x200 - Cod. LH0010 - € 9,50 (Preimb. 6 pz)' },
 
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD RIGATO', name: 'Coprimaterasso Jacquard Rigato 170x200 (LH0011)', code: 'LH0011', price: 16.20, category: 'bianco_only', label: 'Coprimaterasso Jacquard Rigato 170x200 - Cod. LH0011 - € 16,20' },
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD RIGATO', name: 'Coprimaterasso Jacquard Rigato 120x200 (LH0012)', code: 'LH0012', price: 14.00, category: 'bianco_only', label: 'Coprimaterasso Jacquard Rigato 120x200 - Cod. LH0012 - € 14,00' },
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD RIGATO', name: 'Coprimaterasso Jacquard Rigato 85x200 (LH0013)', code: 'LH0013', price: 11.00, category: 'bianco_only', label: 'Coprimaterasso Jacquard Rigato 85x200 - Cod. LH0013 - € 11,00' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD RIGATO', name: 'Coprimaterasso Jacquard Rigato 170x200 (LH0011)', code: 'LH0011', price: 16.20, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Jacquard Rigato 170x200 - Cod. LH0011 - € 16,20 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD RIGATO', name: 'Coprimaterasso Jacquard Rigato 120x200 (LH0012)', code: 'LH0012', price: 14.00, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Jacquard Rigato 120x200 - Cod. LH0012 - € 14,00 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD RIGATO', name: 'Coprimaterasso Jacquard Rigato 85x200 (LH0013)', code: 'LH0013', price: 11.00, pack: 6, category: 'bianco_only', label: 'Coprimaterasso Jacquard Rigato 85x200 - Cod. LH0013 - € 11,00 (Preimb. 6 pz)' },
 
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 165x200 (LH0014)', code: 'LH0014', price: 16.50, category: 'bianco_only', label: 'Coprimaterasso 3D 165x200 - Cod. LH0014 - € 16,50' },
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 125x200 (LH0015)', code: 'LH0015', price: 14.50, category: 'bianco_only', label: 'Coprimaterasso 3D 125x200 - Cod. LH0015 - € 14,50' },
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 90x200 (LH0016)', code: 'LH0016', price: 11.30, category: 'bianco_only', label: 'Coprimaterasso 3D 90x200 - Cod. LH0016 - € 11,30' },
-            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D Lettino c/Angoli 65x130 (LH0017)', code: 'LH0017', price: 7.90, category: 'bianco_only', label: 'Coprimaterasso 3D Lettino c/Angoli 65x130 - Cod. LH0017 - € 7,90' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 165x200 (LH0014)', code: 'LH0014', price: 16.50, pack: 4, category: 'bianco_only', label: 'Coprimaterasso 3D 165x200 - Cod. LH0014 - € 16,50 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 125x200 (LH0015)', code: 'LH0015', price: 14.50, pack: 4, category: 'bianco_only', label: 'Coprimaterasso 3D 125x200 - Cod. LH0015 - € 14,50 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 90x200 (LH0016)', code: 'LH0016', price: 11.30, pack: 6, category: 'bianco_only', label: 'Coprimaterasso 3D 90x200 - Cod. LH0016 - € 11,30 (Preimb. 6 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D Lettino c/Angoli 65x130 (LH0017)', code: 'LH0017', price: 7.90, pack: 6, category: 'bianco_only', label: 'Coprimaterasso 3D Lettino c/Angoli 65x130 - Cod. LH0017 - € 7,90 (Preimb. 6 pz)' },
 
-            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 175-195 cm (LH0031)', code: 'LH0031', price: 15.90, category: 'bianco_only', label: 'Salvamaterasso Stretch 175-195 cm - Cod. LH0031 - € 15,90' },
-            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 125-145 cm (LH0033)', code: 'LH0033', price: 12.50, category: 'bianco_only', label: 'Salvamaterasso Stretch 125-145 cm - Cod. LH0033 - € 12,50' },
-            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 90-100 cm (LH0032)', code: 'LH0032', price: 9.90, category: 'bianco_only', label: 'Salvamaterasso Stretch 90-100 cm - Cod. LH0032 - € 9,90' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 175-195 cm (LH0031)', code: 'LH0031', price: 15.90, pack: 4, category: 'bianco_only', label: 'Salvamaterasso Stretch 175-195 cm - Cod. LH0031 - € 15,90 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 125-145 cm (LH0033)', code: 'LH0033', price: 12.50, pack: 4, category: 'bianco_only', label: 'Salvamaterasso Stretch 125-145 cm - Cod. LH0033 - € 12,50 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 90-100 cm (LH0032)', code: 'LH0032', price: 9.90, pack: 6, category: 'bianco_only', label: 'Salvamaterasso Stretch 90-100 cm - Cod. LH0032 - € 9,90 (Preimb. 6 pz)' },
 
-            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO REGOLATORE', name: 'Salvamaterasso Termo Regolatore 160x200 (LH0034)', code: 'LH0034', price: 37.90, category: 'avorio_only', label: 'Salvamaterasso Termo Regolatore 160x200 - Cod. LH0034 - € 37,90' },
-            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO REGOLATORE', name: 'Salvamaterasso Termo Regolatore 120x200 (LH0035)', code: 'LH0035', price: 31.50, category: 'avorio_only', label: 'Salvamaterasso Termo Regolatore 120x200 - Cod. LH0035 - € 31,50' },
-            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO REGOLATORE', name: 'Salvamaterasso Termo Regolatore 90x200 (LH0036)', code: 'LH0036', price: 25.50, category: 'avorio_only', label: 'Salvamaterasso Termo Regolatore 90x200 - Cod. LH0036 - € 25,50' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO REGOLATORE', name: 'Salvamaterasso Termo Regolatore 160x200 (LH0034)', code: 'LH0034', price: 37.90, pack: 2, category: 'avorio_only', label: 'Salvamaterasso Termo Regolatore 160x200 - Cod. LH0034 - € 37,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO REGOLATORE', name: 'Salvamaterasso Termo Regolatore 120x200 (LH0035)', code: 'LH0035', price: 31.50, pack: 1, category: 'avorio_only', label: 'Salvamaterasso Termo Regolatore 120x200 - Cod. LH0035 - € 31,50 (Preimb. 1 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO REGOLATORE', name: 'Salvamaterasso Termo Regolatore 90x200 (LH0036)', code: 'LH0036', price: 25.50, pack: 2, category: 'avorio_only', label: 'Salvamaterasso Termo Regolatore 90x200 - Cod. LH0036 - € 25,50 (Preimb. 2 pz)' },
 
-            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 180x200+5 (LH0027)', code: 'LH0027', price: 79.90, category: 'bianco_only', label: 'Topper Four Season 180x200+5 - Cod. LH0027 - € 79,90' },
-            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 160x200+5 (LH0028)', code: 'LH0028', price: 69.00, category: 'bianco_only', label: 'Topper Four Season 160x200+5 - Cod. LH0028 - € 69,00' },
-            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 120x200+5 (LH0029)', code: 'LH0029', price: 56.90, category: 'bianco_only', label: 'Topper Four Season 120x200+5 - Cod. LH0029 - € 56,90' },
-            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 90x200+5 (LH0030)', code: 'LH0030', price: 44.90, category: 'bianco_only', label: 'Topper Four Season 90x200+5 - Cod. LH0030 - € 44,90' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 180x200+5 (LH0027)', code: 'LH0027', price: 79.90, pack: 2, category: 'bianco_only', label: 'Topper Four Season 180x200+5 - Cod. LH0027 - € 79,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 160x200+5 (LH0028)', code: 'LH0028', price: 69.00, pack: 2, category: 'bianco_only', label: 'Topper Four Season 160x200+5 - Cod. LH0028 - € 69,00 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 120x200+5 (LH0029)', code: 'LH0029', price: 56.90, pack: 2, category: 'bianco_only', label: 'Topper Four Season 120x200+5 - Cod. LH0029 - € 56,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 90x200+5 (LH0030)', code: 'LH0030', price: 44.90, pack: 2, category: 'bianco_only', label: 'Topper Four Season 90x200+5 - Cod. LH0030 - € 44,90 (Preimb. 2 pz)' },
 
-            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 180x200+5 (LH0019)', code: 'LH0019', price: 59.90, category: 'bianco_only', label: 'Topper Percalle 180x200+5 - Cod. LH0019 - € 59,90' },
-            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 160x200+5 (LH0020)', code: 'LH0020', price: 47.90, category: 'bianco_only', label: 'Topper Percalle 160x200+5 - Cod. LH0020 - € 47,90' },
-            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 120x200+5 (LH0021)', code: 'LH0021', price: 44.90, category: 'bianco_only', label: 'Topper Percalle 120x200+5 - Cod. LH0021 - € 44,90' },
-            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 90x200+5 (LH0022)', code: 'LH0022', price: 35.90, category: 'bianco_only', label: 'Topper Percalle 90x200+5 - Cod. LH0022 - € 35,90' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 180x200+5 (LH0019)', code: 'LH0019', price: 59.90, pack: 2, category: 'bianco_only', label: 'Topper Percalle 180x200+5 - Cod. LH0019 - € 59,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 160x200+5 (LH0020)', code: 'LH0020', price: 47.90, pack: 2, category: 'bianco_only', label: 'Topper Percalle 160x200+5 - Cod. LH0020 - € 47,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 120x200+5 (LH0021)', code: 'LH0021', price: 44.90, pack: 2, category: 'bianco_only', label: 'Topper Percalle 120x200+5 - Cod. LH0021 - € 44,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 90x200+5 (LH0022)', code: 'LH0022', price: 35.90, pack: 2, category: 'bianco_only', label: 'Topper Percalle 90x200+5 - Cod. LH0022 - € 35,90 (Preimb. 2 pz)' },
 
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Switch&Dream Interno Piumino 4 Stagioni Percalle (LK0044)', code: 'LK0044', price: 79.90, category: 'bianco_only', label: 'Switch&Dream Interno Piumino 4 Stagioni Percalle - Cod. LK0044 - € 79,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 100 GSM Percalle 250x200 (LK0032)', code: 'LK0032', price: 33.90, category: 'bianco_only', label: 'Interno Piumino 100 GSM Percalle 250x200 - Cod. LK0032 - € 33,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 100 GSM Percalle 200x200 (LK0033)', code: 'LK0033', price: 28.90, category: 'bianco_only', label: 'Interno Piumino 100 GSM Percalle 200x200 - Cod. LK0033 - € 28,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 100 GSM Percalle 150x200 (LK0034)', code: 'LK0034', price: 22.90, category: 'bianco_only', label: 'Interno Piumino 100 GSM Percalle 150x200 - Cod. LK0034 - € 22,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 220 GSM Percalle 250x200 (LK0035)', code: 'LK0035', price: 37.90, category: 'bianco_only', label: 'Interno Piumino 220 GSM Percalle 250x200 - Cod. LK0035 - € 37,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 220 GSM Percalle 200x200 (LK0036)', code: 'LK0036', price: 33.90, category: 'bianco_only', label: 'Interno Piumino 220 GSM Percalle 200x200 - Cod. LK0036 - € 33,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 220 GSM Percalle 150x200 (LK0037)', code: 'LK0037', price: 25.90, category: 'bianco_only', label: 'Interno Piumino 220 GSM Percalle 150x200 - Cod. LK0037 - € 25,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 320 GSM Percalle 250x200 (LK0038)', code: 'LK0038', price: 39.90, category: 'bianco_only', label: 'Interno Piumino 320 GSM Percalle 250x200 - Cod. LK0038 - € 39,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 320 GSM Percalle 200x200 (LK0039)', code: 'LK0039', price: 34.90, category: 'bianco_only', label: 'Interno Piumino 320 GSM Percalle 200x200 - Cod. LK0039 - € 34,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 320 GSM Percalle 150x200 (LK0040)', code: 'LK0040', price: 29.90, category: 'bianco_only', label: 'Interno Piumino 320 GSM Percalle 150x200 - Cod. LK0040 - € 29,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 4 Stagioni Percalle 250x200 (LK0041)', code: 'LK0041', price: 69.90, category: 'bianco_only', label: 'Interno Piumino 4 Stagioni Percalle 250x200 - Cod. LK0041 - € 69,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 4 Stagioni Percalle 200x200 (LK0042)', code: 'LK0042', price: 59.90, category: 'bianco_only', label: 'Interno Piumino 4 Stagioni Percalle 200x200 - Cod. LK0042 - € 59,90' },
-            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 4 Stagioni Percalle 150x200 (LK0043)', code: 'LK0043', price: 46.90, category: 'bianco_only', label: 'Interno Piumino 4 Stagioni Percalle 150x200 - Cod. LK0043 - € 46,90' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Switch&Dream Interno Piumino 4 Stagioni Percalle (LK0044)', code: 'LK0044', price: 79.90, pack: 2, category: 'bianco_only', label: 'Switch&Dream Interno Piumino 4 Stagioni Percalle - Cod. LK0044 - € 79,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 100 GSM Percalle 250x200 (LK0032)', code: 'LK0032', price: 33.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 100 GSM Percalle 250x200 - Cod. LK0032 - € 33,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 100 GSM Percalle 200x200 (LK0033)', code: 'LK0033', price: 28.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 100 GSM Percalle 200x200 - Cod. LK0033 - € 28,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 100 GSM Percalle 150x200 (LK0034)', code: 'LK0034', price: 22.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 100 GSM Percalle 150x200 - Cod. LK0034 - € 22,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 220 GSM Percalle 250x200 (LK0035)', code: 'LK0035', price: 37.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 220 GSM Percalle 250x200 - Cod. LK0035 - € 37,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 220 GSM Percalle 200x200 (LK0036)', code: 'LK0036', price: 33.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 220 GSM Percalle 200x200 - Cod. LK0036 - € 33,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 220 GSM Percalle 150x200 (LK0037)', code: 'LK0037', price: 25.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 220 GSM Percalle 150x200 - Cod. LK0037 - € 25,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 320 GSM Percalle 250x200 (LK0038)', code: 'LK0038', price: 39.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 320 GSM Percalle 250x200 - Cod. LK0038 - € 39,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 320 GSM Percalle 200x200 (LK0039)', code: 'LK0039', price: 34.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 320 GSM Percalle 200x200 - Cod. LK0039 - € 34,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 320 GSM Percalle 150x200 (LK0040)', code: 'LK0040', price: 29.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 320 GSM Percalle 150x200 - Cod. LK0040 - € 29,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 4 Stagioni Percalle 250x200 (LK0041)', code: 'LK0041', price: 69.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 4 Stagioni Percalle 250x200 - Cod. LK0041 - € 69,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 4 Stagioni Percalle 200x200 (LK0042)', code: 'LK0042', price: 59.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 4 Stagioni Percalle 200x200 - Cod. LK0042 - € 59,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 4 Stagioni Percalle 150x200 (LK0043)', code: 'LK0043', price: 46.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 4 Stagioni Percalle 150x200 - Cod. LK0043 - € 46,90 (Preimb. 2 pz)' },
 
-            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Memory Viscogel 45x75 (LJ0002)', code: 'LJ0002', price: 28.50, category: 'bianco_only', label: 'Guanciale Memory Viscogel 45x75 - Cod. LJ0002 - € 28,50' },
-            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Memory 42x72 H13 (LJ0005)', code: 'LJ0005', price: 15.50, category: 'bianco_only', label: 'Guanciale Memory 42x72 H13 - Cod. LJ0005 - € 15,50' },
-            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Soft Poliestere 50x80 H18 (LJ0003)', code: 'LJ0003', price: 13.50, category: 'bianco_only', label: 'Guanciale Soft Poliestere 50x80 H18 - Cod. LJ0003 - € 13,50' },
-            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Nuvola Poliestere 50x80 H17 (LJ0004)', code: 'LJ0004', price: 6.10, category: 'bianco_only', label: 'Guanciale Nuvola Poliestere 50x80 H17 - Cod. LJ0004 - € 6,10' },
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Memory Viscogel 45x75 (LJ0002)', code: 'LJ0002', price: 28.50, pack: 2, category: 'bianco_only', label: 'Guanciale Memory Viscogel 45x75 - Cod. LJ0002 - € 28,50 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Memory 42x72 H13 (LJ0005)', code: 'LJ0005', price: 15.50, pack: 8, category: 'bianco_only', label: 'Guanciale Memory 42x72 H13 - Cod. LJ0005 - € 15,50 (Preimb. 8 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Soft Poliestere 50x80 H18 (LJ0003)', code: 'LJ0003', price: 13.50, pack: 8, category: 'bianco_only', label: 'Guanciale Soft Poliestere 50x80 H18 - Cod. LJ0003 - € 13,50 (Preimb. 8 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Nuvola Poliestere 50x80 H17 (LJ0004)', code: 'LJ0004', price: 6.10, pack: 8, category: 'bianco_only', label: 'Guanciale Nuvola Poliestere 50x80 H17 - Cod. LJ0004 - € 6,10 (Preimb. 8 pz)' },
 
-            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Coppia Copriguanciale Cotone Jacquard Rigato 50x80 (LM0073)', code: 'LM0073', price: 7.90, category: 'bianco_only', label: 'Coppia Copriguanciale Cotone Jacquard Rigato 50x80 - Cod. LM0073 - € 7,90' },
-            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Coppia Copriguanciale Spugna Jersey 50x80 (LM0072)', code: 'LM0072', price: 6.50, category: 'bianco_only', label: 'Coppia Copriguanciale Spugna Jersey 50x80 - Cod. LM0072 - € 6,50' },
-            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Copriguanciale 3D 50x80 (LM0074)', code: 'LM0074', price: 5.40, category: 'bianco_only', label: 'Copriguanciale 3D 50x80 - Cod. LM0074 - € 5,40' }
+            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Coppia Copriguanciale Cotone Jacquard Rigato 50x80 (LM0073)', code: 'LM0073', price: 7.90, pack: 12, category: 'bianco_only', label: 'Coppia Copriguanciale Cotone Jacquard Rigato 50x80 - Cod. LM0073 - € 7,90 (Preimb. 12 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Coppia Copriguanciale Spugna Jersey 50x80 (LM0072)', code: 'LM0072', price: 6.50, pack: 12, category: 'bianco_only', label: 'Coppia Copriguanciale Spugna Jersey 50x80 - Cod. LM0072 - € 6,50 (Preimb. 12 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Copriguanciale 3D 50x80 (LM0074)', code: 'LM0074', price: 5.40, pack: 12, category: 'bianco_only', label: 'Copriguanciale 3D 50x80 - Cod. LM0074 - € 5,40 (Preimb. 12 pz)' }
         ];
 
         // --- COLORI LINEA PAINT ---
@@ -399,6 +399,12 @@
             document.getElementById('itemColor').innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
             document.getElementById('previewBox').classList.add('hidden');
 
+            const qtyInput = document.getElementById('itemQty');
+            qtyInput.value = 1;
+            qtyInput.min = 1;
+            qtyInput.step = 1;
+            document.getElementById('qtyLabel').innerText = "Quantità (Pezzi) *";
+
             const filteredProducts = filterLine === 'ALL' 
                 ? productsData 
                 : productsData.filter(p => p.line === filterLine);
@@ -415,6 +421,7 @@
                     opt.textContent = p.label;
                     opt.setAttribute('data-code', p.code);
                     opt.setAttribute('data-price', p.price);
+                    opt.setAttribute('data-pack', p.pack || 1);
                     opt.setAttribute('data-category', p.category);
                     optGroup.appendChild(opt);
                 });
@@ -426,19 +433,37 @@
         function onItemChange() {
             const select = document.getElementById('itemSelect');
             const colorSelect = document.getElementById('itemColor');
+            const qtyInput = document.getElementById('itemQty');
+            const qtyLabel = document.getElementById('qtyLabel');
 
             if (!select.value || select.selectedIndex === 0) {
                 document.getElementById('itemPriceInput').value = '';
                 colorSelect.innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
                 document.getElementById('previewBox').classList.add('hidden');
+                qtyInput.value = 1;
+                qtyInput.min = 1;
+                qtyInput.step = 1;
+                qtyLabel.innerText = "Quantità (Pezzi) *";
                 return;
             }
 
             const selectedOption = select.options[select.selectedIndex];
             const price = selectedOption.getAttribute('data-price') || "0.00";
+            const pack = parseInt(selectedOption.getAttribute('data-pack') || 1);
             const category = selectedOption.getAttribute('data-category');
 
             document.getElementById('itemPriceInput').value = `€ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
+
+            // Impostazione quantitativi minimi e multipli
+            qtyInput.min = pack;
+            qtyInput.step = pack;
+            qtyInput.value = pack;
+            if (pack > 1) {
+                qtyLabel.innerText = `Quantità (Minimo ${pack} pz e multipli) *`;
+            } else {
+                qtyLabel.innerText = "Quantità (Pezzi) *";
+            }
+
             colorSelect.innerHTML = '<option value="">-- Seleziona Variante --</option>';
 
             let colorsToLoad = standardColors;
@@ -515,16 +540,27 @@
             const code = selectedOption.getAttribute('data-code');
             const articleName = selectedOption.value;
             const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
+            const pack = parseInt(selectedOption.getAttribute('data-pack') || 1);
             const color = document.getElementById('itemColor').value;
-            const qty = parseInt(document.getElementById('itemQty').value) || 0;
+            let qty = parseInt(document.getElementById('itemQty').value) || 0;
 
             if (!color) {
                 alert("Seleziona la variante colore dell'articolo.");
                 return;
             }
-            if (qty <= 0) {
-                alert("Inserisci una quantità valida (almeno 1 pz).");
+
+            // Controllo e correzione multiplo imballo
+            if (qty < pack) {
+                alert(`La quantità minima per questo articolo è di ${pack} pezzi.`);
+                document.getElementById('itemQty').value = pack;
                 return;
+            }
+
+            if (qty % pack !== 0) {
+                const roundedQty = Math.ceil(qty / pack) * pack;
+                alert(`Questo articolo viene venduto in confezioni da ${pack} pezzi. La quantità è stata adeguata a ${roundedQty} pz.`);
+                qty = roundedQty;
+                document.getElementById('itemQty').value = roundedQty;
             }
 
             items.push({
