@@ -1,520 +1,285 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riviera Basic - Modulo Ordini Completo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
-        @media print {
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            body { background: white !important; padding: 0 !important; }
-            #pdfContent { border: none !important; shadow: none !important; padding: 0 !important; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riassortimento Ordini - RIVIERA BASIC & PAINT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12">
 
-    <!-- Header -->
-    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50 no-print">
-        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-bold tracking-wide"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
-                <p class="text-xs text-indigo-200">Modulo Unificato - Riassortimento Ordini</p>
-            </div>
-            <button onclick="resetForm()" class="text-xs bg-indigo-800 hover:bg-indigo-700 px-3 py-2 rounded transition">
-                <i class="fa-solid fa-rotate-left mr-1"></i> Nuovo Ordine
-            </button>
-        </div>
-    </header>
+  <header class="bg-blue-900 text-white p-4 shadow-md mb-6">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold flex items-center gap-2">
+        <i class="fa-solid fa-cart-shopping"></i> Riassortimento Ordini - RIVIERA BASIC & PAINT
+      </h1>
+    </div>
+  </header>
 
-    <main class="max-w-5xl mx-auto px-4 mt-6 space-y-6">
+  <main class="max-w-4xl mx-auto px-4 space-y-6">
 
-        <!-- Dati Cliente -->
-        <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
-            <h2 class="text-base font-semibold text-slate-700 mb-4 border-b pb-2 flex items-center">
-                <i class="fa-solid fa-user-tag text-indigo-600 mr-2"></i> Dati Anagrafici Cliente
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Ragione Sociale / Cliente *</label>
-                    <input type="text" id="clientName" placeholder="Es. Rossi Home" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Città / Località</label>
-                    <input type="text" id="clientCity" placeholder="Es. Catania" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">P.IVA / Cod. Univoco / SDI</label>
-                    <input type="text" id="clientVat" placeholder="IT0123456789" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                </div>
-            </div>
-        </section>
+    <!-- SELEZIONE PRODOTTO -->
+    <section class="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
+      <h2 class="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-list-check text-blue-600"></i> Selezione Prodotto
+      </h2>
 
-        <!-- Inserimento Articolo -->
-        <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
-            <h2 class="text-base font-semibold text-slate-700 mb-4 border-b pb-2 flex items-center">
-                <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Seleziona Prodotto dal Copia Commissione
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div class="md:col-span-2">
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Articolo - Misura - Codice - Listino</label>
-                    <select id="itemSelect" onchange="onItemChange()" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                        <option value="">-- Seleziona Articolo da Tutte le Linee --</option>
-                        
-                        <!-- LINEA ACCESSORI -->
-                        <optgroup label="--- LINEA ACCESSORI ---">
-                            <!-- Coprimaterasso -->
-                            <option value="Coprimaterasso Sanitario 175X200+27" data-code="LH0005" data-price="19.90" data-prepack="4 PZ." data-colors="0101 BIANCO">Coprimaterasso Sanitario 175X200+27 - Cod. LH0005 - € 19,90 (Preimb. 4 PZ)</option>
-                            <option value="Coprimaterasso Sanitario 125X200+27" data-code="LH0006" data-price="16.90" data-prepack="4 PZ." data-colors="0101 BIANCO">Coprimaterasso Sanitario 125X200+27 - Cod. LH0006 - € 16,90 (Preimb. 4 PZ)</option>
-                            <option value="Coprimaterasso Sanitario 90X200+27" data-code="LH0007" data-price="12.90" data-prepack="6 PZ." data-colors="0101 BIANCO">Coprimaterasso Sanitario 90X200+27 - Cod. LH0007 - € 12,90 (Preimb. 6 PZ)</option>
-                            <option value="Coprimaterasso Spugna Jersey 175X200+27" data-code="LH0008" data-price="13.50" data-prepack="4 PZ." data-colors="0101 BIANCO">Coprimaterasso Spugna Jersey 175X200+27 - Cod. LH0008 - € 13,50 (Preimb. 4 PZ)</option>
-                            <option value="Coprimaterasso Spugna Jersey 125X200+27" data-code="LH0009" data-price="11.50" data-prepack="4 PZ." data-colors="0101 BIANCO">Coprimaterasso Spugna Jersey 125X200+27 - Cod. LH0009 - € 11,50 (Preimb. 4 PZ)</option>
-                            <option value="Coprimaterasso Spugna Jersey 90X200+27" data-code="LH0010" data-price="9.50" data-prepack="6 PZ." data-colors="0101 BIANCO">Coprimaterasso Spugna Jersey 90X200+27 - Cod. LH0010 - € 9,50 (Preimb. 6 PZ)</option>
-                            <option value="Coprimaterasso Jacquard Rigato 170X200+25" data-code="LH0011" data-price="16.20" data-prepack="4 PZ." data-colors="0101 BIANCO">Coprimaterasso Jacquard Rigato 170X200+25 - Cod. LH0011 - € 16,20 (Preimb. 4 PZ)</option>
-                            <option value="Coprimaterasso Jacquard Rigato 120X200+25" data-code="LH0012" data-price="14.00" data-prepack="4 PZ." data-colors="0101 BIANCO">Coprimaterasso Jacquard Rigato 120X200+25 - Cod. LH0012 - € 14,00 (Preimb. 4 PZ)</option>
-                            <option value="Coprimaterasso Jacquard Rigato 85X200+25" data-code="LH0013" data-price="11.00" data-prepack="6 PZ." data-colors="0101 BIANCO">Coprimaterasso Jacquard Rigato 85X200+25 - Cod. LH0013 - € 11,00 (Preimb. 6 PZ)</option>
-                            <option value="Coprimaterasso 3D 165X200+28" data-code="LH0014" data-price="16.50" data-prepack="4 PZ." data-colors="0101 BIANCO">Coprimaterasso 3D 165X200+28 - Cod. LH0014 - € 16,50 (Preimb. 4 PZ)</option>
-                            <option value="Coprimaterasso 3D 125X200+28" data-code="LH0015" data-price="14.50" data-prepack="4 PZ." data-colors="0101 BIANCO">Coprimaterasso 3D 125X200+28 - Cod. LH0015 - € 14,50 (Preimb. 4 PZ)</option>
-                            <option value="Coprimaterasso 3D 90X200+28" data-code="LH0016" data-price="11.30" data-prepack="6 PZ." data-colors="0101 BIANCO">Coprimaterasso 3D 90X200+28 - Cod. LH0016 - € 11,30 (Preimb. 6 PZ)</option>
-                            <option value="Coprimaterasso 3D Lettino c/Angoli 65X130+18" data-code="LH0017" data-price="7.90" data-prepack="6 PZ." data-colors="0101 BIANCO">Coprimaterasso 3D Lettino c/Angoli 65X130+18 - Cod. LH0017 - € 7,90 (Preimb. 6 PZ)</option>
-                            
-                            <!-- Salvamaterasso -->
-                            <option value="Salvamaterasso Stretch 175-195 x 200-210 + 30 cm" data-code="LH0031" data-price="15.90" data-prepack="4 PZ." data-colors="0101 BIANCO">Salvamaterasso Stretch 175-195x200-210 - Cod. LH0031 - € 15,90 (Preimb. 4 PZ)</option>
-                            <option value="Salvamaterasso Stretch 125-145 x 200-210 + 30 cm" data-code="LH0033" data-price="12.50" data-prepack="4 PZ." data-colors="0101 BIANCO">Salvamaterasso Stretch 125-145x200-210 - Cod. LH0033 - € 12,50 (Preimb. 4 PZ)</option>
-                            <option value="Salvamaterasso Stretch 90-100 x 200-210 + 30 cm" data-code="LH0032" data-price="9.90" data-prepack="6 PZ." data-colors="0101 BIANCO">Salvamaterasso Stretch 90-100x200-210 - Cod. LH0032 - € 9,90 (Preimb. 6 PZ)</option>
-                            <option value="Salvamaterasso Termo Regolatore 160X200 + 30 cm" data-code="LH0034" data-price="37.90" data-prepack="2 PZ." data-colors="0101 AVORIO">Salvamaterasso Termo Regolatore 160X200 - Cod. LH0034 - € 37,90 (Preimb. 2 PZ)</option>
-                            <option value="Salvamaterasso Termo Regolatore 120X200 + 30 cm" data-code="LH0035" data-price="31.50" data-prepack="1 PZ." data-colors="0101 AVORIO">Salvamaterasso Termo Regolatore 120X200 - Cod. LH0035 - € 31,50 (Preimb. 1 PZ)</option>
-                            <option value="Salvamaterasso Termo Regolatore 90X200 + 30 cm" data-code="LH0036" data-price="25.50" data-prepack="2 PZ." data-colors="0101 AVORIO">Salvamaterasso Termo Regolatore 90X200 - Cod. LH0036 - € 25,50 (Preimb. 2 PZ)</option>
-
-                            <!-- Topper -->
-                            <option value="Topper Four Season 180X200+5" data-code="LH0027" data-price="79.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Topper Four Season 180X200+5 - Cod. LH0027 - € 79,90 (Preimb. 2 PZ)</option>
-                            <option value="Topper Four Season 160X200+5" data-code="LH0028" data-price="69.00" data-prepack="2 PZ." data-colors="0101 BIANCO">Topper Four Season 160X200+5 - Cod. LH0028 - € 69,00 (Preimb. 2 PZ)</option>
-                            <option value="Topper Four Season 120X200+5" data-code="LH0029" data-price="56.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Topper Four Season 120X200+5 - Cod. LH0029 - € 56,90 (Preimb. 2 PZ)</option>
-                            <option value="Topper Four Season 90X200+5" data-code="LH0030" data-price="44.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Topper Four Season 90X200+5 - Cod. LH0030 - € 44,90 (Preimb. 2 PZ)</option>
-                            <option value="Topper Percalle 180X200+5" data-code="LH0019" data-price="59.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Topper Percalle 180X200+5 - Cod. LH0019 - € 59,90 (Preimb. 2 PZ)</option>
-                            <option value="Topper Percalle 160X200+5" data-code="LH0020" data-price="47.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Topper Percalle 160X200+5 - Cod. LH0020 - € 47,90 (Preimb. 2 PZ)</option>
-                            <option value="Topper Percalle 120X200+5" data-code="LH0021" data-price="44.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Topper Percalle 120X200+5 - Cod. LH0021 - € 44,90 (Preimb. 2 PZ)</option>
-                            <option value="Topper Percalle 90X200+5" data-code="LH0022" data-price="35.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Topper Percalle 90X200+5 - Cod. LH0022 - € 35,90 (Preimb. 2 PZ)</option>
-
-                            <!-- Interno Piumino -->
-                            <option value="Switch&Dream Interno Piumino 4 Stagioni Percalle (4 PZ CM 125X200)" data-code="LK0044" data-price="79.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Switch&Dream 4 Stagioni Percalle - Cod. LK0044 - € 79,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 100 GSM Percalle 250X200" data-code="LK0032" data-price="33.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 100 GSM 250X200 - Cod. LK0032 - € 33,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 100 GSM Percalle 200X200" data-code="LK0033" data-price="28.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 100 GSM 200X200 - Cod. LK0033 - € 28,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 100 GSM Percalle 150X200" data-code="LK0034" data-price="22.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 100 GSM 150X200 - Cod. LK0034 - € 22,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 220 GSM Percalle 250X200" data-code="LK0035" data-price="37.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 220 GSM 250X200 - Cod. LK0035 - € 37,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 220 GSM Percalle 200X200" data-code="LK0036" data-price="33.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 220 GSM 200X200 - Cod. LK0036 - € 33,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 220 GSM Percalle 150X200" data-code="LK0037" data-price="25.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 220 GSM 150X200 - Cod. LK0037 - € 25,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 320 GSM Percalle 250X200" data-code="LK0038" data-price="39.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 320 GSM 250X200 - Cod. LK0038 - € 39,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 320 GSM Percalle 200X200" data-code="LK0039" data-price="34.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 320 GSM 200X200 - Cod. LK0039 - € 34,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 320 GSM Percalle 150X200" data-code="LK0040" data-price="29.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 320 GSM 150X200 - Cod. LK0040 - € 29,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 4 Stagioni Percalle 250X200" data-code="LK0041" data-price="69.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 4 Stagioni 250X200 - Cod. LK0041 - € 69,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 4 Stagioni Percalle 200X200" data-code="LK0042" data-price="59.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 4 Stagioni 200X200 - Cod. LK0042 - € 59,90 (Preimb. 2 PZ)</option>
-                            <option value="Interno Piumino 4 Stagioni Percalle 150X200" data-code="LK0043" data-price="46.90" data-prepack="2 PZ." data-colors="0101 BIANCO">Piumino 4 Stagioni 150X200 - Cod. LK0043 - € 46,90 (Preimb. 2 PZ)</option>
-
-                            <!-- Guanciali e Copriguanciali -->
-                            <option value="Guanciale Memory Viscogel (45x75)" data-code="LJ0002" data-price="28.50" data-prepack="2 PZ." data-colors="0101 BIANCO">Guanciale Memory Viscogel 45x75 - Cod. LJ0002 - € 28,50 (Preimb. 2 PZ)</option>
-                            <option value="Guanciale Memory (42x72 H13)" data-code="LJ0005" data-price="15.50" data-prepack="8 PZ." data-colors="0101 BIANCO">Guanciale Memory 42x72 H13 - Cod. LJ0005 - € 15,50 (Preimb. 8 PZ)</option>
-                            <option value="Guanciale Soft Poliestere (50x80 H18)" data-code="LJ0003" data-price="13.50" data-prepack="8 PZ." data-colors="0101 BIANCO">Guanciale Soft Poliestere 50x80 H18 - Cod. LJ0003 - € 13,50 (Preimb. 8 PZ)</option>
-                            <option value="Guanciale Nuvola Poliestere (50x80 H17)" data-code="LJ0004" data-price="6.10" data-prepack="8 PZ." data-colors="0101 BIANCO">Guanciale Nuvola Poliestere 50x80 H17 - Cod. LJ0004 - € 6,10 (Preimb. 8 PZ)</option>
-                            <option value="Coppia Copriguanciale Cotone Jacquard Rigato (50X80)" data-code="LM0073" data-price="7.90" data-prepack="12 PZ." data-colors="0101 BIANCO">Coppia Copriguanciale Cotone Jacquard 50X80 - Cod. LM0073 - € 7,90 (Preimb. 12 PZ)</option>
-                            <option value="Coppia Copriguanciale Spugna Jersey (50X80)" data-code="LM0072" data-price="6.50" data-prepack="12 PZ." data-colors="0101 BIANCO">Coppia Copriguanciale Spugna Jersey 50X80 - Cod. LM0072 - € 6,50 (Preimb. 12 PZ)</option>
-                            <option value="Copriguanciale 3D (50X80)" data-code="LM0074" data-price="5.40" data-prepack="12 PZ." data-colors="0101 BIANCO">Copriguanciale 3D 50X80 - Cod. LM0074 - € 5,40 (Preimb. 12 PZ)</option>
-                        </optgroup>
-
-                        <!-- COMPLETO LETTO -->
-                        <optgroup label="--- LINEA PAINT: COMPLETO LETTO ---">
-                            <option value="Completo Letto 2P (LN0506)" data-code="LN0506" data-price="29.90" data-category="standard">Completo Letto 2P - Cod. LN0506 - € 29,90</option>
-                            <option value="Completo Letto KING SIZE (LN1862)" data-code="LN1862" data-price="33.50" data-category="standard">Completo Letto KING SIZE - Cod. LN1862 - € 33,50</option>
-                            <option value="Completo Letto 1+1/2P FRANCESE (LN0508)" data-code="LN0508" data-price="28.50" data-category="standard">Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50</option>
-                            <option value="Completo Letto 1+1/2P (LN0507)" data-code="LN0507" data-price="23.90" data-category="standard">Completo Letto 1+1/2P - Cod. LN0507 - € 23,90</option>
-                            <option value="Completo Letto 1P (LN0509)" data-code="LN0509" data-price="19.90" data-category="standard">Completo Letto 1P - Cod. LN0509 - € 19,90</option>
-                        </optgroup>
-
-                        <!-- PARURE COPRIPIUMINO -->
-                        <optgroup label="--- LINEA PAINT: PARURE COPRIPIUMINO ---">
-                            <option value="Parure Copripiumino 2P (LF0179)" data-code="LF0179" data-price="30.90" data-category="standard">Parure Copripiumino 2P - Cod. LF0179 - € 30,90</option>
-                            <option value="Parure Copripiumino 1+1/2P (LF0180)" data-code="LF0180" data-price="26.90" data-category="standard">Parure Copripiumino 1+1/2P - Cod. LF0180 - € 26,90</option>
-                            <option value="Parure Copripiumino 1P (LF0181)" data-code="LF0181" data-price="20.90" data-category="standard">Parure Copripiumino 1P - Cod. LF0181 - € 20,90</option>
-                        </optgroup>
-
-                        <!-- QUILT DOUBLE TRAPUNTATO -->
-                        <optgroup label="--- LINEA PAINT: QUILT DOUBLE TRAPUNTATO ---">
-                            <option value="Quilt Double Trapuntato 2P (LE0607)" data-code="LE0607" data-price="44.90" data-category="quilt">Quilt Double Trapuntato 2P - Cod. LE0607 - € 44,90</option>
-                            <option value="Quilt Double Trapuntato 1+1/2P (LE0624)" data-code="LE0624" data-price="39.90" data-category="quilt">Quilt Double Trapuntato 1+1/2P - Cod. LE0624 - € 39,90</option>
-                            <option value="Quilt Double Trapuntato 1P (LE0625)" data-code="LE0625" data-price="34.90" data-category="quilt">Quilt Double Trapuntato 1P - Cod. LE0625 - € 34,90</option>
-                        </optgroup>
-
-                        <!-- LENZUOLO SOPRA -->
-                        <optgroup label="--- LINEA PAINT: LENZUOLO SOPRA ---">
-                            <option value="Lenzuolo Sopra 2P (LP0001)" data-code="LP0001" data-price="13.50" data-category="standard">Lenzuolo Sopra 2P - Cod. LP0001 - € 13,50</option>
-                            <option value="Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)" data-code="LP0003" data-price="12.90" data-category="standard">Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90</option>
-                            <option value="Lenzuolo Sopra 1+1/2P (LP0002)" data-code="LP0002" data-price="11.50" data-category="standard">Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50</option>
-                            <option value="Lenzuolo Sopra 1P (LP0004)" data-code="LP0004" data-price="9.90" data-category="standard">Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90</option>
-                        </optgroup>
-
-                        <!-- LENZUOLO SOTTO CON ANGOLI -->
-                        <optgroup label="--- LINEA PAINT: LENZUOLO SOTTO CON ANGOLI ---">
-                            <option value="Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)" data-code="LQ0002" data-price="11.50" data-category="standard">Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50</option>
-                            <option value="Lenzuolo Sotto c/Angoli 2P (LQ0058)" data-code="LQ0058" data-price="10.50" data-category="standard">Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50</option>
-                            <option value="Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)" data-code="LQ0054" data-price="13.50" data-category="standard">Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50</option>
-                            <option value="Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)" data-code="LQ0004" data-price="10.30" data-category="standard">Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30</option>
-                            <option value="Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)" data-code="LQ0003" data-price="9.90" data-category="standard">Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90</option>
-                            <option value="Lenzuolo Sotto c/Angoli 1P (LQ0005)" data-code="LQ0005" data-price="7.90" data-category="standard">Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90</option>
-                        </optgroup>
-
-                        <!-- COPPIA FEDERE -->
-                        <optgroup label="--- LINEA PAINT: COPPIA FEDERE ---">
-                            <option value="Coppia Federe 50X80 (LM0068)" data-code="LM0068" data-price="7.50" data-category="standard">Coppia Federe 50X80 - Cod. LM0068 - € 7,50</option>
-                        </optgroup>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Variante / Colore</label>
-                    <select id="itemColor" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                        <option value="">-- Seleziona Prima l'Articolo --</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Quantità (Pezzi) *</label>
-                    <input type="number" id="itemQty" min="1" value="1" class="w-full text-sm font-semibold border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Prezzo Unitario €</label>
-                    <input type="text" id="itemPriceInput" readonly class="w-full text-sm font-bold bg-slate-100 border border-slate-300 rounded-lg p-2.5 text-slate-700">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Preimballo</label>
-                    <input type="text" id="itemPrepackInput" readonly class="w-full text-sm font-medium bg-slate-100 border border-slate-300 rounded-lg p-2.5 text-slate-600" placeholder="-">
-                </div>
-                <div class="flex items-end">
-                    <button onclick="addItem()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm transition">
-                        <i class="fa-solid fa-plus mr-1"></i> Aggiungi all'Ordine
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Tabella Ordine / Anteprima Stampa -->
-        <div id="pdfContent" class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
-            <!-- Testata PDF -->
-            <div class="flex justify-between items-start border-b pb-4 mb-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-indigo-900">RIVIERA BASIC</h2>
-                    <p class="text-sm font-semibold text-slate-600">Copia Commissione / Riassortimento Unificato</p>
-                </div>
-                <div class="text-right text-xs text-slate-500">
-                    <p id="docDate"></p>
-                </div>
-            </div>
-
-            <!-- Dati Cliente per PDF -->
-            <div class="mb-6 bg-slate-50 p-3 rounded border border-slate-200 text-xs grid grid-cols-3 gap-2">
-                <div><strong>Cliente:</strong> <span id="pdfClientName">-</span></div>
-                <div><strong>Città:</strong> <span id="pdfClientCity">-</span></div>
-                <div><strong>P.IVA/SDI:</strong> <span id="pdfClientVat">-</span></div>
-            </div>
-
-            <!-- Tabella Articoli -->
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs text-slate-700 border-collapse">
-                    <thead>
-                        <tr class="bg-slate-100 text-slate-800 uppercase font-semibold border-b">
-                            <th class="py-2.5 px-3">Codice</th>
-                            <th class="py-2.5 px-3">Articolo / Descrizione</th>
-                            <th class="py-2.5 px-3">Variante</th>
-                            <th class="py-2.5 px-3 text-center">Preimballo</th>
-                            <th class="py-2.5 px-3 text-center">PZ</th>
-                            <th class="py-2.5 px-3 text-right">Prezzo Unit.</th>
-                            <th class="py-2.5 px-3 text-right">Totale €</th>
-                            <th class="py-2.5 px-3 text-center no-print">Azione</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orderTableBody">
-                        <tr>
-                            <td colspan="8" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Totali -->
-            <div class="mt-6 border-t pt-4 flex flex-col items-end text-xs space-y-1">
-                <div class="flex justify-between w-48">
-                    <span class="text-slate-600">Totale Pezzi:</span>
-                    <span id="totalPieces" class="font-bold text-slate-800">0</span>
-                </div>
-                <div class="flex justify-between w-48 text-sm pt-2 border-t">
-                    <span class="font-bold text-slate-800">Totale Netto:</span>
-                    <span id="grandTotal" class="font-bold text-indigo-700">€ 0,00</span>
-                </div>
-            </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">1. Seleziona Articolo / Codice:</label>
+          <select id="productSelect" class="w-full border border-slate-300 rounded p-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">-- Seleziona un articolo --</option>
+          </select>
         </div>
 
-        <!-- Azioni Finale (WhatsApp, Email, PDF) -->
-        <div class="flex flex-wrap gap-3 justify-end no-print">
-            <button onclick="sendWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
-                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Invia via WhatsApp
-            </button>
-            <button onclick="sendEmail()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
-                <i class="fa-solid fa-envelope text-lg mr-2"></i> Invia via Email
-            </button>
-            <button onclick="exportPDF()" class="bg-slate-700 hover:bg-slate-800 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
-                <i class="fa-solid fa-file-pdf text-lg mr-2"></i> Scarica / Stampa PDF
-            </button>
+        <div>
+          <label class="block text-sm font-semibold mb-1">2. Inserisci Variante / Colore / Misura:</label>
+          <input type="text" id="variantInput" placeholder="Es. 0101 BIANCO" class="w-full border border-slate-300 rounded p-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <p class="text-xs text-slate-400 mt-1">Carica l'immagine corrispondente in <code>img/</code> per attivare l'anteprima.</p>
         </div>
 
-    </main>
+        <!-- ANTEPRIMA MINIATURA -->
+        <div id="previewContainer" class="flex items-center gap-4 bg-slate-50 p-3 rounded border border-slate-200">
+          <div class="w-16 h-16 bg-slate-200 rounded flex items-center justify-center overflow-hidden border border-slate-300">
+            <img id="previewImage" src="" alt="Anteprima" class="w-full h-full object-cover hidden" onerror="this.classList.add('hidden'); document.getElementById('previewIcon').classList.remove('hidden');">
+            <i id="previewIcon" class="fa-solid fa-shirt text-slate-300 text-2xl"></i>
+          </div>
+          <div>
+            <div id="previewTitle" class="font-bold text-sm text-slate-800">Nessun articolo selezionato</div>
+            <div id="previewVariant" class="text-xs text-slate-500">Variante: -</div>
+          </div>
+        </div>
 
-    <script>
-        const standardColors = [
-            "0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA",
-            "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE",
-            "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO",
-            "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA",
-            "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO",
-            "2501 LOTO", "1201 BORDEAUX"
-        ];
+        <div class="flex gap-4 items-center">
+          <div class="w-1/2">
+            <label class="block text-sm font-semibold mb-1">Quantità (Pezzi):</label>
+            <input type="number" id="qtyInput" min="1" value="1" class="w-full border border-slate-300 rounded p-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div class="w-1/2 flex items-end">
+            <button id="addBtn" onclick="addToOrder()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow transition">
+              <i class="fa-solid fa-plus"></i> Aggiungi all'Ordine
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        const quiltColors = [
-            "0101 AVORIO/GRIGIO PERLA", "0201 TORTORA/AVORIO", "0301 CAMMELLO/GLACÉ",
-            "0401 ACCIAIO/NEW TORTORA", "0501 CARBONE/CAMMELLO", "0601 C. DA ZUCCHERO/DENIM",
-            "0701 MUSCHIO/TURCHESE", "0801 LOTO/MALVA", "0901 CAROTA/NEW TORTORA", "1001 BORDEAUX/GLACÉ"
-        ];
+    <!-- RIEPILOGO ORDINE -->
+    <section class="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
+      <h2 class="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-file-invoice text-blue-600"></i> Riepilogo Ordine
+      </h2>
 
-        let items = [];
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-slate-100 border-b border-slate-200 text-slate-600">
+              <th class="p-2">Foto</th>
+              <th class="p-2">Codice</th>
+              <th class="p-2">Descrizione</th>
+              <th class="p-2">Variante</th>
+              <th class="p-2 text-center">Qtà</th>
+              <th class="p-2 text-right">Prezzo</th>
+              <th class="p-2 text-center">Azione</th>
+            </tr>
+          </thead>
+          <tbody id="orderTableBody">
+            <tr>
+              <td colspan="7" class="p-4 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-        document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
+  </main>
 
-        function onItemChange() {
-            const select = document.getElementById('itemSelect');
-            const selectedOption = select.options[select.selectedIndex];
-            
-            if (!select.value) {
-                document.getElementById('itemPriceInput').value = '';
-                document.getElementById('itemPrepackInput').value = '';
-                document.getElementById('itemColor').innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
-                return;
-            }
+  <script>
+    // LISTA COMPLETA PRODOTTI (PAINT, SFUSI & ACCESSORI RIVIERA BASIC)
+    const products = [
+      /* PAINT COMPLETI & SFUSI */
+      { code: "LN0506", name: "Completo Letto Matrimoniale 2P", price: "29,90", pack: 2 },
+      { code: "LN1862", name: "Completo Letto King Size", price: "33,50", pack: 2 },
+      { code: "LN0508", name: "Completo Letto Piazza e Mezza Francese", price: "28,50", pack: 2 },
+      { code: "LN0507", name: "Completo Letto Piazza e Mezza", price: "23,90", pack: 2 },
+      { code: "LN0509", name: "Completo Letto Singolo 1P", price: "19,90", pack: 2 },
+      { code: "LF0179", name: "Parure Copripiumino Matrimoniale", price: "30,90", pack: 2 },
+      { code: "LF0180", name: "Parure Copripiumino Piazza e Mezza", price: "26,90", pack: 2 },
+      { code: "LF0181", name: "Parure Copripiumino Singolo", price: "20,90", pack: 2 },
 
-            const price = selectedOption.getAttribute('data-price') || "0.00";
-            const prepack = selectedOption.getAttribute('data-prepack') || "-";
-            const category = selectedOption.getAttribute('data-category');
-            const customColors = selectedOption.getAttribute('data-colors');
+      /* ACCESSORI - COPRIMATERASSO */
+      { code: "LH0005", name: "Coprimaterasso Sanitario 175x200", price: "19,90", pack: 4 },
+      { code: "LH0006", name: "Coprimaterasso Sanitario 125x200", price: "16,90", pack: 4 },
+      { code: "LH0007", name: "Coprimaterasso Sanitario 90x200", price: "12,90", pack: 6 },
+      { code: "LH0008", name: "Coprimaterasso Spugna Jersey 175x200", price: "13,50", pack: 4 },
+      { code: "LH0009", name: "Coprimaterasso Spugna Jersey 125x200", price: "11,50", pack: 4 },
+      { code: "LH0010", name: "Coprimaterasso Spugna Jersey 90x200", price: "9,50", pack: 6 },
+      { code: "LH0011", name: "Coprimaterasso Jacquard Rigato 170x200", price: "16,20", pack: 4 },
+      { code: "LH0012", name: "Coprimaterasso Jacquard Rigato 120x200", price: "14,00", pack: 4 },
+      { code: "LH0013", name: "Coprimaterasso Jacquard Rigato 85x200", price: "11,00", pack: 6 },
+      { code: "LH0014", name: "Coprimaterasso 3D 165x200", price: "16,50", pack: 4 },
+      { code: "LH0015", name: "Coprimaterasso 3D 125x200", price: "14,50", pack: 4 },
+      { code: "LH0016", name: "Coprimaterasso 3D 90x200", price: "11,30", pack: 6 },
+      { code: "LH0017", name: "Coprimaterasso 3D Lettino C/Angoli 65x130", price: "7,90", pack: 6 },
 
-            document.getElementById('itemPriceInput').value = `€ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
-            document.getElementById('itemPrepackInput').value = prepack;
+      /* ACCESSORI - SALVAMATERASSO */
+      { code: "LH0031", name: "Salvamaterasso Stretch 175-195 cm", price: "15,90", pack: 4 },
+      { code: "LH0033", name: "Salvamaterasso Stretch 125-145 cm", price: "12,50", pack: 4 },
+      { code: "LH0032", name: "Salvamaterasso Stretch 90-100 cm", price: "9,90", pack: 6 },
+      { code: "LH0034", name: "Salvamaterasso Termo Regolatore 160x200", price: "37,90", pack: 2 },
+      { code: "LH0035", name: "Salvamaterasso Termo Regolatore 120x200", price: "31,50", pack: 1 },
+      { code: "LH0036", name: "Salvamaterasso Termo Regolatore 90x200", price: "25,50", pack: 2 },
 
-            const colorSelect = document.getElementById('itemColor');
-            colorSelect.innerHTML = '<option value="">-- Seleziona Variante --</option>';
+      /* ACCESSORI - TOPPER */
+      { code: "LH0027", name: "Topper Four Season 180x200+5", price: "79,90", pack: 2 },
+      { code: "LH0028", name: "Topper Four Season 160x200+5", price: "69,00", pack: 2 },
+      { code: "LH0029", name: "Topper Four Season 120x200+5", price: "56,90", pack: 2 },
+      { code: "LH0030", name: "Topper Four Season 90x200+5", price: "44,90", pack: 2 },
+      { code: "LH0019", name: "Topper Percalle 180x200+5", price: "59,90", pack: 2 },
+      { code: "LH0020", name: "Topper Percalle 160x200+5", price: "47,90", pack: 2 },
+      { code: "LH0021", name: "Topper Percalle 120x200+5", price: "44,90", pack: 2 },
+      { code: "LH0022", name: "Topper Percalle 90x200+5", price: "35,90", pack: 2 },
 
-            if (customColors) {
-                customColors.split(',').forEach(col => {
-                    const opt = document.createElement('option');
-                    opt.value = col.trim();
-                    opt.innerText = col.trim();
-                    colorSelect.appendChild(opt);
-                });
-            } else if (category) {
-                const colorsToLoad = category === 'quilt' ? quiltColors : standardColors;
-                colorsToLoad.forEach(col => {
-                    const opt = document.createElement('option');
-                    opt.value = col;
-                    opt.innerText = col;
-                    colorSelect.appendChild(opt);
-                });
-            }
+      /* ACCESSORI - INTERNO PIUMINO */
+      { code: "LK0044", name: "Switch&Dream Interno Piumino 4 Stagioni Percalle", price: "79,90", pack: 2 },
+      { code: "LK0032", name: "Interno Piumino 100 GSM Percalle 250x200", price: "33,90", pack: 2 },
+      { code: "LK0033", name: "Interno Piumino 100 GSM Percalle 200x200", price: "28,90", pack: 2 },
+      { code: "LK0034", name: "Interno Piumino 100 GSM Percalle 150x200", price: "22,90", pack: 2 },
+      { code: "LK0035", name: "Interno Piumino 220 GSM Percalle 250x200", price: "37,90", pack: 2 },
+      { code: "LK0036", name: "Interno Piumino 220 GSM Percalle 200x200", price: "33,90", pack: 2 },
+      { code: "LK0037", name: "Interno Piumino 220 GSM Percalle 150x200", price: "25,90", pack: 2 },
+      { code: "LK0038", name: "Interno Piumino 320 GSM Percalle 250x200", price: "39,90", pack: 2 },
+      { code: "LK0039", name: "Interno Piumino 320 GSM Percalle 200x200", price: "34,90", pack: 2 },
+      { code: "LK0040", name: "Interno Piumino 320 GSM Percalle 150x200", price: "29,90", pack: 2 },
+      { code: "LK0041", "name": "Interno Piumino 4 Stagioni Percalle 250x200", price: "69,90", pack: 2 },
+      { code: "LK0042", "name": "Interno Piumino 4 Stagioni Percalle 200x200", price: "59,90", pack: 2 },
+      { code: "LK0043", "name": "Interno Piumino 4 Stagioni Percalle 150x200", price: "46,90", pack: 2 },
+
+      /* ACCESSORI - GUANCIALI & COPRIGUANCIALI */
+      { code: "LJ0002", name: "Guanciale Memory Viscogel 45x75", price: "28,50", pack: 2 },
+      { code: "LJ0005", name: "Guanciale Memory 42x72 H13", price: "15,50", pack: 8 },
+      { code: "LJ0003", name: "Guanciale Soft Poliestere 50x80 H18", price: "13,50", pack: 8 },
+      { code: "LJ0004", name: "Guanciale Nuvola Poliestere 50x80 H17", price: "6,10", pack: 8 },
+      { code: "LM0073", name: "Coppia Copriguanciale Cotone Jacquard Rigato 50x80", price: "7,90", pack: 12 },
+      { code: "LM0072", name: "Coppia Copriguanciale Spugna Jersey 50x80", price: "6,50", pack: 12 },
+      { code: "LM0074", name: "Copriguanciale 3D 50x80", price: "5,40", pack: 12 }
+    ];
+
+    const orderItems = [];
+
+    // Popola il menu a tendina
+    const productSelect = document.getElementById('productSelect');
+    products.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.code;
+      opt.textContent = `${p.name} - Cod. ${p.code} - € ${p.price}`;
+      productSelect.appendChild(opt);
+    });
+
+    // Aggiorna anteprima miniatura
+    function updatePreview() {
+      const selectedCode = productSelect.value;
+      const variantText = document.getElementById('variantInput').value.trim();
+      const p = products.find(x => x.code === selectedCode);
+
+      const previewImage = document.getElementById('previewImage');
+      const previewIcon = document.getElementById('previewIcon');
+      const previewTitle = document.getElementById('previewTitle');
+      const previewVariant = document.getElementById('previewVariant');
+
+      if (p) {
+        previewTitle.textContent = `${p.name} (${p.code})`;
+        previewVariant.textContent = `Variante: ${variantText || 'Nessuna'}`;
+
+        // Regola estrazione codice variante numerico per l'immagine
+        const cleanVariant = variantText.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (cleanVariant) {
+          previewImage.src = `img/${cleanVariant}.jpg`;
+          previewImage.classList.remove('hidden');
+          previewIcon.classList.add('hidden');
+        } else {
+          previewImage.classList.add('hidden');
+          previewIcon.classList.remove('hidden');
         }
+      } else {
+        previewTitle.textContent = "Nessun articolo selezionato";
+        previewVariant.textContent = "Variante: -";
+        previewImage.classList.add('hidden');
+        previewIcon.classList.remove('hidden');
+      }
+    }
 
-        function addItem() {
-            const select = document.getElementById('itemSelect');
-            const selectedOption = select.options[select.selectedIndex];
-            
-            if (!select.value) {
-                alert("Seleziona un articolo prima di aggiungerlo.");
-                return;
-            }
+    productSelect.addEventListener('change', updatePreview);
+    document.getElementById('variantInput').addEventListener('input', updatePreview);
 
-            const code = selectedOption.getAttribute('data-code');
-            const articleName = selectedOption.value;
-            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
-            const prepack = selectedOption.getAttribute('data-prepack') || "-";
-            const color = document.getElementById('itemColor').value;
-            const qty = parseInt(document.getElementById('itemQty').value) || 0;
+    // Aggiungi elemento all'ordine
+    function addToOrder() {
+      const selectedCode = productSelect.value;
+      const variantText = document.getElementById('variantInput').value.trim();
+      const qty = parseInt(document.getElementById('qtyInput').value) || 1;
 
-            if (!color) {
-                alert("Seleziona la variante colore dell'articolo.");
-                return;
-            }
-            if (qty <= 0) {
-                alert("Inserisci una quantità valida (almeno 1 pz).");
-                return;
-            }
+      if (!selectedCode) {
+        alert("Seleziona prima un articolo!");
+        return;
+      }
 
-            items.push({
-                code: code,
-                article: articleName,
-                color: color,
-                prepack: prepack,
-                qty: qty,
-                price: price,
-                total: price * qty
-            });
+      const p = products.find(x => x.code === selectedCode);
+      const cleanVariant = variantText.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '');
 
-            document.getElementById('itemQty').value = '1';
+      orderItems.push({
+        code: p.code,
+        name: p.name,
+        price: p.price,
+        variant: variantText || '-',
+        imgCode: cleanVariant,
+        qty: qty
+      });
 
-            renderTable();
-        }
+      renderOrderTable();
+    }
 
-        function removeItem(index) {
-            items.splice(index, 1);
-            renderTable();
-        }
+    // Rendering tabella ordine
+    function renderOrderTable() {
+      const tbody = document.getElementById('orderTableBody');
+      if (orderItems.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
+        return;
+      }
 
-        function renderTable() {
-            const tbody = document.getElementById('orderTableBody');
-            
-            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
-            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
-            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
+      tbody.innerHTML = '';
+      orderItems.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-slate-200 hover:bg-slate-50";
 
-            if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
-                document.getElementById('totalPieces').innerText = "0";
-                document.getElementById('grandTotal').innerText = "€ 0,00";
-                return;
-            }
+        const imgSrc = item.imgCode ? `img/${item.imgCode}.jpg` : '';
 
-            let html = '';
-            let totalQty = 0;
-            let grandTotal = 0;
+        tr.innerHTML = `
+          <td class="p-2">
+            <div class="w-10 h-10 bg-slate-100 rounded flex items-center justify-center overflow-hidden border border-slate-200">
+              ${item.imgCode ? `<img src="${imgSrc}" class="w-full h-full object-cover" onerror="this.outerHTML='<i class=\\'fa-solid fa-shirt text-slate-300\\'></i>'">` : `<i class="fa-solid fa-shirt text-slate-300"></i>`}
+            </div>
+          </td>
+          <td class="p-2 font-mono text-xs font-bold">${item.code}</td>
+          <td class="p-2">${item.name}</td>
+          <td class="p-2 text-slate-600">${item.variant}</td>
+          <td class="p-2 text-center font-bold">${item.qty}</td>
+          <td class="p-2 text-right font-semibold">€ ${item.price}</td>
+          <td class="p-2 text-center">
+            <button onclick="removeOrderItem(${index})" class="text-red-500 hover:text-red-700">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
 
-            items.forEach((item, index) => {
-                totalQty += item.qty;
-                grandTotal += item.total;
-                html += `
-                    <tr class="border-b hover:bg-slate-50">
-                        <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
-                        <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
-                        <td class="py-2.5 px-3 font-medium">${item.color}</td>
-                        <td class="py-2.5 px-3 text-center text-slate-500">${item.prepack}</td>
-                        <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
-                        <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
-                        <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
-                        <td class="py-2.5 px-3 text-center no-print">
-                            <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            tbody.innerHTML = html;
-            document.getElementById('totalPieces').innerText = totalQty;
-            document.getElementById('grandTotal').innerText = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
-        }
-
-        function buildOrderSummaryText() {
-            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
-            const city = document.getElementById('clientCity').value || '-';
-            const vat = document.getElementById('clientVat').value || '-';
-            
-            let summary = `*ORDINE RIVIERA BASIC - UNIFICATO*\n`;
-            summary += `----------------------------------\n`;
-            summary += `*Cliente:* ${client}\n`;
-            summary += `*Città:* ${city}\n`;
-            summary += `*P.IVA/SDI:* ${vat}\n`;
-            summary += `*Data:* ${new Date().toLocaleDateString('it-IT')}\n`;
-            summary += `----------------------------------\n`;
-            summary += `*ARTICOLI IN ORDINE:*\n\n`;
-
-            let totalPz = 0;
-            let totalEuro = 0;
-
-            items.forEach(i => {
-                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color} | Preimb: ${i.prepack}\n  Q.tà: ${i.qty} pz | Prezzo: € ${i.price.toFixed(2).replace('.', ',')} | Tot: € ${i.total.toFixed(2).replace('.', ',')}\n\n`;
-                totalPz += i.qty;
-                totalEuro += i.total;
-            });
-
-            summary += `----------------------------------\n`;
-            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
-            summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
-
-            return summary;
-        }
-
-        function sendWhatsApp() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
-                return;
-            }
-            const text = encodeURIComponent(buildOrderSummaryText());
-            const phone = "393392822146";
-            window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`, '_blank');
-        }
-
-        function sendEmail() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
-                return;
-            }
-            const client = document.getElementById('clientName').value || 'Cliente';
-            const subject = encodeURIComponent(`Ordine Riviera Unificato - ${client}`);
-            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
-            const email = "cacciola74@gmail.com";
-            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-        }
-
-        function resetForm() {
-            if (confirm("Vuoi azzerare l'ordine corrente?")) {
-                items = [];
-                document.getElementById('clientName').value = '';
-                document.getElementById('clientCity').value = '';
-                document.getElementById('clientVat').value = '';
-                renderTable();
-            }
-        }
-
-        function exportPDF() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
-                return;
-            }
-
-            renderTable();
-
-            const client = document.getElementById('clientName').value || 'Cliente';
-            const element = document.getElementById('pdfContent');
-            const opt = {
-                margin:       8,
-                filename:     `Ordine_Riviera_${client.replace(/\s+/g, '_')}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            try {
-                html2pdf().set(opt).from(element).save().catch(err => {
-                    window.print();
-                });
-            } catch (e) {
-                window.print();
-            }
-        }
-
-        document.getElementById('clientName').addEventListener('input', renderTable);
-        document.getElementById('clientCity').addEventListener('input', renderTable);
-        document.getElementById('clientVat').addEventListener('input', renderTable);
-    </script>
+    function removeOrderItem(index) {
+      orderItems.splice(index, 1);
+      renderOrderTable();
+    }
+  </script>
 </body>
 </html>
