@@ -55,13 +55,14 @@
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12">
 
-    <!-- Header Modificato -->
+    <!-- Header con Data, Orario e Rappresentante -->
     <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50 no-print">
         <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-bold tracking-wide"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
-                <p class="text-xs text-indigo-200 mt-1">
-                    <span id="headerDate"></span> | <strong>Rappresentante Cacciola Daniele</strong>
+                <h1 class="text-2xl font-black tracking-wider"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
+                <p class="text-xs text-indigo-100 mt-1 font-medium">
+                    <span id="headerDateTime" class="bg-indigo-950 px-2 py-0.5 rounded border border-indigo-700">Caricamento data/ora...</span>
+                    <span class="ml-2 font-bold text-white">| Rappresentante Cacciola Daniele</span>
                 </p>
             </div>
             <div class="flex items-center space-x-2">
@@ -104,9 +105,14 @@
                 <h2 class="text-base font-semibold text-slate-700 flex items-center">
                     <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Seleziona Prodotto e Compila Varianti
                 </h2>
-                <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs text-indigo-600 font-bold hover:underline flex items-center">
-                    <i class="fa-solid fa-book-open mr-1"></i> Apri Catalogo Continuativo
-                </a>
+                <div class="flex items-center space-x-3">
+                    <button onclick="populateItems('ALL')" class="text-xs text-indigo-700 font-semibold hover:underline">
+                        <i class="fa-solid fa-arrows-rotate mr-1"></i>Ricarica Articoli
+                    </button>
+                    <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs text-indigo-600 font-bold hover:underline flex items-center">
+                        <i class="fa-solid fa-book-open mr-1"></i> Apri Catalogo
+                    </a>
+                </div>
             </div>
 
             <!-- SELETTORE LINEA -->
@@ -255,4 +261,239 @@
             { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto M (BA0010)', code: 'BA0010-M', price: 18.50, pack: 1, category: 'wimbledon_adulto', label: 'Accappatoio Adulto M - Cod. BA0010 - € 18,50' },
             { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto L (BA0010)', code: 'BA0010-L', price: 18.50, pack: 1, category: 'wimbledon_adulto', label: 'Accappatoio Adulto L - Cod. BA0010 - € 18,50' },
             { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto XL (BA0010)', code: 'BA0010-XL', price: 18.50, pack: 1, category: 'wimbledon_adulto', label: 'Accappatoio Adulto XL - Cod. BA0010 - € 18,50' },
-            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto XXL (BA0010)', code: 'BA0
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto XXL (BA0010)', code: 'BA0010-XXL', price: 18.50, pack: 1, category: 'wimbledon_adulto', label: 'Accappatoio Adulto XXL - Cod. BA0010 - € 18,50' },
+
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 6-8 Anni (BA0021)', code: 'BA0021-6/8', price: 14.90, pack: 1, category: 'wimbledon_junior', label: 'Accappatoio Junior 6-8 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 8-10 Anni (BA0021)', code: 'BA0021-8/10', price: 14.90, pack: 1, category: 'wimbledon_junior', label: 'Accappatoio Junior 8-10 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 10-12 Anni (BA0021)', code: 'BA0021-10/12', price: 14.90, pack: 1, category: 'wimbledon_junior', label: 'Accappatoio Junior 10-12 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 12-14 Anni (BA0021)', code: 'BA0021-12/14', price: 14.90, pack: 1, category: 'wimbledon_junior', label: 'Accappatoio Junior 12-14 Anni - Cod. BA0021 - € 14,90' },
+
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: TELO BAGNO', name: 'WIMBLEDON - Telo Bagno 100x180 CM (BE0049)', code: 'BE0049', price: 10.90, pack: 1, category: 'wimbledon_telo', label: 'Telo Bagno 100x180 CM - Cod. BE0049 - € 10,90' },
+
+            // --- LINEA GLAMOUR ---
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto S (BA0041)', code: 'BA0041-S', price: 15.55, pack: 1, category: 'glamour_accappatoio', label: 'Accappatoio Adulto S - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto M (BA0041)', code: 'BA0041-M', price: 15.55, pack: 1, category: 'glamour_accappatoio', label: 'Accappatoio Adulto M - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto L (BA0041)', code: 'BA0041-L', price: 15.55, pack: 1, category: 'glamour_accappatoio', label: 'Accappatoio Adulto L - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XL (BA0041)', code: 'BA0041-XL', price: 15.55, pack: 1, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XL - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXL (BA0041)', code: 'BA0041-XXL', price: 15.55, pack: 1, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XXL - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXXL (BA0041)', code: 'BA0041-3XL', price: 15.55, pack: 1, category: 'glamour_accappatoio_3xl', label: 'Accappatoio Adulto XXXL - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Set 1+1 40x60/60x110 (BB0189)', code: 'BB0189', price: 4.90, pack: 1, category: 'glamour_set', label: 'Set 1+1 (Asciugamano + Ospite) - Cod. BB0189 - € 4,90 (-11%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Telo Bagno 100x150 (BE0044)', code: 'BE0044', price: 8.51, pack: 1, category: 'glamour_set', label: 'Telo Bagno 100x150 - Cod. BE0044 - € 8,51 (-14%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Tappeto Bagno 50x80 (AX0250)', code: 'AX0250', price: 4.20, pack: 1, category: 'glamour_tappeto', label: 'Tappeto Bagno 50x80 - Cod. AX0250 - € 4,20' },
+
+            // --- LINEA PAINT ---
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 2P (LN0506)', code: 'LN0506', price: 29.90, pack: 1, category: 'standard', label: 'Completo Letto 2P - Cod. LN0506 - € 29,90' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto KING SIZE (LN1862)', code: 'LN1862', price: 33.50, pack: 1, category: 'king', label: 'Completo Letto KING SIZE - Cod. LN1862 - € 33,50' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P FRANCESE (LN0508)', code: 'LN0508', price: 28.50, pack: 1, category: 'francese', label: 'Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P (LN0507)', code: 'LN0507', price: 23.90, pack: 1, category: 'standard', label: 'Completo Letto 1+1/2P - Cod. LN0507 - € 23,90' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1P (LN0509)', code: 'LN0509', price: 19.90, pack: 2, category: 'standard', label: 'Completo Letto 1P - Cod. LN0509 - € 19,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 2P (LF0179)', code: 'LF0179', price: 30.90, pack: 1, category: 'standard', label: 'Parure Copripiumino 2P - Cod. LF0179 - € 30,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1+1/2P (LF0180)', code: 'LF0180', price: 26.90, pack: 1, category: 'standard', label: 'Parure Copripiumino 1+1/2P - Cod. LF0180 - € 26,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1P (LF0181)', code: 'LF0181', price: 20.90, pack: 1, category: 'standard', label: 'Parure Copripiumino 1P - Cod. LF0181 - € 20,90' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 2P (LE0607)', code: 'LE0607', price: 44.90, pack: 2, category: 'quilt', label: 'Quilt Double Trapuntato 2P - Cod. LE0607 - € 44,90' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1+1/2P (LE0624)', code: 'LE0624', price: 39.90, pack: 1, category: 'quilt', label: 'Quilt Double Trapuntato 1+1/2P - Cod. LE0624 - € 39,90' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1P (LE0625)', code: 'LE0625', price: 34.90, pack: 2, category: 'quilt', label: 'Quilt Double Trapuntato 1P - Cod. LE0625 - € 34,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 2P (LP0001)', code: 'LP0001', price: 13.50, pack: 2, category: 'standard', label: 'Lenzuolo Sopra 2P - Cod. LP0001 - € 13,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)', code: 'LP0003', price: 12.90, pack: 1, category: 'francese', label: 'Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P (LP0002)', code: 'LP0002', price: 11.50, pack: 1, category: 'standard', label: 'Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1P (LP0004)', code: 'LP0004', price: 9.90, pack: 1, category: 'standard', label: 'Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)', code: 'LQ0002', price: 11.50, pack: 2, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P (LQ0058)', code: 'LQ0058', price: 10.50, pack: 2, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)', code: 'LQ0054', price: 13.50, pack: 2, category: 'king', label: 'Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)', code: 'LQ0004', price: 10.30, pack: 1, category: 'francese', label: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)', code: 'LQ0003', price: 9.90, pack: 1, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1P (LQ0005)', code: 'LQ0005', price: 7.90, pack: 2, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90' },
+            { line: 'PAINT', group: 'PAINT: COPPIA FEDERE', name: 'Coppia Federe 50X80 (LM0068)', code: 'LM0068', price: 7.50, pack: 2, category: 'standard', label: 'Coppia Federe 50X80 - Cod. LM0068 - € 7,50' },
+
+            // --- LINEA ACCESSORI LETTO ---
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 175x200 (LH0005)', code: 'LH0005', price: 19.90, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Sanitario 175x200 - Cod. LH0005 - € 19,90 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 125x200 (LH0006)', code: 'LH0006', price: 16.90, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Sanitario 125x200 - Cod. LH0006 - € 16,90 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 90x200 (LH0007)', code: 'LH0007', price: 12.90, pack: 6, category: 'bianco_only', label: 'Coprimaterasso Sanitario 90x200 - Cod. LH0007 - € 12,90 (Preimb. 6 pz)' },
+
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SPUGNA JERSEY', name: 'Coprimaterasso Spugna Jersey 175x200 (LH0008)', code: 'LH0008', price: 13.50, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Spugna Jersey 175x200 - Cod. LH0008 - € 13,50 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SPUGNA JERSEY', name: 'Coprimaterasso Spugna Jersey 125x200 (LH0009)', code: 'LH0009', price: 11.50, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Spugna Jersey 125x200 - Cod. LH0009 - € 11,50 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SPUGNA JERSEY', name: 'Coprimaterasso Spugna Jersey 90x200 (LH0010)', code: 'LH0010', price: 9.50, pack: 6, category: 'bianco_only', label: 'Coprimaterasso Spugna Jersey 90x200 - Cod. LH0010 - € 9,50 (Preimb. 6 pz)' },
+
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD RIGATO', name: 'Coprimaterasso Jacquard Rigato 170x200 (LH0011)', code: 'LH0011', price: 16.20, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Jacquard Rigato 170x200 - Cod. LH0011 - € 16,20 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD RIGATO', name: 'Coprimaterasso Jacquard Rigato 120x200 (LH0012)', code: 'LH0012', price: 14.00, pack: 4, category: 'bianco_only', label: 'Coprimaterasso Jacquard Rigato 120x200 - Cod. LH0012 - € 14,00 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD RIGATO', name: 'Coprimaterasso Jacquard Rigato 85x200 (LH0013)', code: 'LH0013', price: 11.00, pack: 6, category: 'bianco_only', label: 'Coprimaterasso Jacquard Rigato 85x200 - Cod. LH0013 - € 11,00 (Preimb. 6 pz)' },
+
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 165x200 (LH0014)', code: 'LH0014', price: 16.50, pack: 4, category: 'bianco_only', label: 'Coprimaterasso 3D 165x200 - Cod. LH0014 - € 16,50 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 125x200 (LH0015)', code: 'LH0015', price: 14.50, pack: 4, category: 'bianco_only', label: 'Coprimaterasso 3D 125x200 - Cod. LH0015 - € 14,50 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 90x200 (LH0016)', code: 'LH0016', price: 11.30, pack: 6, category: 'bianco_only', label: 'Coprimaterasso 3D 90x200 - Cod. LH0016 - € 11,30 (Preimb. 6 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D Lettino c/Angoli 65x130 (LH0017)', code: 'LH0017', price: 7.90, pack: 6, category: 'bianco_only', label: 'Coprimaterasso 3D Lettino c/Angoli 65x130 - Cod. LH0017 - € 7,90 (Preimb. 6 pz)' },
+
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 175-195 cm (LH0031)', code: 'LH0031', price: 15.90, pack: 4, category: 'bianco_only', label: 'Salvamaterasso Stretch 175-195 cm - Cod. LH0031 - € 15,90 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 125-145 cm (LH0033)', code: 'LH0033', price: 12.50, pack: 4, category: 'bianco_only', label: 'Salvamaterasso Stretch 125-145 cm - Cod. LH0033 - € 12,50 (Preimb. 4 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 90-100 cm (LH0032)', code: 'LH0032', price: 9.90, pack: 6, category: 'bianco_only', label: 'Salvamaterasso Stretch 90-100 cm - Cod. LH0032 - € 9,90 (Preimb. 6 pz)' },
+
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO REGOLATORE', name: 'Salvamaterasso Termo Regolatore 160x200 (LH0034)', code: 'LH0034', price: 37.90, pack: 2, category: 'avorio_only', label: 'Salvamaterasso Termo Regolatore 160x200 - Cod. LH0034 - € 37,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO REGOLATORE', name: 'Salvamaterasso Termo Regolatore 120x200 (LH0035)', code: 'LH0035', price: 31.50, pack: 1, category: 'avorio_only', label: 'Salvamaterasso Termo Regolatore 120x200 - Cod. LH0035 - € 31,50 (Preimb. 1 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO REGOLATORE', name: 'Salvamaterasso Termo Regolatore 90x200 (LH0036)', code: 'LH0036', price: 25.50, pack: 2, category: 'avorio_only', label: 'Salvamaterasso Termo Regolatore 90x200 - Cod. LH0036 - € 25,50 (Preimb. 2 pz)' },
+
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 180x200+5 (LH0027)', code: 'LH0027', price: 79.90, pack: 2, category: 'bianco_only', label: 'Topper Four Season 180x200+5 - Cod. LH0027 - € 79,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 160x200+5 (LH0028)', code: 'LH0028', price: 69.00, pack: 2, category: 'bianco_only', label: 'Topper Four Season 160x200+5 - Cod. LH0028 - € 69,00 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 120x200+5 (LH0029)', code: 'LH0029', price: 56.90, pack: 2, category: 'bianco_only', label: 'Topper Four Season 120x200+5 - Cod. LH0029 - € 56,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER FOUR SEASON', name: 'Topper Four Season 90x200+5 (LH0030)', code: 'LH0030', price: 44.90, pack: 2, category: 'bianco_only', label: 'Topper Four Season 90x200+5 - Cod. LH0030 - € 44,90 (Preimb. 2 pz)' },
+
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 180x200+5 (LH0019)', code: 'LH0019', price: 59.90, pack: 2, category: 'bianco_only', label: 'Topper Percalle 180x200+5 - Cod. LH0019 - € 59,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 160x200+5 (LH0020)', code: 'LH0020', price: 47.90, pack: 2, category: 'bianco_only', label: 'Topper Percalle 160x200+5 - Cod. LH0020 - € 47,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 120x200+5 (LH0021)', code: 'LH0021', price: 44.90, pack: 2, category: 'bianco_only', label: 'Topper Percalle 120x200+5 - Cod. LH0021 - € 44,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 90x200+5 (LH0022)', code: 'LH0022', price: 35.90, pack: 2, category: 'bianco_only', label: 'Topper Percalle 90x200+5 - Cod. LH0022 - € 35,90 (Preimb. 2 pz)' },
+
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Switch&Dream Interno Piumino 4 Stagioni Percalle (LK0044)', code: 'LK0044', price: 79.90, pack: 2, category: 'bianco_only', label: 'Switch&Dream Interno Piumino 4 Stagioni Percalle - Cod. LK0044 - € 79,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 100 GSM Percalle 250x200 (LK0032)', code: 'LK0032', price: 33.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 100 GSM Percalle 250x200 - Cod. LK0032 - € 33,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 100 GSM Percalle 200x200 (LK0033)', code: 'LK0033', price: 28.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 100 GSM Percalle 200x200 - Cod. LK0033 - € 28,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 100 GSM Percalle 150x200 (LK0034)', code: 'LK0034', price: 22.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 100 GSM Percalle 150x200 - Cod. LK0034 - € 22,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 220 GSM Percalle 250x200 (LK0035)', code: 'LK0035', price: 37.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 220 GSM Percalle 250x200 - Cod. LK0035 - € 37,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 220 GSM Percalle 200x200 (LK0036)', code: 'LK0036', price: 33.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 220 GSM Percalle 200x200 - Cod. LK0036 - € 33,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 220 GSM Percalle 150x200 (LK0037)', code: 'LK0037', price: 25.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 220 GSM Percalle 150x200 - Cod. LK0037 - € 25,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 320 GSM Percalle 250x200 (LK0038)', code: 'LK0038', price: 39.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 320 GSM Percalle 250x200 - Cod. LK0038 - € 39,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 320 GSM Percalle 200x200 (LK0039)', code: 'LK0039', price: 34.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 320 GSM Percalle 200x200 - Cod. LK0039 - € 34,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 320 GSM Percalle 150x200 (LK0040)', code: 'LK0040', price: 29.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 320 GSM Percalle 150x200 - Cod. LK0040 - € 29,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 4 Stagioni Percalle 250x200 (LK0041)', code: 'LK0041', price: 69.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 4 Stagioni Percalle 250x200 - Cod. LK0041 - € 69,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 4 Stagioni Percalle 200x200 (LK0042)', code: 'LK0042', price: 59.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 4 Stagioni Percalle 200x200 - Cod. LK0042 - € 59,90 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'INTERNO PIUMINO', name: 'Interno Piumino 4 Stagioni Percalle 150x200 (LK0043)', code: 'LK0043', price: 46.90, pack: 2, category: 'bianco_only', label: 'Interno Piumino 4 Stagioni Percalle 150x200 - Cod. LK0043 - € 46,90 (Preimb. 2 pz)' },
+
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Memory Viscogel 45x75 (LJ0002)', code: 'LJ0002', price: 28.50, pack: 2, category: 'bianco_only', label: 'Guanciale Memory Viscogel 45x75 - Cod. LJ0002 - € 28,50 (Preimb. 2 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Memory 42x72 H13 (LJ0005)', code: 'LJ0005', price: 15.50, pack: 8, category: 'bianco_only', label: 'Guanciale Memory 42x72 H13 - Cod. LJ0005 - € 15,50 (Preimb. 8 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Soft Poliestere 50x80 H18 (LJ0003)', code: 'LJ0003', price: 13.50, pack: 8, category: 'bianco_only', label: 'Guanciale Soft Poliestere 50x80 H18 - Cod. LJ0003 - € 13,50 (Preimb. 8 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Nuvola Poliestere 50x80 H17 (LJ0004)', code: 'LJ0004', price: 6.10, pack: 8, category: 'bianco_only', label: 'Guanciale Nuvola Poliestere 50x80 H17 - Cod. LJ0004 - € 6,10 (Preimb. 8 pz)' },
+
+            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Coppia Copriguanciale Cotone Jacquard Rigato 50x80 (LM0073)', code: 'LM0073', price: 7.90, pack: 12, category: 'bianco_only', label: 'Coppia Copriguanciale Cotone Jacquard Rigato 50x80 - Cod. LM0073 - € 7,90 (Preimb. 12 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Coppia Copriguanciale Spugna Jersey 50x80 (LM0072)', code: 'LM0072', price: 6.50, pack: 12, category: 'bianco_only', label: 'Coppia Copriguanciale Spugna Jersey 50x80 - Cod. LM0072 - € 6,50 (Preimb. 12 pz)' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Copriguanciale 3D 50x80 (LM0074)', code: 'LM0074', price: 5.40, pack: 12, category: 'bianco_only', label: 'Copriguanciale 3D 50x80 - Cod. LM0074 - € 5,40 (Preimb. 12 pz)' }
+        ];
+
+        // COLORI
+        const standardColors = ["0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA", "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE", "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO", "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA", "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO", "2501 LOTO", "1201 BORDEAUX"];
+        const franceseColors = ["0101 BIANCO", "0301 NEW TORTORA", "0501 PERLA", "0601 ACCIAIO", "1501 DENIM", "1001 MALVA"];
+        const kingColors = ["0101 BIANCO", "0201 AVORIO", "0301 NEW TORTORA", "0501 PERLA", "1401 C. ZUCCHERO", "2701 MUSCHIO", "1001 MALVA"];
+        const quiltColors = ["0101 AVORIO/GRIGIO PERLA", "0201 TORTORA/AVORIO", "0301 CAMMELLO/GLACÉ", "0401 ACCIAIO/NEW TORTORA", "0501 CARBONE/CAMMELLO", "0601 C. DA ZUCCHERO/DENIM", "0701 MUSCHIO/TURCHESE", "0801 LOTO/MALVA", "0901 CAROTA/NEW TORTORA", "1001 BORDEAUX/GLACÉ"];
+        const glamourSetColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "1101 RUGGINO", "0501 ROSA", "1201 BORDEAUX", "0801 MALVA", "1301 AMETISTA"];
+        const glamourAccappatoioColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "0501 ROSA", "0801 MALVA", "1201 BORDEAUX"];
+        const glamourAccappatoio3XLColors = ["0106 BIANCO", "1506 AVORIO", "0306 TORTORA", "0406 GRIGIO SCURO", "1006 BLU SCURO", "0706 VERDE"];
+        const glamourTappetoColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0701 VERDE", "0801 MALVA", "1101 RUGGINO"];
+        const wimbledonAdultoColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
+        const wimbledonJuniorColors = ["1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1501 MALVA"];
+        const wimbledonTeloColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
+        const babyAnimalsColors = ["SHARK", "SHEEP", "RABBIT", "DINO", "UNICORN", "GIRAFFE"];
+        const biancoOnlyColors = ["0101 BIANCO"];
+        const avorioOnlyColors = ["0101 AVORIO"];
+
+        let items = [];
+
+        // FUNZIONE OLOGIO E DATA
+        function updateDateTime() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('it-IT');
+            const timeStr = now.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            const headerEl = document.getElementById('headerDateTime');
+            const docEl = document.getElementById('docDate');
+            
+            if (headerEl) headerEl.innerText = `Data: ${dateStr} - Ore:${timeStr}`;
+            if (docEl) docEl.innerText = `Data: ${dateStr} Ore:${timeStr}`;
+        }
+
+        // POPOLAMENTO ARTICOLI
+        function populateItems(filterLine) {
+            const itemSelect = document.getElementById('itemSelect');
+            if(!itemSelect) return;
+            
+            itemSelect.innerHTML = '<option value="">-- Seleziona Articolo --</option>';
+            document.getElementById('itemPriceInput').value = '';
+            document.getElementById('variantsContainer').classList.add('hidden');
+
+            const filteredProducts = (filterLine === 'ALL' || !filterLine)
+                ? productsData 
+                : productsData.filter(p => p.line === filterLine);
+
+            const groups = [...new Set(filteredProducts.map(p => p.group))];
+
+            groups.forEach(grp => {
+                const optGroup = document.createElement('optgroup');
+                optGroup.label = `--- ${grp} ---`;
+
+                filteredProducts.filter(p => p.group === grp).forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.name;
+                    opt.textContent = p.label;
+                    opt.setAttribute('data-code', p.code);
+                    opt.setAttribute('data-price', p.price);
+                    opt.setAttribute('data-pack', p.pack || 1);
+                    opt.setAttribute('data-category', p.category);
+                    optGroup.appendChild(opt);
+                });
+
+                itemSelect.appendChild(optGroup);
+            });
+        }
+
+        function initPage() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            populateItems('ALL');
+
+            document.getElementById('clientName').addEventListener('input', renderTable);
+            document.getElementById('clientCity').addEventListener('input', renderTable);
+            document.getElementById('clientVat').addEventListener('input', renderTable);
+        }
+
+        document.addEventListener('DOMContentLoaded', initPage);
+        window.onload = function() {
+            if (document.getElementById('itemSelect').options.length <= 1) {
+                populateItems('ALL');
+            }
+        };
+
+        function onLineChange() {
+            const selectedLine = document.getElementById('lineSelect').value;
+            populateItems(selectedLine);
+        }
+
+        function onItemChange() {
+            const select = document.getElementById('itemSelect');
+            const variantsContainer = document.getElementById('variantsContainer');
+            const variantsTableBody = document.getElementById('variantsTableBody');
+            const variantRuleBadge = document.getElementById('variantRuleBadge');
+
+            if (!select.value || select.selectedIndex === 0) {
+                document.getElementById('itemPriceInput').value = '';
+                variantsContainer.classList.add('hidden');
+                return;
+            }
+
+            const selectedOption = select.options[select.selectedIndex];
+            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
+            const pack = parseInt(selectedOption.getAttribute('data-pack') || 1);
+            const category = selectedOption.getAttribute('data-category');
+
+            document.getElementById('itemPriceInput').value = `€ ${price.toFixed(2).replace('.', ',')}`;
+
+            if (pack > 1) {
+                variantRuleBadge.innerText = `Minimo e multipli di ${pack} pezzi per variante`;
+            } else {
+                variantRuleBadge.innerText = `Pezzi singoli (lascia vuoto o inserisci q.tà)`;
+            }
+
+            let colorsToLoad = standardColors;
+            if (category === 'quilt') colorsToLoad = quiltColors;
+            else if (category === 'francese') colorsToLoad = franceseColors;
+            else if (category === 'king') colorsToLoad = kingColors;
+            else if (category === 'glamour_set') colorsToLoad = glamourSetColors;
+            else if (category === 'glamour_accappatoio') colorsToLoad = glamourAccappatoioColors;
+            else if (category === 'glamour_accappatoio_3xl') colorsToLoad = glamourAccappatoio3XLColors;
+            else if (category === 'glamour_tappeto') colorsToLoad = glamourTappetoColors;
+            else if (category === 'wimbledon_adulto') colorsToLoad = wimbledonAdultoColors;
+            else if (category === 'wimbledon_junior') colorsToLoad = wimbledonJuniorColors;
+            else if (category === 'wimbledon_telo') colorsToLoad = wimbledonTeloColors;
+            else if (category === 'baby_animals') colorsToLoad = babyAnimalsColors;
+            else if (category === 'bianco_only') colorsToLoad = biancoOnlyColors;
+            else if (category === 'avorio_only') colorsToLoad = avorioOnlyColors;
+
+            let html = '';
+            colorsToLoad.forEach((col, idx) => {
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2 px-3
