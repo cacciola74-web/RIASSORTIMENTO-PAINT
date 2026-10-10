@@ -1,285 +1,592 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Riassortimento Ordini - RIVIERA BASIC & PAINT</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riviera Basic - Modulo Ordini</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @media print {
+            header, section, .no-print, button, select, input { 
+                display: none !important; 
+            }
+            
+            html, body { 
+                background: #ffffff !important; 
+                color: #000000 !important;
+                padding: 0 !important; 
+                margin: 0 !important;
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
+            }
+            
+            #pdfContent { 
+                display: block !important;
+                visibility: visible !important;
+                position: relative !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 15px !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: #ffffff !important;
+            }
+
+            #pdfContent table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                background: #ffffff !important;
+            }
+
+            #pdfContent th, 
+            #pdfContent td {
+                border-bottom: 1px solid #cbd5e1 !important;
+                padding: 8px 4px !important;
+                color: #000000 !important;
+            }
+
+            #pdfContent tr {
+                page-break-inside: avoid !important;
+            }
+        }
+    </style>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12">
 
-  <header class="bg-blue-900 text-white p-4 shadow-md mb-6">
-    <div class="max-w-4xl mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-bold flex items-center gap-2">
-        <i class="fa-solid fa-cart-shopping"></i> Riassortimento Ordini - RIVIERA BASIC & PAINT
-      </h1>
-    </div>
-  </header>
-
-  <main class="max-w-4xl mx-auto px-4 space-y-6">
-
-    <!-- SELEZIONE PRODOTTO -->
-    <section class="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-      <h2 class="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
-        <i class="fa-solid fa-list-check text-blue-600"></i> Selezione Prodotto
-      </h2>
-
-      <div class="space-y-4">
-        <div>
-          <label class="block text-sm font-semibold mb-1">1. Seleziona Articolo / Codice:</label>
-          <select id="productSelect" class="w-full border border-slate-300 rounded p-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="">-- Seleziona un articolo --</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-sm font-semibold mb-1">2. Inserisci Variante / Colore / Misura:</label>
-          <input type="text" id="variantInput" placeholder="Es. 0101 BIANCO" class="w-full border border-slate-300 rounded p-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <p class="text-xs text-slate-400 mt-1">Carica l'immagine corrispondente in <code>img/</code> per attivare l'anteprima.</p>
-        </div>
-
-        <!-- ANTEPRIMA MINIATURA -->
-        <div id="previewContainer" class="flex items-center gap-4 bg-slate-50 p-3 rounded border border-slate-200">
-          <div class="w-16 h-16 bg-slate-200 rounded flex items-center justify-center overflow-hidden border border-slate-300">
-            <img id="previewImage" src="" alt="Anteprima" class="w-full h-full object-cover hidden" onerror="this.classList.add('hidden'); document.getElementById('previewIcon').classList.remove('hidden');">
-            <i id="previewIcon" class="fa-solid fa-shirt text-slate-300 text-2xl"></i>
-          </div>
-          <div>
-            <div id="previewTitle" class="font-bold text-sm text-slate-800">Nessun articolo selezionato</div>
-            <div id="previewVariant" class="text-xs text-slate-500">Variante: -</div>
-          </div>
-        </div>
-
-        <div class="flex gap-4 items-center">
-          <div class="w-1/2">
-            <label class="block text-sm font-semibold mb-1">Quantità (Pezzi):</label>
-            <input type="number" id="qtyInput" min="1" value="1" class="w-full border border-slate-300 rounded p-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div class="w-1/2 flex items-end">
-            <button id="addBtn" onclick="addToOrder()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow transition">
-              <i class="fa-solid fa-plus"></i> Aggiungi all'Ordine
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- RIEPILOGO ORDINE -->
-    <section class="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-      <h2 class="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
-        <i class="fa-solid fa-file-invoice text-blue-600"></i> Riepilogo Ordine
-      </h2>
-
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="bg-slate-100 border-b border-slate-200 text-slate-600">
-              <th class="p-2">Foto</th>
-              <th class="p-2">Codice</th>
-              <th class="p-2">Descrizione</th>
-              <th class="p-2">Variante</th>
-              <th class="p-2 text-center">Qtà</th>
-              <th class="p-2 text-right">Prezzo</th>
-              <th class="p-2 text-center">Azione</th>
-            </tr>
-          </thead>
-          <tbody id="orderTableBody">
-            <tr>
-              <td colspan="7" class="p-4 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-  </main>
-
-  <script>
-    // LISTA COMPLETA PRODOTTI (PAINT, SFUSI & ACCESSORI RIVIERA BASIC)
-    const products = [
-      /* PAINT COMPLETI & SFUSI */
-      { code: "LN0506", name: "Completo Letto Matrimoniale 2P", price: "29,90", pack: 2 },
-      { code: "LN1862", name: "Completo Letto King Size", price: "33,50", pack: 2 },
-      { code: "LN0508", name: "Completo Letto Piazza e Mezza Francese", price: "28,50", pack: 2 },
-      { code: "LN0507", name: "Completo Letto Piazza e Mezza", price: "23,90", pack: 2 },
-      { code: "LN0509", name: "Completo Letto Singolo 1P", price: "19,90", pack: 2 },
-      { code: "LF0179", name: "Parure Copripiumino Matrimoniale", price: "30,90", pack: 2 },
-      { code: "LF0180", name: "Parure Copripiumino Piazza e Mezza", price: "26,90", pack: 2 },
-      { code: "LF0181", name: "Parure Copripiumino Singolo", price: "20,90", pack: 2 },
-
-      /* ACCESSORI - COPRIMATERASSO */
-      { code: "LH0005", name: "Coprimaterasso Sanitario 175x200", price: "19,90", pack: 4 },
-      { code: "LH0006", name: "Coprimaterasso Sanitario 125x200", price: "16,90", pack: 4 },
-      { code: "LH0007", name: "Coprimaterasso Sanitario 90x200", price: "12,90", pack: 6 },
-      { code: "LH0008", name: "Coprimaterasso Spugna Jersey 175x200", price: "13,50", pack: 4 },
-      { code: "LH0009", name: "Coprimaterasso Spugna Jersey 125x200", price: "11,50", pack: 4 },
-      { code: "LH0010", name: "Coprimaterasso Spugna Jersey 90x200", price: "9,50", pack: 6 },
-      { code: "LH0011", name: "Coprimaterasso Jacquard Rigato 170x200", price: "16,20", pack: 4 },
-      { code: "LH0012", name: "Coprimaterasso Jacquard Rigato 120x200", price: "14,00", pack: 4 },
-      { code: "LH0013", name: "Coprimaterasso Jacquard Rigato 85x200", price: "11,00", pack: 6 },
-      { code: "LH0014", name: "Coprimaterasso 3D 165x200", price: "16,50", pack: 4 },
-      { code: "LH0015", name: "Coprimaterasso 3D 125x200", price: "14,50", pack: 4 },
-      { code: "LH0016", name: "Coprimaterasso 3D 90x200", price: "11,30", pack: 6 },
-      { code: "LH0017", name: "Coprimaterasso 3D Lettino C/Angoli 65x130", price: "7,90", pack: 6 },
-
-      /* ACCESSORI - SALVAMATERASSO */
-      { code: "LH0031", name: "Salvamaterasso Stretch 175-195 cm", price: "15,90", pack: 4 },
-      { code: "LH0033", name: "Salvamaterasso Stretch 125-145 cm", price: "12,50", pack: 4 },
-      { code: "LH0032", name: "Salvamaterasso Stretch 90-100 cm", price: "9,90", pack: 6 },
-      { code: "LH0034", name: "Salvamaterasso Termo Regolatore 160x200", price: "37,90", pack: 2 },
-      { code: "LH0035", name: "Salvamaterasso Termo Regolatore 120x200", price: "31,50", pack: 1 },
-      { code: "LH0036", name: "Salvamaterasso Termo Regolatore 90x200", price: "25,50", pack: 2 },
-
-      /* ACCESSORI - TOPPER */
-      { code: "LH0027", name: "Topper Four Season 180x200+5", price: "79,90", pack: 2 },
-      { code: "LH0028", name: "Topper Four Season 160x200+5", price: "69,00", pack: 2 },
-      { code: "LH0029", name: "Topper Four Season 120x200+5", price: "56,90", pack: 2 },
-      { code: "LH0030", name: "Topper Four Season 90x200+5", price: "44,90", pack: 2 },
-      { code: "LH0019", name: "Topper Percalle 180x200+5", price: "59,90", pack: 2 },
-      { code: "LH0020", name: "Topper Percalle 160x200+5", price: "47,90", pack: 2 },
-      { code: "LH0021", name: "Topper Percalle 120x200+5", price: "44,90", pack: 2 },
-      { code: "LH0022", name: "Topper Percalle 90x200+5", price: "35,90", pack: 2 },
-
-      /* ACCESSORI - INTERNO PIUMINO */
-      { code: "LK0044", name: "Switch&Dream Interno Piumino 4 Stagioni Percalle", price: "79,90", pack: 2 },
-      { code: "LK0032", name: "Interno Piumino 100 GSM Percalle 250x200", price: "33,90", pack: 2 },
-      { code: "LK0033", name: "Interno Piumino 100 GSM Percalle 200x200", price: "28,90", pack: 2 },
-      { code: "LK0034", name: "Interno Piumino 100 GSM Percalle 150x200", price: "22,90", pack: 2 },
-      { code: "LK0035", name: "Interno Piumino 220 GSM Percalle 250x200", price: "37,90", pack: 2 },
-      { code: "LK0036", name: "Interno Piumino 220 GSM Percalle 200x200", price: "33,90", pack: 2 },
-      { code: "LK0037", name: "Interno Piumino 220 GSM Percalle 150x200", price: "25,90", pack: 2 },
-      { code: "LK0038", name: "Interno Piumino 320 GSM Percalle 250x200", price: "39,90", pack: 2 },
-      { code: "LK0039", name: "Interno Piumino 320 GSM Percalle 200x200", price: "34,90", pack: 2 },
-      { code: "LK0040", name: "Interno Piumino 320 GSM Percalle 150x200", price: "29,90", pack: 2 },
-      { code: "LK0041", "name": "Interno Piumino 4 Stagioni Percalle 250x200", price: "69,90", pack: 2 },
-      { code: "LK0042", "name": "Interno Piumino 4 Stagioni Percalle 200x200", price: "59,90", pack: 2 },
-      { code: "LK0043", "name": "Interno Piumino 4 Stagioni Percalle 150x200", price: "46,90", pack: 2 },
-
-      /* ACCESSORI - GUANCIALI & COPRIGUANCIALI */
-      { code: "LJ0002", name: "Guanciale Memory Viscogel 45x75", price: "28,50", pack: 2 },
-      { code: "LJ0005", name: "Guanciale Memory 42x72 H13", price: "15,50", pack: 8 },
-      { code: "LJ0003", name: "Guanciale Soft Poliestere 50x80 H18", price: "13,50", pack: 8 },
-      { code: "LJ0004", name: "Guanciale Nuvola Poliestere 50x80 H17", price: "6,10", pack: 8 },
-      { code: "LM0073", name: "Coppia Copriguanciale Cotone Jacquard Rigato 50x80", price: "7,90", pack: 12 },
-      { code: "LM0072", name: "Coppia Copriguanciale Spugna Jersey 50x80", price: "6,50", pack: 12 },
-      { code: "LM0074", name: "Copriguanciale 3D 50x80", price: "5,40", pack: 12 }
-    ];
-
-    const orderItems = [];
-
-    // Popola il menu a tendina
-    const productSelect = document.getElementById('productSelect');
-    products.forEach(p => {
-      const opt = document.createElement('option');
-      opt.value = p.code;
-      opt.textContent = `${p.name} - Cod. ${p.code} - € ${p.price}`;
-      productSelect.appendChild(opt);
-    });
-
-    // Aggiorna anteprima miniatura
-    function updatePreview() {
-      const selectedCode = productSelect.value;
-      const variantText = document.getElementById('variantInput').value.trim();
-      const p = products.find(x => x.code === selectedCode);
-
-      const previewImage = document.getElementById('previewImage');
-      const previewIcon = document.getElementById('previewIcon');
-      const previewTitle = document.getElementById('previewTitle');
-      const previewVariant = document.getElementById('previewVariant');
-
-      if (p) {
-        previewTitle.textContent = `${p.name} (${p.code})`;
-        previewVariant.textContent = `Variante: ${variantText || 'Nessuna'}`;
-
-        // Regola estrazione codice variante numerico per l'immagine
-        const cleanVariant = variantText.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '');
-        if (cleanVariant) {
-          previewImage.src = `img/${cleanVariant}.jpg`;
-          previewImage.classList.remove('hidden');
-          previewIcon.classList.add('hidden');
-        } else {
-          previewImage.classList.add('hidden');
-          previewIcon.classList.remove('hidden');
-        }
-      } else {
-        previewTitle.textContent = "Nessun articolo selezionato";
-        previewVariant.textContent = "Variante: -";
-        previewImage.classList.add('hidden');
-        previewIcon.classList.remove('hidden');
-      }
-    }
-
-    productSelect.addEventListener('change', updatePreview);
-    document.getElementById('variantInput').addEventListener('input', updatePreview);
-
-    // Aggiungi elemento all'ordine
-    function addToOrder() {
-      const selectedCode = productSelect.value;
-      const variantText = document.getElementById('variantInput').value.trim();
-      const qty = parseInt(document.getElementById('qtyInput').value) || 1;
-
-      if (!selectedCode) {
-        alert("Seleziona prima un articolo!");
-        return;
-      }
-
-      const p = products.find(x => x.code === selectedCode);
-      const cleanVariant = variantText.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '');
-
-      orderItems.push({
-        code: p.code,
-        name: p.name,
-        price: p.price,
-        variant: variantText || '-',
-        imgCode: cleanVariant,
-        qty: qty
-      });
-
-      renderOrderTable();
-    }
-
-    // Rendering tabella ordine
-    function renderOrderTable() {
-      const tbody = document.getElementById('orderTableBody');
-      if (orderItems.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = '';
-      orderItems.forEach((item, index) => {
-        const tr = document.createElement('tr');
-        tr.className = "border-b border-slate-200 hover:bg-slate-50";
-
-        const imgSrc = item.imgCode ? `img/${item.imgCode}.jpg` : '';
-
-        tr.innerHTML = `
-          <td class="p-2">
-            <div class="w-10 h-10 bg-slate-100 rounded flex items-center justify-center overflow-hidden border border-slate-200">
-              ${item.imgCode ? `<img src="${imgSrc}" class="w-full h-full object-cover" onerror="this.outerHTML='<i class=\\'fa-solid fa-shirt text-slate-300\\'></i>'">` : `<i class="fa-solid fa-shirt text-slate-300"></i>`}
+    <!-- Header -->
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50 no-print">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
+                <p class="text-xs text-indigo-200">Modulo Riassortimento Ordini - PAINT, GLAMOUR, WIMBLEDON & BABY ANIMALS</p>
             </div>
-          </td>
-          <td class="p-2 font-mono text-xs font-bold">${item.code}</td>
-          <td class="p-2">${item.name}</td>
-          <td class="p-2 text-slate-600">${item.variant}</td>
-          <td class="p-2 text-center font-bold">${item.qty}</td>
-          <td class="p-2 text-right font-semibold">€ ${item.price}</td>
-          <td class="p-2 text-center">
-            <button onclick="removeOrderItem(${index})" class="text-red-500 hover:text-red-700">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
+            <div class="flex items-center space-x-2">
+                <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded transition flex items-center">
+                    <i class="fa-solid fa-file-pdf mr-1.5"></i> Catalogo PDF
+                </a>
+                <button onclick="resetForm()" class="text-xs bg-indigo-800 hover:bg-indigo-700 px-3 py-2 rounded transition">
+                    <i class="fa-solid fa-rotate-left mr-1"></i> Nuovo Ordine
+                </button>
+            </div>
+        </div>
+    </header>
 
-    function removeOrderItem(index) {
-      orderItems.splice(index, 1);
-      renderOrderTable();
-    }
-  </script>
+    <main class="max-w-5xl mx-auto px-4 mt-6 space-y-6">
+
+        <!-- Dati Cliente -->
+        <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
+            <h2 class="text-base font-semibold text-slate-700 mb-4 border-b pb-2 flex items-center">
+                <i class="fa-solid fa-user-tag text-indigo-600 mr-2"></i> Dati Anagrafici Cliente
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Ragione Sociale / Cliente *</label>
+                    <input type="text" id="clientName" placeholder="Es. Rossi Home" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Città / Località</label>
+                    <input type="text" id="clientCity" placeholder="Es. Catania" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">P.IVA / Cod. Univoco / SDI</label>
+                    <input type="text" id="clientVat" placeholder="IT0123456789" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+            </div>
+        </section>
+
+        <!-- Inserimento Articolo -->
+        <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h2 class="text-base font-semibold text-slate-700 flex items-center">
+                    <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Seleziona Prodotto dal Copia Commissione
+                </h2>
+                <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs text-indigo-600 font-bold hover:underline flex items-center">
+                    <i class="fa-solid fa-book-open mr-1"></i> Apri Catalogo Continuativo
+                </a>
+            </div>
+
+            <!-- SELETTORE LINEA -->
+            <div class="mb-4 bg-indigo-50 p-3 rounded-lg border border-indigo-100">
+                <label class="block text-xs font-bold text-indigo-900 mb-1">1. Scegli la Linea Desiderata:</label>
+                <select id="lineSelect" onchange="onLineChange()" class="w-full text-sm font-semibold border border-indigo-300 rounded-lg p-2.5 bg-white text-indigo-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <option value="ALL">-- Mostra Tutte le Linee --</option>
+                    <option value="PAINT">LINEA PAINT (Letto / Tessile Casa)</option>
+                    <option value="GLAMOUR">LINEA GLAMOUR (Bagno / Accappatoi)</option>
+                    <option value="WIMBLEDON">LINEA WIMBLEDON (Bagno / Accappatoi / Junior)</option>
+                    <option value="BABY_ANIMALS">LINEA BABY ANIMALS (Junior Bagno)</option>
+                </select>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-medium text-slate-600 mb-1">2. Articolo - Misura - Codice - Prezzo Unitario</label>
+                    <select id="itemSelect" onchange="onItemChange()" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        <option value="">-- Seleziona Articolo --</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">3. Variante / Personaggio / Colore</label>
+                    <select id="itemColor" onchange="updatePreview()" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        <option value="">-- Seleziona Prima l'Articolo --</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Box Anteprima / Miniatura Prodotto -->
+            <div id="previewBox" class="mb-4 p-3 bg-slate-50 border border-slate-200 rounded-lg hidden flex items-center space-x-4">
+                <div class="w-16 h-16 bg-white border rounded flex items-center justify-center overflow-hidden shadow-sm flex-shrink-0">
+                    <img id="previewImage" src="" alt="Anteprima" class="object-cover w-full h-full hidden">
+                    <i id="previewIcon" class="fa-solid fa-shirt text-slate-300 text-2xl"></i>
+                </div>
+                <div>
+                    <p id="previewTitle" class="text-xs font-bold text-slate-800"></p>
+                    <p id="previewDetail" class="text-xs text-slate-500"></p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Quantità (Pezzi) *</label>
+                    <input type="number" id="itemQty" min="1" value="1" class="w-full text-sm font-semibold border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Prezzo Unitario Netto €</label>
+                    <input type="text" id="itemPriceInput" readonly class="w-full text-sm font-bold bg-slate-100 border border-slate-300 rounded-lg p-2.5 text-slate-700">
+                </div>
+                <div class="flex items-end">
+                    <button onclick="addItem()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm transition">
+                        <i class="fa-solid fa-plus mr-1"></i> Aggiungi all'Ordine
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabella Ordine / Anteprima Stampa -->
+        <div id="pdfContent" class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+            <!-- Testata PDF -->
+            <div class="flex justify-between items-start border-b pb-4 mb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-indigo-900">RIVIERA BASIC</h2>
+                    <p class="text-sm font-semibold text-slate-600">PAINT, GLAMOUR, WIMBLEDON & BABY ANIMALS - Copia Commissione / Riassortimento</p>
+                </div>
+                <div class="text-right text-xs text-slate-500">
+                    <p id="docDate"></p>
+                </div>
+            </div>
+
+            <!-- Dati Cliente per PDF -->
+            <div class="mb-6 bg-slate-50 p-3 rounded border border-slate-200 text-xs grid grid-cols-3 gap-2">
+                <div><strong>Cliente:</strong> <span id="pdfClientName">-</span></div>
+                <div><strong>Città:</strong> <span id="pdfClientCity">-</span></div>
+                <div><strong>P.IVA/SDI:</strong> <span id="pdfClientVat">-</span></div>
+            </div>
+
+            <!-- Tabella Articoli -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-700 border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-800 uppercase font-semibold border-b">
+                            <th class="py-2.5 px-3">Codice</th>
+                            <th class="py-2.5 px-3">Articolo / Descrizione</th>
+                            <th class="py-2.5 px-3">Variante Colore</th>
+                            <th class="py-2.5 px-3 text-center">PZ</th>
+                            <th class="py-2.5 px-3 text-right">Prezzo Unit.</th>
+                            <th class="py-2.5 px-3 text-right">Totale €</th>
+                            <th class="py-2.5 px-3 text-center no-print">Azione</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody">
+                        <tr>
+                            <td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Totali -->
+            <div class="mt-6 border-t pt-4 flex flex-col items-end text-xs space-y-1">
+                <div class="flex justify-between w-48">
+                    <span class="text-slate-600">Totale Pezzi:</span>
+                    <span id="totalPieces" class="font-bold text-slate-800">0</span>
+                </div>
+                <div class="flex justify-between w-48 text-sm pt-2 border-t">
+                    <span class="font-bold text-slate-800">Totale Netto:</span>
+                    <span id="grandTotal" class="font-bold text-indigo-700">€ 0,00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Azioni Finale -->
+        <div class="flex flex-wrap gap-3 justify-end no-print">
+            <button onclick="sendWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Invia via WhatsApp
+            </button>
+            <button onclick="sendEmail()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+                <i class="fa-solid fa-envelope text-lg mr-2"></i> Invia via Email
+            </button>
+            <button onclick="exportPDF()" class="bg-slate-700 hover:bg-slate-800 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+                <i class="fa-solid fa-file-pdf text-lg mr-2"></i> Scarica / Stampa PDF
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        // DATI CATALOGO PRODOTTI
+        const productsData = [
+            // --- LINEA BABY ANIMALS ---
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 0-2 Anni (CM5654)', code: 'CM5654-0/2', price: 8.90, category: 'baby_animals', label: 'Accappatoio Junior 0-2 Anni - Cod. CM5654 - € 8,90' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 2-4 Anni (CM5654)', code: 'CM5654-2/4', price: 8.90, category: 'baby_animals', label: 'Accappatoio Junior 2-4 Anni - Cod. CM5654 - € 8,90' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 4-6 Anni (CM5654)', code: 'CM5654-4/6', price: 8.90, category: 'baby_animals', label: 'Accappatoio Junior 4-6 Anni - Cod. CM5654 - € 8,90' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 6-8 Anni (CM5654)', code: 'CM5654-6/8', price: 8.90, category: 'baby_animals', label: 'Accappatoio Junior 6-8 Anni - Cod. CM5654 - € 8,90' },
+
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Set 1+1 Junior 30x50+50x90 (BB0361)', code: 'BB0361', price: 3.80, category: 'baby_animals', label: 'Set 1+1 Junior 30x50+50x90 CM - Cod. BB0361 - € 3,80' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Telo Bagno 70x140 CM (BE0093)', code: 'BE0093', price: 5.40, category: 'baby_animals', label: 'Telo Bagno 70x140 CM - Cod. BE0093 - € 5,40' },
+
+            // --- LINEA WIMBLEDON ---
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto S (BA0010)', code: 'BA0010-S', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto S - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto M (BA0010)', code: 'BA0010-M', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto M - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto L (BA0010)', code: 'BA0010-L', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto L - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto XL (BA0010)', code: 'BA0010-XL', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto XL - Cod. BA0010 - € 18,50' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO ADULTO', name: 'WIMBLEDON - Accappatoio Adulto XXL (BA0010)', code: 'BA0010-XXL', price: 18.50, category: 'wimbledon_adulto', label: 'Accappatoio Adulto XXL - Cod. BA0010 - € 18,50' },
+
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 6-8 Anni (BA0021)', code: 'BA0021-6/8', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 6-8 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 8-10 Anni (BA0021)', code: 'BA0021-8/10', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 8-10 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 10-12 Anni (BA0021)', code: 'BA0021-10/12', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 10-12 Anni - Cod. BA0021 - € 14,90' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 12-14 Anni (BA0021)', code: 'BA0021-12/14', price: 14.90, category: 'wimbledon_junior', label: 'Accappatoio Junior 12-14 Anni - Cod. BA0021 - € 14,90' },
+
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: TELO BAGNO', name: 'WIMBLEDON - Telo Bagno 100x180 CM (BE0049)', code: 'BE0049', price: 10.90, category: 'wimbledon_telo', label: 'Telo Bagno 100x180 CM - Cod. BE0049 - € 10,90' },
+
+            // --- LINEA GLAMOUR ---
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto S (BA0041)', code: 'BA0041-S', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto S - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto M (BA0041)', code: 'BA0041-M', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto M - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto L (BA0041)', code: 'BA0041-L', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto L - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XL (BA0041)', code: 'BA0041-XL', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XL - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXL (BA0041)', code: 'BA0041-XXL', price: 15.55, category: 'glamour_accappatoio', label: 'Accappatoio Adulto XXL - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXXL (BA0041)', code: 'BA0041-3XL', price: 15.55, category: 'glamour_accappatoio_3xl', label: 'Accappatoio Adulto XXXL - Cod. BA0041 - € 15,55 (-8%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Set 1+1 40x60/60x110 (BB0189)', code: 'BB0189', price: 4.90, category: 'glamour_set', label: 'Set 1+1 (Asciugamano + Ospite) - Cod. BB0189 - € 4,90 (-11%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Telo Bagno 100x150 (BE0044)', code: 'BE0044', price: 8.51, category: 'glamour_set', label: 'Telo Bagno 100x150 - Cod. BE0044 - € 8,51 (-14%)' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: BAGNO & ACCAPPATOI', name: 'GLAMOUR - Tappeto Bagno 50x80 (AX0250)', code: 'AX0250', price: 4.20, category: 'glamour_tappeto', label: 'Tappeto Bagno 50x80 - Cod. AX0250 - € 4,20' },
+
+            // --- LINEA PAINT ---
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 2P (LN0506)', code: 'LN0506', price: 29.90, category: 'standard', label: 'Completo Letto 2P - Cod. LN0506 - € 29,90' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto KING SIZE (LN1862)', code: 'LN1862', price: 33.50, category: 'king', label: 'Completo Letto KING SIZE - Cod. LN1862 - € 33,50' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P FRANCESE (LN0508)', code: 'LN0508', price: 28.50, category: 'francese', label: 'Completo Letto 1+1/2P FRANCESE - Cod. LN0508 - € 28,50' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P (LN0507)', code: 'LN0507', price: 23.90, category: 'standard', label: 'Completo Letto 1+1/2P - Cod. LN0507 - € 23,90' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1P (LN0509)', code: 'LN0509', price: 19.90, category: 'standard', label: 'Completo Letto 1P - Cod. LN0509 - € 19,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 2P (LF0179)', code: 'LF0179', price: 30.90, category: 'standard', label: 'Parure Copripiumino 2P - Cod. LF0179 - € 30,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1+1/2P (LF0180)', code: 'LF0180', price: 26.90, category: 'standard', label: 'Parure Copripiumino 1+1/2P - Cod. LF0180 - € 26,90' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1P (LF0181)', code: 'LF0181', price: 20.90, category: 'standard', label: 'Parure Copripiumino 1P - Cod. LF0181 - € 20,90' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 2P (LE0607)', code: 'LE0607', price: 44.90, category: 'quilt', label: 'Quilt Double Trapuntato 2P - Cod. LE0607 - € 44,90' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1+1/2P (LE0624)', code: 'LE0624', price: 39.90, category: 'quilt', label: 'Quilt Double Trapuntato 1+1/2P - Cod. LE0624 - € 39,90' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1P (LE0625)', code: 'LE0625', price: 34.90, category: 'quilt', label: 'Quilt Double Trapuntato 1P - Cod. LE0625 - € 34,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 2P (LP0001)', code: 'LP0001', price: 13.50, category: 'standard', label: 'Lenzuolo Sopra 2P - Cod. LP0001 - € 13,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P FRANCESE (LP0003)', code: 'LP0003', price: 12.90, category: 'francese', label: 'Lenzuolo Sopra 1+1/2P FRANCESE - Cod. LP0003 - € 12,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P (LP0002)', code: 'LP0002', price: 11.50, category: 'standard', label: 'Lenzuolo Sopra 1+1/2P - Cod. LP0002 - € 11,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1P (LP0004)', code: 'LP0004', price: 9.90, category: 'standard', label: 'Lenzuolo Sopra 1P - Cod. LP0004 - € 9,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P MAXI (LQ0002)', code: 'LQ0002', price: 11.50, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P MAXI - Cod. LQ0002 - € 11,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P (LQ0058)', code: 'LQ0058', price: 10.50, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 2P - Cod. LQ0058 - € 10,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli KING SIZE (LQ0054)', code: 'LQ0054', price: 13.50, category: 'king', label: 'Lenzuolo Sotto c/Angoli KING SIZE - Cod. LQ0054 - € 13,50' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE (LQ0004)', code: 'LQ0004', price: 10.30, category: 'francese', label: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE - Cod. LQ0004 - € 10,30' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P (LQ0003)', code: 'LQ0003', price: 9.90, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1+1/2P - Cod. LQ0003 - € 9,90' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1P (LQ0005)', code: 'LQ0005', price: 7.90, category: 'standard', label: 'Lenzuolo Sotto c/Angoli 1P - Cod. LQ0005 - € 7,90' },
+            { line: 'PAINT', group: 'PAINT: COPPIA FEDERE', name: 'Coppia Federe 50X80 (LM0068)', code: 'LM0068', price: 7.50, category: 'standard', label: 'Coppia Federe 50X80 - Cod. LM0068 - € 7,50' }
+        ];
+
+        // --- COLORI LINEA PAINT ---
+        const standardColors = ["0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA", "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE", "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO", "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA", "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO", "2501 LOTO", "1201 BORDEAUX"];
+        const franceseColors = ["0101 BIANCO", "0301 NEW TORTORA", "0501 PERLA", "0601 ACCIAIO", "1501 DENIM", "1001 MALVA"];
+        const kingColors = ["0101 BIANCO", "0201 AVORIO", "0301 NEW TORTORA", "0501 PERLA", "1401 C. ZUCCHERO", "2701 MUSCHIO", "1001 MALVA"];
+        const quiltColors = ["0101 AVORIO/GRIGIO PERLA", "0201 TORTORA/AVORIO", "0301 CAMMELLO/GLACÉ", "0401 ACCIAIO/NEW TORTORA", "0501 CARBONE/CAMMELLO", "0601 C. DA ZUCCHERO/DENIM", "0701 MUSCHIO/TURCHESE", "0801 LOTO/MALVA", "0901 CAROTA/NEW TORTORA", "1001 BORDEAUX/GLACÉ"];
+
+        // --- COLORI LINEA GLAMOUR ---
+        const glamourSetColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "1101 RUGGINO", "0501 ROSA", "1201 BORDEAUX", "0801 MALVA", "1301 AMETISTA"];
+        const glamourAccappatoioColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "0501 ROSA", "0801 MALVA", "1201 BORDEAUX"];
+        const glamourAccappatoio3XLColors = ["0106 BIANCO", "1506 AVORIO", "0306 TORTORA", "0406 GRIGIO SCURO", "1006 BLU SCURO", "0706 VERDE"];
+        const glamourTappetoColors = ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0701 VERDE", "0801 MALVA", "1101 RUGGINO"];
+
+        // --- COLORI LINEA WIMBLEDON ---
+        const wimbledonAdultoColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
+        const wimbledonJuniorColors = ["1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1501 MALVA"];
+        const wimbledonTeloColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
+
+        // --- VARIANTI LINEA BABY ANIMALS ---
+        const babyAnimalsColors = ["SHARK", "SHEEP", "RABBIT", "DINO", "UNICORN", "GIRAFFE"];
+
+        let items = [];
+
+        document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
+
+        // Inizializza tutti i prodotti all'avvio
+        populateItems('ALL');
+
+        function onLineChange() {
+            const selectedLine = document.getElementById('lineSelect').value;
+            populateItems(selectedLine);
+        }
+
+        function populateItems(filterLine) {
+            const itemSelect = document.getElementById('itemSelect');
+            itemSelect.innerHTML = '<option value="">-- Seleziona Articolo --</option>';
+            document.getElementById('itemPriceInput').value = '';
+            document.getElementById('itemColor').innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
+            document.getElementById('previewBox').classList.add('hidden');
+
+            const filteredProducts = filterLine === 'ALL' 
+                ? productsData 
+                : productsData.filter(p => p.line === filterLine);
+
+            const groups = [...new Set(filteredProducts.map(p => p.group))];
+
+            groups.forEach(grp => {
+                const optGroup = document.createElement('optgroup');
+                optGroup.label = `--- ${grp} ---`;
+
+                filteredProducts.filter(p => p.group === grp).forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.name;
+                    opt.textContent = p.label;
+                    opt.setAttribute('data-code', p.code);
+                    opt.setAttribute('data-price', p.price);
+                    opt.setAttribute('data-category', p.category);
+                    optGroup.appendChild(opt);
+                });
+
+                itemSelect.appendChild(optGroup);
+            });
+        }
+
+        function onItemChange() {
+            const select = document.getElementById('itemSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            const colorSelect = document.getElementById('itemColor');
+
+            if (!select.value || select.selectedIndex === 0) {
+                document.getElementById('itemPriceInput').value = '';
+                colorSelect.innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
+                document.getElementById('previewBox').classList.add('hidden');
+                return;
+            }
+
+            const price = selectedOption.getAttribute('data-price') || "0.00";
+            const category = selectedOption.getAttribute('data-category');
+
+            document.getElementById('itemPriceInput').value = `€ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
+            colorSelect.innerHTML = '<option value="">-- Seleziona Variante --</option>';
+
+            let colorsToLoad = standardColors;
+            
+            if (category === 'quilt') colorsToLoad = quiltColors;
+            else if (category === 'francese') colorsToLoad = franceseColors;
+            else if (category === 'king') colorsToLoad = kingColors;
+            else if (category === 'glamour_set') colorsToLoad = glamourSetColors;
+            else if (category === 'glamour_accappatoio') colorsToLoad = glamourAccappatoioColors;
+            else if (category === 'glamour_accappatoio_3xl') colorsToLoad = glamourAccappatoio3XLColors;
+            else if (category === 'glamour_tappeto') colorsToLoad = glamourTappetoColors;
+            else if (category === 'wimbledon_adulto') colorsToLoad = wimbledonAdultoColors;
+            else if (category === 'wimbledon_junior') colorsToLoad = wimbledonJuniorColors;
+            else if (category === 'wimbledon_telo') colorsToLoad = wimbledonTeloColors;
+            else if (category === 'baby_animals') colorsToLoad = babyAnimalsColors;
+            
+            colorsToLoad.forEach(col => {
+                const opt = document.createElement('option');
+                opt.value = col;
+                opt.textContent = col;
+                colorSelect.appendChild(opt);
+            });
+
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const select = document.getElementById('itemSelect');
+            const colorSelect = document.getElementById('itemColor');
+            const previewBox = document.getElementById('previewBox');
+
+            if (!select.value) {
+                previewBox.classList.add('hidden');
+                return;
+            }
+
+            const articleName = select.value;
+            const color = colorSelect.value || 'Nessuna variante selezionata';
+
+            document.getElementById('previewTitle').innerText = articleName;
+            document.getElementById('previewDetail').innerText = `Variante: ${color}`;
+            previewBox.classList.remove('hidden');
+        }
+
+        function addItem() {
+            const select = document.getElementById('itemSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (!select.value) {
+                alert("Seleziona un articolo prima di aggiungerlo.");
+                return;
+            }
+
+            const code = selectedOption.getAttribute('data-code');
+            const articleName = selectedOption.value;
+            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
+            const color = document.getElementById('itemColor').value;
+            const qty = parseInt(document.getElementById('itemQty').value) || 0;
+
+            if (!color) {
+                alert("Seleziona la variante colore dell'articolo.");
+                return;
+            }
+            if (qty <= 0) {
+                alert("Inserisci una quantità valida (almeno 1 pz).");
+                return;
+            }
+
+            items.push({
+                code: code,
+                article: articleName,
+                color: color,
+                qty: qty,
+                price: price,
+                total: price * qty
+            });
+
+            document.getElementById('itemColor').value = '';
+            document.getElementById('itemQty').value = '1';
+            document.getElementById('previewBox').classList.add('hidden');
+
+            renderTable();
+        }
+
+        function removeItem(index) {
+            items.splice(index, 1);
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('orderTableBody');
+            
+            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
+            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
+            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
+                document.getElementById('totalPieces').innerText = "0";
+                document.getElementById('grandTotal').innerText = "€ 0,00";
+                return;
+            }
+
+            let html = '';
+            let totalQty = 0;
+            let grandTotal = 0;
+
+            items.forEach((item, index) => {
+                totalQty += item.qty;
+                grandTotal += item.total;
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
+                        <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
+                        <td class="py-2.5 px-3 font-medium">${item.color}</td>
+                        <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
+                        <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-center no-print">
+                            <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            document.getElementById('totalPieces').innerText = totalQty;
+            document.getElementById('grandTotal').innerText = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
+        }
+
+        function buildOrderSummaryText() {
+            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
+            const city = document.getElementById('clientCity').value || '-';
+            const vat = document.getElementById('clientVat').value || '-';
+            
+            let summary = `*ORDINE RIVIERA BASIC*\n`;
+            summary += `----------------------------------\n`;
+            summary += `*Cliente:* ${client}\n`;
+            summary += `*Città:* ${city}\n`;
+            summary += `*P.IVA/SDI:* ${vat}\n`;
+            summary += `*Data:* ${new Date().toLocaleDateString('it-IT')}\n`;
+            summary += `----------------------------------\n`;
+            summary += `*ARTICOLI IN ORDINE:*\n\n`;
+
+            let totalPz = 0;
+            let totalEuro = 0;
+
+            items.forEach(i => {
+                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo: € ${i.price.toFixed(2).replace('.', ',')} | Tot: € ${i.total.toFixed(2).replace('.', ',')}\n\n`;
+                totalPz += i.qty;
+                totalEuro += i.total;
+            });
+
+            summary += `----------------------------------\n`;
+            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
+            summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
+
+            return summary;
+        }
+
+        function sendWhatsApp() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                return;
+            }
+            const text = encodeURIComponent(buildOrderSummaryText());
+            const phone = "393392822146";
+            window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`, '_blank');
+        }
+
+        function sendEmail() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                return;
+            }
+            const client = document.getElementById('clientName').value || 'Cliente';
+            const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
+            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
+            const email = "cacciola74@gmail.com";
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        }
+
+        function resetForm() {
+            if (confirm("Vuoi azzerare l'ordine corrente?")) {
+                items = [];
+                document.getElementById('clientName').value = '';
+                document.getElementById('clientCity').value = '';
+                document.getElementById('clientVat').value = '';
+                document.getElementById('lineSelect').value = 'ALL';
+                populateItems('ALL');
+                renderTable();
+            }
+        }
+
+        function exportPDF() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
+                return;
+            }
+
+            renderTable();
+
+            setTimeout(function() {
+                window.print();
+            }, 100);
+        }
+
+        document.getElementById('clientName').addEventListener('input', renderTable);
+        document.getElementById('clientCity').addEventListener('input', renderTable);
+        document.getElementById('clientVat').addEventListener('input', renderTable);
+    </script>
 </body>
 </html>
