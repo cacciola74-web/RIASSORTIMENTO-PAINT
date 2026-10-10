@@ -374,4 +374,306 @@
         const wimbledonJuniorColors = ["1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1501 MALVA"];
         const wimbledonTeloColors = ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"];
 
-        // ---
+        // --- VARIANTI LINEA BABY ANIMALS ---
+        const babyAnimalsColors = ["SHARK", "SHEEP", "RABBIT", "DINO", "UNICORN", "GIRAFFE"];
+
+        // --- VARIANTI ACCESSORI LETTO ---
+        const biancoOnlyColors = ["0101 BIANCO"];
+        const avorioOnlyColors = ["0101 AVORIO"];
+
+        let items = [];
+
+        document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
+
+        // Inizializza tutti i prodotti all'avvio
+        populateItems('ALL');
+
+        function onLineChange() {
+            const selectedLine = document.getElementById('lineSelect').value;
+            populateItems(selectedLine);
+        }
+
+        function populateItems(filterLine) {
+            const itemSelect = document.getElementById('itemSelect');
+            itemSelect.innerHTML = '<option value="">-- Seleziona Articolo --</option>';
+            document.getElementById('itemPriceInput').value = '';
+            document.getElementById('variantsContainer').classList.add('hidden');
+
+            const filteredProducts = filterLine === 'ALL' 
+                ? productsData 
+                : productsData.filter(p => p.line === filterLine);
+
+            const groups = [...new Set(filteredProducts.map(p => p.group))];
+
+            groups.forEach(grp => {
+                const optGroup = document.createElement('optgroup');
+                optGroup.label = `--- ${grp} ---`;
+
+                filteredProducts.filter(p => p.group === grp).forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.name;
+                    opt.textContent = p.label;
+                    opt.setAttribute('data-code', p.code);
+                    opt.setAttribute('data-price', p.price);
+                    opt.setAttribute('data-pack', p.pack || 1);
+                    opt.setAttribute('data-category', p.category);
+                    optGroup.appendChild(opt);
+                });
+
+                itemSelect.appendChild(optGroup);
+            });
+        }
+
+        function onItemChange() {
+            const select = document.getElementById('itemSelect');
+            const variantsContainer = document.getElementById('variantsContainer');
+            const variantsTableBody = document.getElementById('variantsTableBody');
+            const variantRuleBadge = document.getElementById('variantRuleBadge');
+
+            if (!select.value || select.selectedIndex === 0) {
+                document.getElementById('itemPriceInput').value = '';
+                variantsContainer.classList.add('hidden');
+                return;
+            }
+
+            const selectedOption = select.options[select.selectedIndex];
+            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
+            const pack = parseInt(selectedOption.getAttribute('data-pack') || 1);
+            const category = selectedOption.getAttribute('data-category');
+
+            document.getElementById('itemPriceInput').value = `€ ${price.toFixed(2).replace('.', ',')}`;
+
+            if (pack > 1) {
+                variantRuleBadge.innerText = `Minimo e multipli di ${pack} pezzi per variante`;
+            } else {
+                variantRuleBadge.innerText = `Pezzi singoli (lascia vuoto o inserisci q.tà)`;
+            }
+
+            let colorsToLoad = standardColors;
+            if (category === 'quilt') colorsToLoad = quiltColors;
+            else if (category === 'francese') colorsToLoad = franceseColors;
+            else if (category === 'king') colorsToLoad = kingColors;
+            else if (category === 'glamour_set') colorsToLoad = glamourSetColors;
+            else if (category === 'glamour_accappatoio') colorsToLoad = glamourAccappatoioColors;
+            else if (category === 'glamour_accappatoio_3xl') colorsToLoad = glamourAccappatoio3XLColors;
+            else if (category === 'glamour_tappeto') colorsToLoad = glamourTappetoColors;
+            else if (category === 'wimbledon_adulto') colorsToLoad = wimbledonAdultoColors;
+            else if (category === 'wimbledon_junior') colorsToLoad = wimbledonJuniorColors;
+            else if (category === 'wimbledon_telo') colorsToLoad = wimbledonTeloColors;
+            else if (category === 'baby_animals') colorsToLoad = babyAnimalsColors;
+            else if (category === 'bianco_only') colorsToLoad = biancoOnlyColors;
+            else if (category === 'avorio_only') colorsToLoad = avorioOnlyColors;
+
+            let html = '';
+            colorsToLoad.forEach((col, idx) => {
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2 px-3 font-medium text-slate-800">${col}</td>
+                        <td class="py-2 px-3 text-center">
+                            <input type="number" data-color="${col}" min="0" step="${pack}" placeholder="" class="variant-qty-input w-28 text-center text-sm font-bold border border-slate-300 rounded p-1.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none" onkeydown="handleVariantKeydown(event, ${idx})">
+                        </td>
+                    </tr>
+                `;
+            });
+
+            variantsTableBody.innerHTML = html;
+            variantsContainer.classList.remove('hidden');
+        }
+
+        function handleVariantKeydown(event, currentIndex) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.variant-qty-input');
+                const nextInput = inputs[currentIndex + 1];
+                if (nextInput) {
+                    nextInput.focus();
+                    nextInput.select();
+                } else {
+                    addMultiVariantItems();
+                }
+            }
+        }
+
+        function addMultiVariantItems() {
+            const select = document.getElementById('itemSelect');
+            if (!select.value || select.selectedIndex === 0) return;
+
+            const selectedOption = select.options[select.selectedIndex];
+            const code = selectedOption.getAttribute('data-code');
+            const articleName = selectedOption.value;
+            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
+            const pack = parseInt(selectedOption.getAttribute('data-pack') || 1);
+
+            const qtyInputs = document.querySelectorAll('.variant-qty-input');
+            let addedCount = 0;
+
+            qtyInputs.forEach(input => {
+                if (input.value === "" || input.value === null) return;
+                let qty = parseInt(input.value) || 0;
+                const color = input.getAttribute('data-color');
+
+                if (qty > 0) {
+                    // Validazione e correzione multipli
+                    if (qty < pack) {
+                        alert(`La quantità per la variante "${color}" è inferiore al minimo stabilito (${pack} pz). Regolata al minimo.`);
+                        qty = pack;
+                    } else if (qty % pack !== 0) {
+                        qty = Math.ceil(qty / pack) * pack;
+                        alert(`La quantità per la variante "${color}" è stata adeguata al multiplo di imballo (${pack} pz): ${qty} pz.`);
+                    }
+
+                    items.push({
+                        code: code,
+                        article: articleName,
+                        color: color,
+                        qty: qty,
+                        price: price,
+                        total: price * qty
+                    });
+
+                    addedCount++;
+                    input.value = ""; // Reset campo vuoto
+                }
+            });
+
+            if (addedCount === 0) {
+                alert("Inserisci almeno una quantità maggiore di zero su una variante.");
+                return;
+            }
+
+            renderTable();
+            alert("Articoli aggiunti correttamente all'ordine!");
+        }
+
+        function removeItem(index) {
+            items.splice(index, 1);
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('orderTableBody');
+            
+            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
+            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
+            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
+                document.getElementById('totalPieces').innerText = "0";
+                document.getElementById('grandTotal').innerText = "€ 0,00";
+                return;
+            }
+
+            let html = '';
+            let totalQty = 0;
+            let grandTotal = 0;
+
+            items.forEach((item, index) => {
+                totalQty += item.qty;
+                grandTotal += item.total;
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
+                        <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
+                        <td class="py-2.5 px-3 font-medium">${item.color}</td>
+                        <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
+                        <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-3 text-center no-print">
+                            <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            document.getElementById('totalPieces').innerText = totalQty;
+            document.getElementById('grandTotal').innerText = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
+        }
+
+        function buildOrderSummaryText() {
+            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
+            const city = document.getElementById('clientCity').value || '-';
+            const vat = document.getElementById('clientVat').value || '-';
+            
+            let summary = `*ORDINE RIVIERA BASIC*\n`;
+            summary += `----------------------------------\n`;
+            summary += `*Cliente:* ${client}\n`;
+            summary += `*Città:* ${city}\n`;
+            summary += `*P.IVA/SDI:* ${vat}\n`;
+            summary += `*Data:* ${new Date().toLocaleDateString('it-IT')}\n`;
+            summary += `----------------------------------\n`;
+            summary += `*ARTICOLI IN ORDINE:*\n\n`;
+
+            let totalPz = 0;
+            let totalEuro = 0;
+
+            items.forEach(i => {
+                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo: € ${i.price.toFixed(2).replace('.', ',')} | Tot: € ${i.total.toFixed(2).replace('.', ',')}\n\n`;
+                totalPz += i.qty;
+                totalEuro += i.total;
+            });
+
+            summary += `----------------------------------\n`;
+            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
+            summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
+
+            return summary;
+        }
+
+        function sendWhatsApp() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                return;
+            }
+            const text = encodeURIComponent(buildOrderSummaryText());
+            const phone = "393392822146";
+            window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`, '_blank');
+        }
+
+        function sendEmail() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'email.");
+                return;
+            }
+            const client = document.getElementById('clientName').value || 'Cliente';
+            const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
+            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
+            const email = "cacciola74@gmail.com";
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        }
+
+        function resetForm() {
+            if (confirm("Vuoi azzerare l'ordine corrente?")) {
+                items = [];
+                document.getElementById('clientName').value = '';
+                document.getElementById('clientCity').value = '';
+                document.getElementById('clientVat').value = '';
+                document.getElementById('lineSelect').value = 'ALL';
+                populateItems('ALL');
+                document.getElementById('variantsContainer').classList.add('hidden');
+                renderTable();
+            }
+        }
+
+        function exportPDF() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
+                return;
+            }
+
+            renderTable();
+
+            setTimeout(function() {
+                window.print();
+            }, 100);
+        }
+
+        document.getElementById('clientName').addEventListener('input', renderTable);
+        document.getElementById('clientCity').addEventListener('input', renderTable);
+        document.getElementById('clientVat').addEventListener('input', renderTable);
+    </script>
+</body>
+</html>
