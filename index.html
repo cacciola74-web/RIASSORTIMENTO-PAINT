@@ -96,11 +96,11 @@
             </div>
         </section>
 
-        <!-- Inserimento Articolo -->
+        <!-- Inserimento Articolo Multi-Variante -->
         <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
             <div class="flex justify-between items-center mb-4 border-b pb-2">
                 <h2 class="text-base font-semibold text-slate-700 flex items-center">
-                    <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Seleziona Prodotto dal Copia Commissione
+                    <i class="fa-solid fa-cart-plus text-indigo-600 mr-2"></i> Seleziona Prodotto e Compila Varianti
                 </h2>
                 <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs text-indigo-600 font-bold hover:underline flex items-center">
                     <i class="fa-solid fa-book-open mr-1"></i> Apri Catalogo Continuativo
@@ -127,40 +127,41 @@
                         <option value="">-- Seleziona Articolo --</option>
                     </select>
                 </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">3. Variante / Personaggio / Colore</label>
-                    <select id="itemColor" onchange="updatePreview()" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                        <option value="">-- Seleziona Prima l'Articolo --</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Box Anteprima / Miniatura Prodotto -->
-            <div id="previewBox" class="mb-4 p-3 bg-slate-50 border border-slate-200 rounded-lg hidden flex items-center space-x-4">
-                <div class="w-16 h-16 bg-white border rounded flex items-center justify-center overflow-hidden shadow-sm flex-shrink-0">
-                    <img id="previewImage" src="" alt="Anteprima" class="object-cover w-full h-full hidden" onerror="this.classList.add('hidden'); document.getElementById('previewIcon').classList.remove('hidden');">
-                    <i id="previewIcon" class="fa-solid fa-shirt text-slate-300 text-2xl"></i>
-                </div>
-                <div>
-                    <p id="previewTitle" class="text-xs font-bold text-slate-800"></p>
-                    <p id="previewDetail" class="text-xs text-slate-500"></p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1" id="qtyLabel">Quantità (Pezzi) *</label>
-                    <input type="number" id="itemQty" min="1" step="1" value="1" class="w-full text-sm font-semibold border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                </div>
                 <div>
                     <label class="block text-xs font-medium text-slate-600 mb-1">Prezzo Unitario Netto €</label>
                     <input type="text" id="itemPriceInput" readonly class="w-full text-sm font-bold bg-slate-100 border border-slate-300 rounded-lg p-2.5 text-slate-700">
                 </div>
-                <div class="flex items-end">
-                    <button onclick="addItem()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg shadow-sm transition">
-                        <i class="fa-solid fa-plus mr-1"></i> Aggiungi all'Ordine
-                    </button>
+            </div>
+
+            <!-- Tabella Dinamica delle Varianti Colore -->
+            <div id="variantsContainer" class="mb-4 hidden">
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-900">
+                            <i class="fa-solid fa-list-check mr-1"></i> Inserisci le quantità desiderate per variante
+                        </h3>
+                        <span id="variantRuleBadge" class="text-[11px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded font-semibold"></span>
+                    </div>
+                    
+                    <div class="max-h-64 overflow-y-auto border border-slate-200 rounded bg-white">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-100 text-slate-700 uppercase sticky top-0 border-b">
+                                <tr>
+                                    <th class="py-2 px-3">Variante / Colore</th>
+                                    <th class="py-2 px-3 text-center w-36">Quantità (PZ)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="variantsTableBody">
+                                <!-- Generato via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-4 flex justify-end">
+                        <button onclick="addMultiVariantItems()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs py-2.5 px-5 rounded-lg shadow-sm transition flex items-center">
+                            <i class="fa-solid fa-plus mr-1.5"></i> Aggiungi Tutte le Varianti all'Ordine
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -396,14 +397,7 @@
             const itemSelect = document.getElementById('itemSelect');
             itemSelect.innerHTML = '<option value="">-- Seleziona Articolo --</option>';
             document.getElementById('itemPriceInput').value = '';
-            document.getElementById('itemColor').innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
-            document.getElementById('previewBox').classList.add('hidden');
-
-            const qtyInput = document.getElementById('itemQty');
-            qtyInput.value = 1;
-            qtyInput.min = 1;
-            qtyInput.step = 1;
-            document.getElementById('qtyLabel').innerText = "Quantità (Pezzi) *";
+            document.getElementById('variantsContainer').classList.add('hidden');
 
             const filteredProducts = filterLine === 'ALL' 
                 ? productsData 
@@ -432,42 +426,30 @@
 
         function onItemChange() {
             const select = document.getElementById('itemSelect');
-            const colorSelect = document.getElementById('itemColor');
-            const qtyInput = document.getElementById('itemQty');
-            const qtyLabel = document.getElementById('qtyLabel');
+            const variantsContainer = document.getElementById('variantsContainer');
+            const variantsTableBody = document.getElementById('variantsTableBody');
+            const variantRuleBadge = document.getElementById('variantRuleBadge');
 
             if (!select.value || select.selectedIndex === 0) {
                 document.getElementById('itemPriceInput').value = '';
-                colorSelect.innerHTML = '<option value="">-- Seleziona Prima l\'Articolo --</option>';
-                document.getElementById('previewBox').classList.add('hidden');
-                qtyInput.value = 1;
-                qtyInput.min = 1;
-                qtyInput.step = 1;
-                qtyLabel.innerText = "Quantità (Pezzi) *";
+                variantsContainer.classList.add('hidden');
                 return;
             }
 
             const selectedOption = select.options[select.selectedIndex];
-            const price = selectedOption.getAttribute('data-price') || "0.00";
+            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
             const pack = parseInt(selectedOption.getAttribute('data-pack') || 1);
             const category = selectedOption.getAttribute('data-category');
 
-            document.getElementById('itemPriceInput').value = `€ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
+            document.getElementById('itemPriceInput').value = `€ ${price.toFixed(2).replace('.', ',')}`;
 
-            // Impostazione quantitativi minimi e multipli
-            qtyInput.min = pack;
-            qtyInput.step = pack;
-            qtyInput.value = pack;
             if (pack > 1) {
-                qtyLabel.innerText = `Quantità (Minimo ${pack} pz e multipli) *`;
+                variantRuleBadge.innerText = `Minimo e multipli di ${pack} pezzi per variante`;
             } else {
-                qtyLabel.innerText = "Quantità (Pezzi) *";
+                variantRuleBadge.innerText = `Pezzi singoli (minimo 0 o 1)`;
             }
 
-            colorSelect.innerHTML = '<option value="">-- Seleziona Variante --</option>';
-
             let colorsToLoad = standardColors;
-            
             if (category === 'quilt') colorsToLoad = quiltColors;
             else if (category === 'francese') colorsToLoad = franceseColors;
             else if (category === 'king') colorsToLoad = kingColors;
@@ -481,102 +463,71 @@
             else if (category === 'baby_animals') colorsToLoad = babyAnimalsColors;
             else if (category === 'bianco_only') colorsToLoad = biancoOnlyColors;
             else if (category === 'avorio_only') colorsToLoad = avorioOnlyColors;
-            
-            colorsToLoad.forEach(col => {
-                const opt = document.createElement('option');
-                opt.value = col;
-                opt.textContent = col;
-                colorSelect.appendChild(opt);
+
+            let html = '';
+            colorsToLoad.forEach((col, idx) => {
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2 px-3 font-medium text-slate-800">${col}</td>
+                        <td class="py-2 px-3 text-center">
+                            <input type="number" data-color="${col}" min="0" step="${pack}" value="0" class="variant-qty-input w-28 text-center text-sm font-bold border border-slate-300 rounded p-1.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        </td>
+                    </tr>
+                `;
             });
 
-            if (colorsToLoad.length === 1) {
-                colorSelect.value = colorsToLoad[0];
-            }
-
-            updatePreview();
+            variantsTableBody.innerHTML = html;
+            variantsContainer.classList.remove('hidden');
         }
 
-        function updatePreview() {
+        function addMultiVariantItems() {
             const select = document.getElementById('itemSelect');
-            const colorSelect = document.getElementById('itemColor');
-            const previewBox = document.getElementById('previewBox');
-
-            if (!select.value) {
-                previewBox.classList.add('hidden');
-                return;
-            }
-
-            const articleName = select.value;
-            const color = colorSelect.value || 'Nessuna variante selezionata';
-            const cleanVariant = color.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '');
-
-            document.getElementById('previewTitle').innerText = articleName;
-            document.getElementById('previewDetail').innerText = `Variante: ${color}`;
-
-            const previewImage = document.getElementById('previewImage');
-            const previewIcon = document.getElementById('previewIcon');
-
-            if (cleanVariant) {
-                previewImage.src = `img/${cleanVariant}.jpg`;
-                previewImage.classList.remove('hidden');
-                previewIcon.classList.add('hidden');
-            } else {
-                previewImage.classList.add('hidden');
-                previewIcon.classList.remove('hidden');
-            }
-
-            previewBox.classList.remove('hidden');
-        }
-
-        function addItem() {
-            const select = document.getElementById('itemSelect');
-            
-            if (!select.value || select.selectedIndex === 0) {
-                alert("Seleziona un articolo prima di aggiungerlo.");
-                return;
-            }
+            if (!select.value || select.selectedIndex === 0) return;
 
             const selectedOption = select.options[select.selectedIndex];
             const code = selectedOption.getAttribute('data-code');
             const articleName = selectedOption.value;
             const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
             const pack = parseInt(selectedOption.getAttribute('data-pack') || 1);
-            const color = document.getElementById('itemColor').value;
-            let qty = parseInt(document.getElementById('itemQty').value) || 0;
 
-            if (!color) {
-                alert("Seleziona la variante colore dell'articolo.");
-                return;
-            }
+            const qtyInputs = document.querySelectorAll('.variant-qty-input');
+            let addedCount = 0;
 
-            // Controllo e correzione multiplo imballo
-            if (qty < pack) {
-                alert(`La quantità minima per questo articolo è di ${pack} pezzi.`);
-                document.getElementById('itemQty').value = pack;
-                return;
-            }
+            qtyInputs.forEach(input => {
+                let qty = parseInt(input.value) || 0;
+                const color = input.getAttribute('data-color');
 
-            if (qty % pack !== 0) {
-                const roundedQty = Math.ceil(qty / pack) * pack;
-                alert(`Questo articolo viene venduto in confezioni da ${pack} pezzi. La quantità è stata adeguata a ${roundedQty} pz.`);
-                qty = roundedQty;
-                document.getElementById('itemQty').value = roundedQty;
-            }
+                if (qty > 0) {
+                    // Validazione e correzione multipli
+                    if (qty < pack) {
+                        alert(`La quantità per la variante "${color}" è inferiore al minimo stabilito (${pack} pz). Regolata al minimo.`);
+                        qty = pack;
+                    } else if (qty % pack !== 0) {
+                        qty = Math.ceil(qty / pack) * pack;
+                        alert(`La quantità per la variante "${color}" è stata adeguata al multiplo di imballo (${pack} pz): ${qty} pz.`);
+                    }
 
-            items.push({
-                code: code,
-                article: articleName,
-                color: color,
-                qty: qty,
-                price: price,
-                total: price * qty
+                    items.push({
+                        code: code,
+                        article: articleName,
+                        color: color,
+                        qty: qty,
+                        price: price,
+                        total: price * qty
+                    });
+
+                    addedCount++;
+                    input.value = "0"; // Reset campo
+                }
             });
 
-            document.getElementById('itemColor').value = '';
-            document.getElementById('itemQty').value = '1';
-            document.getElementById('previewBox').classList.add('hidden');
+            if (addedCount === 0) {
+                alert("Inserisci almeno una quantità maggiore di zero su una variante.");
+                return;
+            }
 
             renderTable();
+            alert("Articoli aggiunti correttamente all'ordine!");
         }
 
         function removeItem(index) {
@@ -669,7 +620,7 @@
 
         function sendEmail() {
             if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                alert("Aggiungi almeno un ordinativo prima di inviare l'email.");
                 return;
             }
             const client = document.getElementById('clientName').value || 'Cliente';
@@ -687,6 +638,7 @@
                 document.getElementById('clientVat').value = '';
                 document.getElementById('lineSelect').value = 'ALL';
                 populateItems('ALL');
+                document.getElementById('variantsContainer').classList.add('hidden');
                 renderTable();
             }
         }
