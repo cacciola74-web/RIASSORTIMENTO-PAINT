@@ -55,12 +55,14 @@
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12">
 
-    <!-- Header -->
+    <!-- Header Pulito -->
     <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50 no-print">
         <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
             <div>
                 <h1 class="text-xl font-bold tracking-wide"><i class="fa-solid fa-palette mr-2"></i>RIVIERA BASIC</h1>
-                <p class="text-xs text-indigo-200">Modulo Riassortimento Ordini - PAINT, GLAMOUR, WIMBLEDON, BABY ANIMALS & ACCESSORI LETTO</p>
+                <p class="text-xs text-indigo-200 mt-1">
+                    <span id="headerDateTime">Data e ora in caricamento...</span> | <strong>Rappresentante Cacciola Daniele</strong>
+                </p>
             </div>
             <div class="flex items-center space-x-2">
                 <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded transition flex items-center">
@@ -172,7 +174,7 @@
             <div class="flex justify-between items-start border-b pb-4 mb-4">
                 <div>
                     <h2 class="text-2xl font-bold text-indigo-900">RIVIERA BASIC</h2>
-                    <p class="text-sm font-semibold text-slate-600">PAINT, GLAMOUR, WIMBLEDON, BABY ANIMALS & ACCESSORI LETTO - Copia Commissione / Riassortimento</p>
+                    <p class="text-sm font-semibold text-slate-600">Rappresentante Cacciola Daniele - Copia Commissione / Riassortimento</p>
                 </div>
                 <div class="text-right text-xs text-slate-500">
                     <p id="docDate"></p>
@@ -383,10 +385,29 @@
 
         let items = [];
 
-        document.getElementById('docDate').innerText = "Data: " + new Date().toLocaleDateString('it-IT');
+        // Funzione per aggiornare l'orario in tempo reale nella testata e nel PDF
+        function updateDateTime() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('it-IT');
+            const timeStr = now.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            const headerDateTimeEl = document.getElementById('headerDateTime');
+            const docDateEl = document.getElementById('docDate');
+            
+            if (headerDateTimeEl) headerDateTimeEl.innerText = `${dateStr} - ${timeStr}`;
+            if (docDateEl) docDateEl.innerText = `Data: ${dateStr} - ${timeStr}`;
+        }
 
-        // Inizializza tutti i prodotti all'avvio
-        populateItems('ALL');
+        // Avvio all'interno del caricamento della pagina
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            populateItems('ALL');
+
+            document.getElementById('clientName').addEventListener('input', renderTable);
+            document.getElementById('clientCity').addEventListener('input', renderTable);
+            document.getElementById('clientVat').addEventListener('input', renderTable);
+        });
 
         function onLineChange() {
             const selectedLine = document.getElementById('lineSelect').value;
@@ -395,11 +416,13 @@
 
         function populateItems(filterLine) {
             const itemSelect = document.getElementById('itemSelect');
+            if(!itemSelect) return;
+
             itemSelect.innerHTML = '<option value="">-- Seleziona Articolo --</option>';
             document.getElementById('itemPriceInput').value = '';
             document.getElementById('variantsContainer').classList.add('hidden');
 
-            const filteredProducts = filterLine === 'ALL' 
+            const filteredProducts = (filterLine === 'ALL' || !filterLine)
                 ? productsData 
                 : productsData.filter(p => p.line === filterLine);
 
@@ -513,7 +536,6 @@
                 const color = input.getAttribute('data-color');
 
                 if (qty > 0) {
-                    // Validazione e correzione multipli
                     if (qty < pack) {
                         alert(`La quantità per la variante "${color}" è inferiore al minimo stabilito (${pack} pz). Regolata al minimo.`);
                         qty = pack;
@@ -532,7 +554,7 @@
                     });
 
                     addedCount++;
-                    input.value = ""; // Reset campo vuoto
+                    input.value = "";
                 }
             });
 
@@ -597,13 +619,15 @@
             const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
             const city = document.getElementById('clientCity').value || '-';
             const vat = document.getElementById('clientVat').value || '-';
+            const now = new Date();
             
             let summary = `*ORDINE RIVIERA BASIC*\n`;
+            summary += `*Rappresentante:* Cacciola Daniele\n`;
             summary += `----------------------------------\n`;
             summary += `*Cliente:* ${client}\n`;
             summary += `*Città:* ${city}\n`;
             summary += `*P.IVA/SDI:* ${vat}\n`;
-            summary += `*Data:* ${new Date().toLocaleDateString('it-IT')}\n`;
+            summary += `*Data e Ora:* ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}\n`;
             summary += `----------------------------------\n`;
             summary += `*ARTICOLI IN ORDINE:*\n\n`;
 
@@ -670,10 +694,6 @@
                 window.print();
             }, 100);
         }
-
-        document.getElementById('clientName').addEventListener('input', renderTable);
-        document.getElementById('clientCity').addEventListener('input', renderTable);
-        document.getElementById('clientVat').addEventListener('input', renderTable);
     </script>
 </body>
 </html>
