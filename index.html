@@ -1,10 +1,3 @@
-Ecco la versione aggiornata del file con la nuova funzionalità per applicare uno sconto percentuale personalizzato (es. 5%, 10%, 15%, ecc.) per i clienti che lo richiedono.
-Nuove Funzionalità Aggiunte:
- * Campo Sconto Personalizzato: Accanto ai dati del cliente, è apparso un nuovo campo numerico "Sconto % sul Listino".
- * Applicazione Automatica: Lo sconto inserito viene applicato in tempo reale a tutti gli articoli inseriti nell'ordine (sia al prezzo unitario ricalcolato sia al totale netto della riga).
- * Trasparenza nel PDF e WhatsApp: Se viene inserito uno sconto (es. 10%), il listino originale viene barrato e viene mostrato il prezzo scontato effettivo sia nella tabella a schermo, sia nel PDF stampato/scaricato, sia nel riepilogo inviato su WhatsApp e via Email.
- * Pulizia Completa: Cliccando su "Nuovo Ordine", anche il campo dello sconto viene azzerato e riportato a vuoto.
-Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codice:
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -57,6 +50,10 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
             #pdfContent tr {
                 page-break-inside: avoid !important;
             }
+
+            .print-only-inline {
+                display: inline !important;
+            }
         }
     </style>
 </head>
@@ -84,13 +81,13 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
 
     <main class="max-w-5xl mx-auto px-4 mt-6 space-y-6">
 
-        <!-- Dati Cliente & Sconto -->
+        <!-- Dati Cliente -->
         <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
             <h2 class="text-base font-semibold text-slate-700 mb-4 border-b pb-2 flex items-center">
-                <i class="fa-solid fa-user-tag text-indigo-600 mr-2"></i> Dati Anagrafici Cliente e Condizioni
+                <i class="fa-solid fa-user-tag text-indigo-600 mr-2"></i> Dati Anagrafici Cliente
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="md:col-span-1">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
                     <label class="block text-xs font-medium text-slate-600 mb-1">Ragione Sociale / Cliente *</label>
                     <input type="text" id="clientName" placeholder="Es. Rossi Home" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
@@ -101,10 +98,6 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
                 <div>
                     <label class="block text-xs font-medium text-slate-600 mb-1">P.IVA / Cod. Univoco / SDI</label>
                     <input type="text" id="clientVat" placeholder="IT0123456789" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-indigo-900 mb-1"><i class="fa-solid fa-percent text-indigo-600 mr-1"></i> Sconto % Cliente</label>
-                    <input type="number" id="clientDiscount" min="0" max="100" step="0.5" placeholder="Es. 10" oninput="renderTable()" class="w-full text-sm font-bold border border-indigo-300 bg-indigo-50/50 rounded-lg p-2.5 text-indigo-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
             </div>
         </section>
@@ -194,11 +187,10 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
             </div>
 
             <!-- Dati Cliente per PDF -->
-            <div class="mb-6 bg-slate-50 p-3 rounded border border-slate-200 text-xs grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="mb-6 bg-slate-50 p-3 rounded border border-slate-200 text-xs grid grid-cols-3 gap-2">
                 <div><strong>Cliente:</strong> <span id="pdfClientName">-</span></div>
                 <div><strong>Città:</strong> <span id="pdfClientCity">-</span></div>
                 <div><strong>P.IVA/SDI:</strong> <span id="pdfClientVat">-</span></div>
-                <div><strong>Sconto Applicato:</strong> <span id="pdfClientDiscount" class="font-bold text-indigo-700">Nessuno</span></div>
             </div>
 
             <!-- Tabella Articoli -->
@@ -206,18 +198,19 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
                 <table class="w-full text-left text-xs text-slate-700 border-collapse">
                     <thead>
                         <tr class="bg-slate-100 text-slate-800 uppercase font-semibold border-b">
-                            <th class="py-2.5 px-3">Codice</th>
-                            <th class="py-2.5 px-3">Articolo / Descrizione</th>
-                            <th class="py-2.5 px-3">Variante Colore</th>
-                            <th class="py-2.5 px-3 text-center">PZ</th>
-                            <th class="py-2.5 px-3 text-right">Prezzo Unit.</th>
-                            <th class="py-2.5 px-3 text-right">Totale €</th>
-                            <th class="py-2.5 px-3 text-center no-print">Azione</th>
+                            <th class="py-2.5 px-2">Codice</th>
+                            <th class="py-2.5 px-2">Articolo / Descrizione</th>
+                            <th class="py-2.5 px-2">Variante Colore</th>
+                            <th class="py-2.5 px-2 text-center">PZ</th>
+                            <th class="py-2.5 px-2 text-right">Prezzo Unit.</th>
+                            <th class="py-2.5 px-2 text-center w-20">Sconto %</th>
+                            <th class="py-2.5 px-2 text-right">Totale €</th>
+                            <th class="py-2.5 px-2 text-center no-print">Azione</th>
                         </tr>
                     </thead>
                     <tbody id="orderTableBody">
                         <tr>
-                            <td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td>
+                            <td colspan="8" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -225,11 +218,11 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
 
             <!-- Totali -->
             <div class="mt-6 border-t pt-4 flex flex-col items-end text-xs space-y-1">
-                <div class="flex justify-between w-56">
+                <div class="flex justify-between w-52">
                     <span class="text-slate-600">Totale Pezzi:</span>
                     <span id="totalPieces" class="font-bold text-slate-800">0</span>
                 </div>
-                <div class="flex justify-between w-56 text-sm pt-2 border-t">
+                <div class="flex justify-between w-52 text-sm pt-2 border-t">
                     <span class="font-bold text-slate-800">Totale Netto:</span>
                     <span id="grandTotal" class="font-bold text-indigo-700">€ 0,00</span>
                 </div>
@@ -563,7 +556,8 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
                         article: articleName,
                         color: color,
                         qty: qty,
-                        price: price
+                        price: price,
+                        discountPercent: 0 // Sconto predefinito 0% per ogni articolo
                     });
 
                     addedCount++;
@@ -580,6 +574,14 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
             alert("Articoli aggiunti correttamente all'ordine!");
         }
 
+        function updateItemDiscount(index, discountVal) {
+            let val = parseFloat(discountVal) || 0;
+            if (val < 0) val = 0;
+            if (val > 100) val = 100;
+            items[index].discountPercent = val;
+            renderTable();
+        }
+
         function removeItem(index) {
             items.splice(index, 1);
             renderTable();
@@ -591,13 +593,9 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
             document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
             document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
             document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
-            
-            const discountInput = parseFloat(document.getElementById('clientDiscount').value) || 0;
-            const discountText = discountInput > 0 ? `${discountInput}%` : 'Nessuno';
-            document.getElementById('pdfClientDiscount').innerText = discountText;
 
             if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
                 document.getElementById('totalPieces').innerText = "0";
                 document.getElementById('grandTotal').innerText = "€ 0,00";
                 return;
@@ -610,25 +608,32 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
             items.forEach((item, index) => {
                 totalQty += item.qty;
                 
-                // Calcolo prezzo scontato
-                const effectivePrice = discountInput > 0 ? item.price * (1 - discountInput / 100) : item.price;
+                const discount = item.discountPercent || 0;
+                const effectivePrice = discount > 0 ? item.price * (1 - discount / 100) : item.price;
                 const itemTotal = effectivePrice * item.qty;
                 grandTotal += itemTotal;
 
                 let priceDisplay = `€ ${item.price.toFixed(2).replace('.', ',')}`;
-                if (discountInput > 0) {
+                if (discount > 0) {
                     priceDisplay = `<span class="line-through text-slate-400 text-[10px] block">€ ${item.price.toFixed(2).replace('.', ',')}</span><span class="text-indigo-700 font-bold">€ ${effectivePrice.toFixed(2).replace('.', ',')}</span>`;
                 }
 
                 html += `
                     <tr class="border-b hover:bg-slate-50">
-                        <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
-                        <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
-                        <td class="py-2.5 px-3 font-medium">${item.color}</td>
-                        <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
-                        <td class="py-2.5 px-3 text-right">${priceDisplay}</td>
-                        <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${itemTotal.toFixed(2).replace('.', ',')}</td>
-                        <td class="py-2.5 px-3 text-center no-print">
+                        <td class="py-2.5 px-2 font-semibold text-indigo-900">${item.code}</td>
+                        <td class="py-2.5 px-2 font-medium text-slate-800">${item.article}</td>
+                        <td class="py-2.5 px-2 font-medium">${item.color}</td>
+                        <td class="py-2.5 px-2 text-center font-bold text-slate-900">${item.qty}</td>
+                        <td class="py-2.5 px-2 text-right">${priceDisplay}</td>
+                        <td class="py-2.5 px-2 text-center">
+                            <div class="no-print flex items-center justify-center">
+                                <input type="number" min="0" max="100" step="0.5" value="${item.discountPercent || ''}" placeholder="0" onchange="updateItemDiscount(${index}, this.value)" class="w-14 text-center text-xs font-bold border border-slate-300 rounded p-1 focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                                <span class="text-[10px] font-bold text-slate-500 ml-0.5">%</span>
+                            </div>
+                            <span class="hidden print-only-inline font-bold">${discount > 0 ? discount + '%' : '-'}</span>
+                        </td>
+                        <td class="py-2.5 px-2 text-right font-semibold text-slate-900">€ ${itemTotal.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-2 text-center no-print">
                             <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
@@ -646,7 +651,6 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
             const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
             const city = document.getElementById('clientCity').value || '-';
             const vat = document.getElementById('clientVat').value || '-';
-            const discountInput = parseFloat(document.getElementById('clientDiscount').value) || 0;
             const now = new Date();
             
             let summary = `*ORDINE RIVIERA BASIC*\n`;
@@ -655,9 +659,6 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
             summary += `*Cliente:* ${client}\n`;
             summary += `*Città:* ${city}\n`;
             summary += `*P.IVA/SDI:* ${vat}\n`;
-            if (discountInput > 0) {
-                summary += `*Sconto Applicato:* ${discountInput}%\n`;
-            }
             summary += `*Data e Ora:* ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}\n`;
             summary += `----------------------------------\n`;
             summary += `*ARTICOLI IN ORDINE:*\n\n`;
@@ -666,10 +667,13 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
             let totalEuro = 0;
 
             items.forEach(i => {
-                const effPrice = discountInput > 0 ? i.price * (1 - discountInput / 100) : i.price;
+                const disc = i.discountPercent || 0;
+                const effPrice = disc > 0 ? i.price * (1 - disc / 100) : i.price;
                 const totLine = effPrice * i.qty;
                 
-                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo: € ${effPrice.toFixed(2).replace('.', ',')} | Tot: € ${totLine.toFixed(2).replace('.', ',')}\n\n`;
+                let discText = disc > 0 ? ` (Sconto ${disc}%)` : '';
+                
+                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo Netto: € ${effPrice.toFixed(2).replace('.', ',')}${discText} | Tot: € ${totLine.toFixed(2).replace('.', ',')}\n\n`;
                 totalPz += i.qty;
                 totalEuro += totLine;
             });
@@ -710,31 +714,5 @@ Sostituisci l'intero contenuto del tuo file index.html su GitHub con questo codi
                 document.getElementById('clientName').value = '';
                 document.getElementById('clientCity').value = '';
                 document.getElementById('clientVat').value = '';
-                document.getElementById('clientDiscount').value = '';
 
-                document.getElementById('lineSelect').value = 'ALL';
-                populateItems('ALL');
-                document.getElementById('itemSelect').value = '';
-                document.getElementById('itemPriceInput').value = '';
-                document.getElementById('variantsContainer').classList.add('hidden');
-
-                renderTable();
-            }
-        }
-
-        function exportPDF() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
-                return;
-            }
-
-            renderTable();
-
-            setTimeout(function() {
-                window.print();
-            }, 100);
-        }
-    </script>
-</body>
-</html>
-
+                document.getElementById('lineSelect').value =
