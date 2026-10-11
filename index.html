@@ -68,7 +68,7 @@
                 <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded transition flex items-center">
                     <i class="fa-solid fa-file-pdf mr-1.5"></i> Catalogo PDF
                 </a>
-                <button onclick="resetForm()" class="text-xs bg-indigo-800 hover:bg-indigo-700 px-3 py-2 rounded transition">
+                <button onclick="resetForm()" class="text-xs bg-indigo-800 hover:bg-indigo-700 px-3 py-2 rounded transition font-bold">
                     <i class="fa-solid fa-rotate-left mr-1"></i> Nuovo Ordine
                 </button>
             </div>
@@ -114,6 +114,7 @@
                 <label class="block text-xs font-bold text-indigo-900 mb-1">1. Scegli la Linea Desiderata:</label>
                 <select id="lineSelect" onchange="onLineChange()" class="w-full text-sm font-semibold border border-indigo-300 rounded-lg p-2.5 bg-white text-indigo-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                     <option value="ALL">-- Mostra Tutte le Linee --</option>
+                    <option value="BECOOL">LINEA BECOOL (Lenzuola & Federe Rinfrescanti)</option>
                     <option value="PAINT">LINEA PAINT (Letto / Tessile Casa)</option>
                     <option value="GLAMOUR">LINEA GLAMOUR (Bagno / Accappatoi)</option>
                     <option value="WIMBLEDON">LINEA WIMBLEDON (Bagno / Accappatoi / Junior)</option>
@@ -241,6 +242,17 @@
     <script>
         // DATI CATALOGO PRODOTTI
         const productsData = [
+            // --- LINEA BECOOL ---
+            { line: 'BECOOL', group: 'BECOOL: LENZUOLO SOPRA RINFRESCANTE', name: 'BeCool - Lenzuolo Sopra Rinfrescante 2P (LP0028)', code: 'LP0028', price: 24.70, pack: 2, category: 'becool', label: 'Lenzuolo Sopra Rinfrescante 2P - Cod. LP0028 - € 24,70' },
+            { line: 'BECOOL', group: 'BECOOL: LENZUOLO SOPRA RINFRESCANTE', name: 'BeCool - Lenzuolo Sopra Rinfrescante 1+1/2P (LP0029)', code: 'LP0029', price: 18.90, pack: 2, category: 'becool', label: 'Lenzuolo Sopra Rinfrescante 1+1/2P - Cod. LP0029 - € 18,90' },
+            { line: 'BECOOL', group: 'BECOOL: LENZUOLO SOPRA RINFRESCANTE', name: 'BeCool - Lenzuolo Sopra Rinfrescante 1P (LP0030)', code: 'LP0030', price: 17.40, pack: 2, category: 'becool', label: 'Lenzuolo Sopra Rinfrescante 1P - Cod. LP0030 - € 17,40' },
+
+            { line: 'BECOOL', group: 'BECOOL: SOTTO CON ANGOLI RINFRESCANTE', name: 'BeCool - Sotto con Angoli Rinfrescante 2P (LQ0048)', code: 'LQ0048', price: 17.80, pack: 2, category: 'becool', label: 'Sotto con Angoli Rinfrescante 2P - Cod. LQ0048 - € 17,80' },
+            { line: 'BECOOL', group: 'BECOOL: SOTTO CON ANGOLI RINFRESCANTE', name: 'BeCool - Sotto con Angoli Rinfrescante 1+1/2P (LQ0049)', code: 'LQ0049', price: 15.60, pack: 2, category: 'becool', label: 'Sotto con Angoli Rinfrescante 1+1/2P - Cod. LQ0049 - € 15,60' },
+            { line: 'BECOOL', group: 'BECOOL: SOTTO CON ANGOLI RINFRESCANTE', name: 'BeCool - Sotto con Angoli Rinfrescante 1P (LQ0050)', code: 'LQ0050', price: 14.40, pack: 2, category: 'becool', label: 'Sotto con Angoli Rinfrescante 1P - Cod. LQ0050 - € 14,40' },
+
+            { line: 'BECOOL', group: 'BECOOL: COPPIA FEDERE RINFRESCANTE', name: 'BeCool - Coppia Federe Rinfrescante 50X80+3 (LM0144)', code: 'LM0144', price: 13.20, pack: 2, category: 'becool', label: 'Coppia Federe Rinfrescante 50X80+3 - Cod. LM0144 - € 13,20' },
+
             // --- LINEA BABY ANIMALS ---
             { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 0-2 Anni (CM5654)', code: 'CM5654-0/2', price: 8.90, pack: 1, category: 'baby_animals', label: 'Accappatoio Junior 0-2 Anni - Cod. CM5654 - € 8,90' },
             { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO JUNIOR', name: 'BABY ANIMALS - Accappatoio Junior 2-4 Anni (CM5654)', code: 'CM5654-2/4', price: 8.90, pack: 1, category: 'baby_animals', label: 'Accappatoio Junior 2-4 Anni - Cod. CM5654 - € 8,90' },
@@ -359,6 +371,9 @@
             { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Copriguanciale 3D 50x80 (LM0074)', code: 'LM0074', price: 5.40, pack: 12, category: 'bianco_only', label: 'Copriguanciale 3D 50x80 - Cod. LM0074 - € 5,40 (Preimb. 12 pz)' }
         ];
 
+        // --- COLORI LINEA BECOOL ---
+        const becoolColors = ["0101 Bianco", "0201 Avorio", "0301 Perla", "0701 Malva", "0501 Salvia", "0801 C. da Zucchero"];
+
         // --- COLORI LINEA PAINT ---
         const standardColors = ["0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA", "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE", "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO", "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA", "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO", "2501 LOTO", "1201 BORDEAUX"];
         const franceseColors = ["0101 BIANCO", "0301 NEW TORTORA", "0501 PERLA", "0601 ACCIAIO", "1501 DENIM", "1001 MALVA"];
@@ -394,8 +409,8 @@
             const headerDateTimeEl = document.getElementById('headerDateTime');
             const docDateEl = document.getElementById('docDate');
             
-            if (headerDateTimeEl) headerDateTimeEl.innerText = `${dateStr} - ${timeStr}`;
-            if (docDateEl) docDateEl.innerText = `Data: ${dateStr} - ${timeStr}`;
+            if (headerDateTimeEl) headerDateTimeEl.innerText = `${dateStr} -${timeStr}`;
+            if (docDateEl) docDateEl.innerText = `Data: ${dateStr} -${timeStr}`;
         }
 
         // Avvio all'interno del caricamento della pagina
@@ -473,7 +488,8 @@
             }
 
             let colorsToLoad = standardColors;
-            if (category === 'quilt') colorsToLoad = quiltColors;
+            if (category === 'becool') colorsToLoad = becoolColors;
+            else if (category === 'quilt') colorsToLoad = quiltColors;
             else if (category === 'francese') colorsToLoad = franceseColors;
             else if (category === 'king') colorsToLoad = kingColors;
             else if (category === 'glamour_set') colorsToLoad = glamourSetColors;
@@ -493,207 +509,4 @@
                     <tr class="border-b hover:bg-slate-50">
                         <td class="py-2 px-3 font-medium text-slate-800">${col}</td>
                         <td class="py-2 px-3 text-center">
-                            <input type="number" data-color="${col}" min="0" step="${pack}" placeholder="" class="variant-qty-input w-28 text-center text-sm font-bold border border-slate-300 rounded p-1.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none" onkeydown="handleVariantKeydown(event, ${idx})">
-                        </td>
-                    </tr>
-                `;
-            });
-
-            variantsTableBody.innerHTML = html;
-            variantsContainer.classList.remove('hidden');
-        }
-
-        function handleVariantKeydown(event, currentIndex) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                const inputs = document.querySelectorAll('.variant-qty-input');
-                const nextInput = inputs[currentIndex + 1];
-                if (nextInput) {
-                    nextInput.focus();
-                    nextInput.select();
-                } else {
-                    addMultiVariantItems();
-                }
-            }
-        }
-
-        function addMultiVariantItems() {
-            const select = document.getElementById('itemSelect');
-            if (!select.value || select.selectedIndex === 0) return;
-
-            const selectedOption = select.options[select.selectedIndex];
-            const code = selectedOption.getAttribute('data-code');
-            const articleName = selectedOption.value;
-            const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
-            const pack = parseInt(selectedOption.getAttribute('data-pack') || 1);
-
-            const qtyInputs = document.querySelectorAll('.variant-qty-input');
-            let addedCount = 0;
-
-            qtyInputs.forEach(input => {
-                if (input.value === "" || input.value === null) return;
-                let qty = parseInt(input.value) || 0;
-                const color = input.getAttribute('data-color');
-
-                if (qty > 0) {
-                    if (qty < pack) {
-                        alert(`La quantità per la variante "${color}" è inferiore al minimo stabilito (${pack} pz). Regolata al minimo.`);
-                        qty = pack;
-                    } else if (qty % pack !== 0) {
-                        qty = Math.ceil(qty / pack) * pack;
-                        alert(`La quantità per la variante "${color}" è stata adeguata al multiplo di imballo (${pack} pz): ${qty} pz.`);
-                    }
-
-                    items.push({
-                        code: code,
-                        article: articleName,
-                        color: color,
-                        qty: qty,
-                        price: price,
-                        total: price * qty
-                    });
-
-                    addedCount++;
-                    input.value = "";
-                }
-            });
-
-            if (addedCount === 0) {
-                alert("Inserisci almeno una quantità maggiore di zero su una variante.");
-                return;
-            }
-
-            renderTable();
-            alert("Articoli aggiunti correttamente all'ordine!");
-        }
-
-        function removeItem(index) {
-            items.splice(index, 1);
-            renderTable();
-        }
-
-        function renderTable() {
-            const tbody = document.getElementById('orderTableBody');
-            
-            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
-            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
-            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
-
-            if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine.</td></tr>`;
-                document.getElementById('totalPieces').innerText = "0";
-                document.getElementById('grandTotal').innerText = "€ 0,00";
-                return;
-            }
-
-            let html = '';
-            let totalQty = 0;
-            let grandTotal = 0;
-
-            items.forEach((item, index) => {
-                totalQty += item.qty;
-                grandTotal += item.total;
-                html += `
-                    <tr class="border-b hover:bg-slate-50">
-                        <td class="py-2.5 px-3 font-semibold text-indigo-900">${item.code}</td>
-                        <td class="py-2.5 px-3 font-medium text-slate-800">${item.article}</td>
-                        <td class="py-2.5 px-3 font-medium">${item.color}</td>
-                        <td class="py-2.5 px-3 text-center font-bold text-slate-900">${item.qty}</td>
-                        <td class="py-2.5 px-3 text-right">€ ${item.price.toFixed(2).replace('.', ',')}</td>
-                        <td class="py-2.5 px-3 text-right font-semibold text-slate-900">€ ${item.total.toFixed(2).replace('.', ',')}</td>
-                        <td class="py-2.5 px-3 text-center no-print">
-                            <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            tbody.innerHTML = html;
-            document.getElementById('totalPieces').innerText = totalQty;
-            document.getElementById('grandTotal').innerText = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
-        }
-
-        function buildOrderSummaryText() {
-            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
-            const city = document.getElementById('clientCity').value || '-';
-            const vat = document.getElementById('clientVat').value || '-';
-            const now = new Date();
-            
-            let summary = `*ORDINE RIVIERA BASIC*\n`;
-            summary += `*Rappresentante:* Cacciola Daniele\n`;
-            summary += `----------------------------------\n`;
-            summary += `*Cliente:* ${client}\n`;
-            summary += `*Città:* ${city}\n`;
-            summary += `*P.IVA/SDI:* ${vat}\n`;
-            summary += `*Data e Ora:* ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}\n`;
-            summary += `----------------------------------\n`;
-            summary += `*ARTICOLI IN ORDINE:*\n\n`;
-
-            let totalPz = 0;
-            let totalEuro = 0;
-
-            items.forEach(i => {
-                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo: € ${i.price.toFixed(2).replace('.', ',')} | Tot: € ${i.total.toFixed(2).replace('.', ',')}\n\n`;
-                totalPz += i.qty;
-                totalEuro += i.total;
-            });
-
-            summary += `----------------------------------\n`;
-            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
-            summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
-
-            return summary;
-        }
-
-        function sendWhatsApp() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
-                return;
-            }
-            const text = encodeURIComponent(buildOrderSummaryText());
-            const phone = "393392822146";
-            window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`, '_blank');
-        }
-
-        function sendEmail() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di inviare l'email.");
-                return;
-            }
-            const client = document.getElementById('clientName').value || 'Cliente';
-            const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
-            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
-            const email = "cacciola74@gmail.com";
-            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-        }
-
-        function resetForm() {
-            if (confirm("Vuoi azzerare l'ordine corrente?")) {
-                items = [];
-                document.getElementById('clientName').value = '';
-                document.getElementById('clientCity').value = '';
-                document.getElementById('clientVat').value = '';
-                document.getElementById('lineSelect').value = 'ALL';
-                populateItems('ALL');
-                document.getElementById('variantsContainer').classList.add('hidden');
-                renderTable();
-            }
-        }
-
-        function exportPDF() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di scaricare o stampare.");
-                return;
-            }
-
-            renderTable();
-
-            setTimeout(function() {
-                window.print();
-            }, 100);
-        }
-    </script>
-</body>
-</html>
+                            <input type="number" data-color="${col}" min="0" step="${pack}" placeholder="" class="variant-qty-input w-28 text-center text-sm font-bold border border-slate-300 rounded p-1.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none" onkeydown="handleVariantKeydown(event, ${idx
