@@ -127,9 +127,9 @@
                 </select>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-medium text-slate-600 mb-1">2. Articolo - Misura - Codice - Prezzo Unitario</label>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">2. Articolo - Misura - Codice</label>
                     <select id="itemSelect" onchange="onItemChange()" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                         <option value="">-- Seleziona Articolo --</option>
                     </select>
@@ -137,6 +137,10 @@
                 <div>
                     <label class="block text-xs font-medium text-slate-600 mb-1">Prezzo Listino €</label>
                     <input type="text" id="itemPriceInput" readonly class="w-full text-sm font-bold bg-slate-100 border border-slate-300 rounded-lg p-2.5 text-slate-700">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-indigo-900 mb-1"><i class="fa-solid fa-percent text-indigo-600 mr-1"></i> Sconto % Articolo</label>
+                    <input type="number" id="itemDiscountInput" min="0" max="100" step="0.5" placeholder="Es. 10" class="w-full text-sm font-bold border border-indigo-300 bg-indigo-50/50 rounded-lg p-2.5 text-indigo-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
             </div>
 
@@ -203,7 +207,7 @@
                             <th class="py-2.5 px-2">Variante Colore</th>
                             <th class="py-2.5 px-2 text-center">PZ</th>
                             <th class="py-2.5 px-2 text-right">Prezzo Unit.</th>
-                            <th class="py-2.5 px-2 text-center w-20">Sconto %</th>
+                            <th class="py-2.5 px-2 text-center">Sconto %</th>
                             <th class="py-2.5 px-2 text-right">Totale €</th>
                             <th class="py-2.5 px-2 text-center no-print">Azione</th>
                         </tr>
@@ -428,6 +432,7 @@
 
             itemSelect.innerHTML = '<option value="">-- Seleziona Articolo --</option>';
             document.getElementById('itemPriceInput').value = '';
+            document.getElementById('itemDiscountInput').value = '';
             document.getElementById('variantsContainer').classList.add('hidden');
 
             const filteredProducts = (filterLine === 'ALL' || !filterLine)
@@ -521,6 +526,9 @@
             const articleName = selectedOption.value;
             const price = parseFloat(selectedOption.getAttribute('data-price') || 0);
             const pack = parseInt(selectedOption.getAttribute('data-pack') || 1);
+            
+            // Lettura dello sconto impostato a livello di articolo
+            const discountInputVal = parseFloat(document.getElementById('itemDiscountInput').value) || 0;
 
             const qtyInputs = document.querySelectorAll('.variant-qty-input');
             let addedCount = 0;
@@ -545,7 +553,7 @@
                         color: color,
                         qty: qty,
                         price: price,
-                        discountPercent: 0
+                        discountPercent: discountInputVal // Applicazione dello sconto dell'articolo a tutte le sue varianti
                     });
 
                     addedCount++;
@@ -560,14 +568,6 @@
 
             renderTable();
             alert("Articoli aggiunti correttamente all'ordine!");
-        }
-
-        function updateItemDiscount(index, discountVal) {
-            let val = parseFloat(discountVal) || 0;
-            if (val < 0) val = 0;
-            if (val > 100) val = 100;
-            items[index].discountPercent = val;
-            renderTable();
         }
 
         function removeItem(index) {
@@ -613,13 +613,7 @@
                         <td class="py-2.5 px-2 font-medium">${item.color}</td>
                         <td class="py-2.5 px-2 text-center font-bold text-slate-900">${item.qty}</td>
                         <td class="py-2.5 px-2 text-right">${priceDisplay}</td>
-                        <td class="py-2.5 px-2 text-center">
-                            <div class="no-print flex items-center justify-center">
-                                <input type="number" min="0" max="100" step="0.5" value="${item.discountPercent || ''}" placeholder="0" onchange="updateItemDiscount(${index}, this.value)" class="w-14 text-center text-xs font-bold border border-slate-300 rounded p-1 focus:ring-1 focus:ring-indigo-500 focus:outline-none">
-                                <span class="text-[10px] font-bold text-slate-500 ml-0.5">%</span>
-                            </div>
-                            <span class="hidden print-only-inline font-bold">${discount > 0 ? discount + '%' : '-'}</span>
-                        </td>
+                        <td class="py-2.5 px-2 text-center font-bold text-indigo-800">${discount > 0 ? discount + '%' : '-'}</td>
                         <td class="py-2.5 px-2 text-right font-semibold text-slate-900">€ ${itemTotal.toFixed(2).replace('.', ',')}</td>
                         <td class="py-2.5 px-2 text-center no-print">
                             <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
@@ -707,6 +701,7 @@
                 populateItems('ALL');
                 document.getElementById('itemSelect').value = '';
                 document.getElementById('itemPriceInput').value = '';
+                document.getElementById('itemDiscountInput').value = '';
                 document.getElementById('variantsContainer').classList.add('hidden');
 
                 renderTable();
