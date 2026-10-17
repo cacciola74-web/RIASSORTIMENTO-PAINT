@@ -221,10 +221,10 @@
                     <i class="fa-solid fa-rotate-left mr-1"></i> Svuota Ordine
                 </button>
                 <button onclick="sendWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
-                    <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Invia WhatsApp + Scarica PDF
+                    <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Invia WhatsApp + PDF
                 </button>
                 <button onclick="sendEmail()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
-                    <i class="fa-solid fa-envelope text-lg mr-2"></i> Invia Email + Scarica PDF
+                    <i class="fa-solid fa-envelope text-lg mr-2"></i> Invia Email + PDF
                 </button>
                 <button onclick="exportPDF()" class="bg-slate-700 hover:bg-slate-800 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
                     <i class="fa-solid fa-file-pdf text-lg mr-2"></i> Stampa / PDF
@@ -701,7 +701,7 @@
             summary += `*Cliente:* ${client}\n`;
             summary += `*Città:* ${city}\n`;
             summary += `*Cod. Univoco/P.IVA:* ${vat}\n`;
-            summary += `*Data e Ora:* ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}\n`;
+            summary += `*Data:* ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}\n`;
             summary += `----------------------------------\n`;
             summary += `*ARTICOLI IN ORDINE:*\n\n`;
 
@@ -726,23 +726,100 @@
             return summary;
         }
 
-        // Funzione per generare e scaricare automaticamente il PDF
-        function downloadOrderPDF(callback) {
+        // Genera un elemento HTML pulito esclusivamente per la conversione in PDF senza stili complessi
+        function generateCleanPDFHtml() {
+            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
+            const city = document.getElementById('clientCity').value || '-';
+            const vat = document.getElementById('clientVat').value || '-';
+            const now = new Date();
+
+            let rows = '';
+            let totalQty = 0;
+            let grandTotal = 0;
+
+            items.forEach(item => {
+                totalQty += item.qty;
+                const discount = item.discountPercent || 0;
+                const effectivePrice = discount > 0 ? item.price * (1 - discount / 100) : item.price;
+                const itemTotal = effectivePrice * item.qty;
+                grandTotal += itemTotal;
+
+                rows += `
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 6px; font-weight: bold;">${item.code}</td>
+                        <td style="padding: 6px;">${item.article}</td>
+                        <td style="padding: 6px;">${item.color}</td>
+                        <td style="padding: 6px; text-align: center;">${item.qty}</td>
+                        <td style="padding: 6px; text-align: right;">€ ${item.price.toFixed(2).replace('.', ',')}</td>
+                        <td style="padding: 6px; text-align: center;">${discount > 0 ? discount + '%' : '-'}</td>
+                        <td style="padding: 6px; text-align: right; font-weight: bold;">€ ${itemTotal.toFixed(2).replace('.', ',')}</td>
+                    </tr>
+                `;
+            });
+
+            const container = document.createElement('div');
+            container.style.padding = '20px';
+            container.style.fontFamily = 'sans-serif';
+            container.style.color = '#000000';
+            container.style.backgroundColor = '#ffffff';
+
+            container.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #312e81; padding-bottom: 10px; margin-bottom: 15px;">
+                    <div>
+                        <h1 style="margin: 0; color: #312e81; font-size: 22px;">RIVIERA BASIC</h1>
+                        <p style="margin: 3px 0 0 0; color: #555; font-size: 12px; font-weight: bold;">Rappresentante Cacciola Daniele - Copia Commissione</p>
+                    </div>
+                    <div style="text-align: right; font-size: 11px; color: #666;">
+                        Data: ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}
+                    </div>
+                </div>
+
+                <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; font-size: 12px; margin-bottom: 15px; display: flex; justify-content: space-between;">
+                    <div><strong>Cliente:</strong> ${client}</div>
+                    <div><strong>Città:</strong> ${city}</div>
+                    <div><strong>Cod. Univoco/P.IVA:</strong> ${vat}</div>
+                </div>
+
+                <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                    <thead>
+                        <tr style="background-color: #f1f5f9; text-align: left; border-bottom: 2px solid #cbd5e1;">
+                            <th style="padding: 8px 6px;">Codice</th>
+                            <th style="padding: 8px 6px;">Articolo / Descrizione</th>
+                            <th style="padding: 8px 6px;">Variante Colore</th>
+                            <th style="padding: 8px 6px; text-align: center;">PZ</th>
+                            <th style="padding: 8px 6px; text-align: right;">Prezzo List.</th>
+                            <th style="padding: 8px 6px; text-align: center;">Sconto %</th>
+                            <th style="padding: 8px 6px; text-align: right;">Totale €</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 20px; border-top: 2px solid #312e81; padding-top: 10px; text-align: right; font-size: 13px;">
+                    <p style="margin: 2px 0;"><strong>Totale Pezzi:</strong> ${totalQty}</p>
+                    <p style="margin: 4px 0 0 0; font-size: 16px; color: #312e81;"><strong>Totale Netto: € ${grandTotal.toFixed(2).replace('.', ',')}</strong></p>
+                </div>
+            `;
+
+            return container;
+        }
+
+        function downloadOrderPDF() {
             const client = document.getElementById('clientName').value || 'Cliente';
             const filename = `Ordine_Riviera_${client.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
-            const element = document.getElementById('pdfContent');
+            const element = generateCleanPDFHtml();
 
             const opt = {
                 margin:       10,
                 filename:     filename,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
+                html2canvas:  { scale: 2, logging: false },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save().then(() => {
-                if (callback) callback();
-            });
+            html2pdf().set(opt).from(element).save();
         }
 
         function sendWhatsApp() {
@@ -751,11 +828,10 @@
                 return;
             }
 
-            // Genera e scarica il PDF e contemporaneamente apre WhatsApp
-            downloadOrderPDF(() => {
-                const text = encodeURIComponent(buildOrderSummaryText());
-                window.open(`https://api.whatsapp.com/send?phone=393392822146&text=${text}`, '_blank');
-            });
+            // Scarica il PDF pulito e apre WhatsApp immediatamente
+            downloadOrderPDF();
+            const text = encodeURIComponent(buildOrderSummaryText());
+            window.open(`https://api.whatsapp.com/send?phone=393392822146&text=${text}`, '_blank');
         }
 
         function sendEmail() {
@@ -766,12 +842,13 @@
 
             const client = document.getElementById('clientName').value || 'Cliente';
             const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
-            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
+            const body = encodeURIComponent(`In allegato la copia commissione in formato PDF per l'ordine di ${client}.\n\nCordiali Saluti,\nCacciola Daniele`);
 
-            // Genera e scarica il PDF e apre l'applicazione Email
-            downloadOrderPDF(() => {
-                window.location.href = `mailto:cacciola74@gmail.com?subject=${subject}&body=${body}`;
-            });
+            // 1. Avvia il download del PDF
+            downloadOrderPDF();
+
+            // 2. Apre il client di posta immediatamente
+            window.location.href = `mailto:cacciola74@gmail.com?subject=${subject}&body=${body}`;
         }
 
         function exportPDF() {
