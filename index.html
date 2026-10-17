@@ -101,10 +101,10 @@
             <div class="flex-1 min-w-[240px]">
                 <select id="lineSelect" onchange="renderProductGrid()" class="w-full text-sm font-semibold border border-indigo-300 rounded-lg p-2.5 bg-indigo-50/50 text-indigo-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                     <option value="ALL">-- Tutte le Linee Prodotti --</option>
+                    <option value="GLAMOUR">LINEA GLAMOUR (Bagno, Accappatoi, Tappeti)</option>
                     <option value="PAINT">LINEA PAINT (Parure Copripiumino & Letto)</option>
                     <option value="INCANTO">LINEA INCANTO (Parure Copripiumino, Letto, Federe)</option>
                     <option value="BECOOL">LINEA BECOOL (Lenzuola Rinfrescanti)</option>
-                    <option value="GLAMOUR">LINEA GLAMOUR (Bagno & Accappatoi)</option>
                     <option value="WIMBLEDON">LINEA WIMBLEDON (Spugna & Junior)</option>
                     <option value="BABY_ANIMALS">LINEA BABY ANIMALS (Junior)</option>
                     <option value="ACCESSORI_LETTO">LINEA ACCESSORI LETTO (Topper, Piumini, Guanciali)</option>
@@ -263,33 +263,41 @@
 
     <script>
         const productsData = [
-            // --- LINEA PAINT (Parure Copripiumino) ---[span_1](start_span)[span_1](end_span)
-            { line: 'PAINT', name: 'Parure Copripiumino Matrimoniale (2P)', code: 'LF0179', price: 30.90, pack: 1, category: 'standard', image: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=500&q=80' },
-            { line: 'PAINT', name: 'Parure Copripiumino Piazza e Mezza (1+1/2P)', code: 'LF0180', price: 26.90, pack: 1, category: 'standard', image: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=500&q=80' },
-            { line: 'PAINT', name: 'Parure Copripiumino Singolo (1P)', code: 'LF0181', price: 20.90, pack: 1, category: 'standard', image: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=500&q=80' },
+            // --- LINEA GLAMOUR ---
+            { line: 'GLAMOUR', name: 'GLAMOUR - Accappatoio Adulto S/M/L/XL/XXL', code: 'BA0041', price: 15.55, pack: 1, category: 'glamour_accappatoio', image: 'img/BA0041.jpg' },
+            { line: 'GLAMOUR', name: 'GLAMOUR - Accappatoio Adulto XXXL', code: 'BA0041-3XL', price: 15.55, pack: 1, category: 'glamour_accappatoio_3xl', image: 'img/BA0041-3XL.jpg' },
+            { line: 'GLAMOUR', name: 'GLAMOUR - Set 1+1 40x60/60x110 (Asciugamano + Ospite)', code: 'BB0189', price: 4.90, pack: 1, category: 'glamour_set', image: 'img/BB0189.jpg' },
+            { line: 'GLAMOUR', name: 'GLAMOUR - Telo Bagno 100x150', code: 'BE0044', price: 8.51, pack: 1, category: 'glamour_set', image: 'img/BE0044.jpg' },
+            { line: 'GLAMOUR', name: 'GLAMOUR - Tappeto Bagno 50x80', code: 'AX0250', price: 4.20, pack: 1, category: 'glamour_tappeto', image: 'img/AX0250.jpg' },
+
+            // --- LINEA PAINT ---
+            { line: 'PAINT', name: 'Parure Copripiumino Matrimoniale (2P)', code: 'LF0179', price: 30.90, pack: 1, category: 'standard', image: 'img/LF0179.jpg' },
+            { line: 'PAINT', name: 'Parure Copripiumino Piazza e Mezza (1+1/2P)', code: 'LF0180', price: 26.90, pack: 1, category: 'standard', image: 'img/LF0180.jpg' },
+            { line: 'PAINT', name: 'Parure Copripiumino Singolo (1P)', code: 'LF0181', price: 20.90, pack: 1, category: 'standard', image: 'img/LF0181.jpg' },
 
             // --- LINEA INCANTO ---
-            { line: 'INCANTO', name: 'Parure Copripiumino 2P', code: 'LF0725', price: 39.90, pack: 2, category: 'incanto_copripiumino', image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=500&q=80' },
-            { line: 'INCANTO', name: 'Parure Copripiumino 1+1/2P', code: 'LF0726', price: 34.90, pack: 1, category: 'incanto_copripiumino', image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=500&q=80' },
-            { line: 'INCANTO', name: 'Parure Copripiumino 1P', code: 'LF0727', price: 26.90, pack: 2, category: 'incanto_copripiumino', image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=500&q=80' },
-            { line: 'INCANTO', name: 'Completo Letto 2P', code: 'LN1544', price: 39.90, pack: 2, category: 'incanto_letto', image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=500&q=80' },
-            { line: 'INCANTO', name: 'Completo Letto 1+1/2P', code: 'LN1545', price: 34.90, pack: 1, category: 'incanto_letto', image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=500&q=80' },
-            { line: 'INCANTO', name: 'Completo Letto 1P', code: 'LN1546', price: 26.90, pack: 2, category: 'incanto_letto', image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=500&q=80' },
-            { line: 'INCANTO', name: 'Coppia Federe 50x80', code: 'LM0140', price: 9.90, pack: 2, category: 'incanto_letto', image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=500&q=80' },
+            { line: 'INCANTO', name: 'Parure Copripiumino 2P', code: 'LF0725', price: 39.90, pack: 2, category: 'incanto_copripiumino', image: 'img/LF0725.jpg' },
+            { line: 'INCANTO', name: 'Parure Copripiumino 1+1/2P', code: 'LF0726', price: 34.90, pack: 1, category: 'incanto_copripiumino', image: 'img/LF0726.jpg' },
+            { line: 'INCANTO', name: 'Parure Copripiumino 1P', code: 'LF0727', price: 26.90, pack: 2, category: 'incanto_copripiumino', image: 'img/LF0727.jpg' },
+            { line: 'INCANTO', name: 'Completo Letto 2P', code: 'LN1544', price: 39.90, pack: 2, category: 'incanto_letto', image: 'img/LN1544.jpg' },
+            { line: 'INCANTO', name: 'Completo Letto 1+1/2P', code: 'LN1545', price: 34.90, pack: 1, category: 'incanto_letto', image: 'img/LN1545.jpg' },
+            { line: 'INCANTO', name: 'Completo Letto 1P', code: 'LN1546', price: 26.90, pack: 2, category: 'incanto_letto', image: 'img/LN1546.jpg' },
+            { line: 'INCANTO', name: 'Coppia Federe 50x80', code: 'LM0140', price: 9.90, pack: 2, category: 'incanto_letto', image: 'img/LM0140.jpg' },
 
             // --- LINEA BECOOL ---
-            { line: 'BECOOL', name: 'BeCool - Lenzuolo Sopra Rinfrescante 2P', code: 'LP0028', price: 24.70, pack: 2, category: 'becool', image: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=500&q=80' },
-
-            // --- LINEA GLAMOUR ---
-            { line: 'GLAMOUR', name: 'GLAMOUR - Accappatoio Adulto', code: 'BA0041', price: 15.55, pack: 1, category: 'glamour_accappatoio', image: 'https://images.unsplash.com/photo-1563178406-4cdc2923acbc?w=500&q=80' }
+            { line: 'BECOOL', name: 'BeCool - Lenzuolo Sopra Rinfrescante 2P', code: 'LP0028', price: 24.70, pack: 2, category: 'becool', image: 'img/LP0028.jpg' },
+            { line: 'BECOOL', name: 'BeCool - Sotto con Angoli Rinfrescante 2P', code: 'LQ0048', price: 17.80, pack: 2, category: 'becool', image: 'img/LQ0048.jpg' }
         ];
 
         const colorMap = {
+            'glamour_set': ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "1101 RUGGINO", "0501 ROSA", "1201 BORDEAUX", "0801 MALVA", "1301 AMETISTA"],
+            'glamour_accappatoio': ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "0501 ROSA", "0801 MALVA", "1201 BORDEAUX"],
+            'glamour_accappatoio_3xl': ["0106 BIANCO", "1506 AVORIO", "0306 TORTORA", "0406 GRIGIO SCURO", "1006 BLU SCURO", "0706 VERDE"],
+            'glamour_tappeto': ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0701 VERDE", "0801 MALVA", "1101 RUGGINO"],
             'standard': ["0101 Bianco", "0201 Avorio", "2901 Tofu", "3001 Mandorla", "0301 New Tortora", "0401 Glacé", "2301 Cammello", "0501 Perla", "0601 Acciaio", "2801 Carbone", "3301 Celeste", "1401 C. da Zucchero", "1901 Turchese", "1501 Denim", "2001 New Ottanio", "1601 Navy", "2101 Militare", "2701 Muschio", "3401 Bosco", "2401 Crema", "2201 Senape", "1001 Malva", "0901 Rosa Antico", "2601 Carota", "3101 Coccio", "2501 Loto", "1201 Bordeaux", "3201 Prugna"],
             'incanto_copripiumino': ["0101 Bianco- Perla", "0201 Avorio -Tortora", "0301 Malva -Avorio", "0401 Ottanio -Tortora", "0501 Senape -Avorio", "0601 Muschio-Avorio"],
             'incanto_letto': ["0101 Bianco", "0201 Avorio", "0301 Perla", "0401 Tortora", "0501 Ottanio", "0601 Muschio", "0701 Senape", "0801 Malva"],
-            'becool': ["0101 Bianco", "0201 Avorio", "0301 Perla", "0701 Malva", "0501 Salvia", "0801 C. da Zucchero"],
-            'glamour_accappatoio': ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO"]
+            'becool': ["0101 Bianco", "0201 Avorio", "0301 Perla", "0701 Malva", "0501 Salvia", "0801 C. da Zucchero"]
         };
 
         let items = [];
@@ -326,7 +334,7 @@
                     <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition border border-slate-200 overflow-hidden flex flex-col justify-between group">
                         <div>
                             <div class="relative overflow-hidden aspect-video bg-slate-100">
-                                <img src="${img}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                <img src="${img}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(p.name)}';" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                                 <span class="absolute top-2 left-2 bg-indigo-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-sm">${p.line}</span>
                             </div>
                             <div class="p-4">
@@ -358,7 +366,13 @@
             document.getElementById('modalProductName').innerText = currentSelectedProduct.name;
             document.getElementById('modalProductCode').innerText = `Codice: ${currentSelectedProduct.code}`;
             document.getElementById('modalProductPrice').innerText = `€ ${currentSelectedProduct.price.toFixed(2).replace('.', ',')}`;
-            document.getElementById('modalProductImage').src = currentSelectedProduct.image || 'https://via.placeholder.com/400x300?text=Riviera+Basic';
+            
+            const imgEl = document.getElementById('modalProductImage');
+            imgEl.src = currentSelectedProduct.image || 'https://via.placeholder.com/400x300?text=Riviera+Basic';
+            imgEl.onerror = function() {
+                this.src = 'https://via.placeholder.com/400x300?text=' + encodeURIComponent(currentSelectedProduct.name);
+            };
+
             document.getElementById('modalDiscountInput').value = '';
 
             const pack = currentSelectedProduct.pack || 1;
