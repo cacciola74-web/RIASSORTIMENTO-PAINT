@@ -101,7 +101,7 @@
             <div class="flex-1 min-w-[240px]">
                 <select id="lineSelect" onchange="renderProductGrid()" class="w-full text-sm font-semibold border border-indigo-300 rounded-lg p-2.5 bg-indigo-50/50 text-indigo-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                     <option value="ALL">-- Tutte le Linee Prodotti --</option>
-                    <option value="PAINT">LINEA PAINT (Parure Copripiumino & Letto)</option>
+                    <option value="PAINT">LINEA PAINT (Parure, Completi, Lenzuola, Federe & Quilt)</option>
                     <option value="GLAMOUR">LINEA GLAMOUR (Bagno, Accappatoi, Tappeti)</option>
                     <option value="INCANTO">LINEA INCANTO (Parure Copripiumino, Letto, Federe)</option>
                     <option value="BECOOL">LINEA BECOOL (Lenzuola Rinfrescanti)</option>
@@ -263,10 +263,34 @@
 
     <script>
         const productsData = [
-            // --- LINEA PAINT ---
-            { line: 'PAINT', name: 'Parure Copripiumino Matrimoniale (2P)', code: 'LF0179', price: 30.90, pack: 1, category: 'standard', image: 'img/IMG_0996.jpeg' },
-            { line: 'PAINT', name: 'Parure Copripiumino Piazza e Mezza (1+1/2P)', code: 'LF0180', price: 26.90, pack: 1, category: 'standard', image: 'img/IMG_0996.jpeg' },
-            { line: 'PAINT', name: 'Parure Copripiumino Singolo (1P)', code: 'LF0181', price: 20.90, pack: 1, category: 'standard', image: 'img/IMG_0996.jpeg' },
+            // --- LINEA PAINT (Parure Copripiumino) ---
+            { line: 'PAINT', name: 'PAINT - Parure Copripiumino Matrimoniale (2P)', code: 'LF0179', price: 29.90, pack: 1, category: 'standard', image: 'img/IMG_0996.jpeg' },
+            { line: 'PAINT', name: 'PAINT - Parure Copripiumino Piazza e Mezza (1+1/2P)', code: 'LF0180', price: 25.90, pack: 1, category: 'standard', image: 'img/IMG_0996.jpeg' },
+            { line: 'PAINT', name: 'PAINT - Parure Copripiumino Singolo (1P)', code: 'LF0181', price: 19.90, pack: 1, category: 'standard', image: 'img/IMG_0996.jpeg' },
+
+            // --- LINEA PAINT (Completi Letto) ---
+            { line: 'PAINT', name: 'PAINT - Completo Letto Matrimoniale (2P)', code: 'LN0506', price: 28.90, pack: 1, category: 'standard', image: 'img/LN0506.jpg' },
+            { line: 'PAINT', name: 'PAINT - Completo Letto Francese', code: 'LN0507', price: 27.50, pack: 1, category: 'standard', image: 'img/LN0507.jpg' },
+            { line: 'PAINT', name: 'PAINT - Completo Letto Piazza e Mezza (1+1/2P)', code: 'LN0508', price: 22.90, pack: 1, category: 'standard', image: 'img/LN0508.jpg' },
+            { line: 'PAINT', name: 'PAINT - Completo Letto Singolo (1P)', code: 'LN0509', price: 18.90, pack: 2, category: 'standard', image: 'img/LN0509.jpg' },
+
+            // --- LINEA PAINT (Lenzuola Sopra Sfuse) ---
+            { line: 'PAINT', name: 'PAINT - Lenzuolo Sopra Matrimoniale (2P)', code: 'LP0001', price: 13.00, pack: 1, category: 'standard', image: 'img/LP0001.jpg' },
+            { line: 'PAINT', name: 'PAINT - Lenzuolo Sopra Francese', code: 'LP0002', price: 12.00, pack: 1, category: 'standard', image: 'img/LP0002.jpg' },
+            { line: 'PAINT', name: 'PAINT - Lenzuolo Sopra Piazza e Mezza (1+1/2P)', code: 'LP0003', price: 11.00, pack: 1, category: 'standard', image: 'img/LP0003.jpg' },
+            { line: 'PAINT', name: 'PAINT - Lenzuolo Sopra Singolo (1P)', code: 'LP0004', price: 9.50, pack: 2, category: 'standard', image: 'img/LP0004.jpg' },
+
+            // --- LINEA PAINT (Lenzuola Sotto con Angoli) ---
+            { line: 'PAINT', name: 'PAINT - Lenzuolo Sotto con Angoli Matrimoniale (2P)', code: 'LQ0002', price: 10.50, pack: 1, category: 'standard', image: 'img/LQ0002.jpg' },
+            { line: 'PAINT', name: 'PAINT - Lenzuolo Sotto con Angoli Francese', code: 'LQ0003', price: 9.90, pack: 1, category: 'standard', image: 'img/LQ0003.jpg' },
+            { line: 'PAINT', name: 'PAINT - Lenzuolo Sotto con Angoli Piazza e Mezza (1+1/2P)', code: 'LQ0004', price: 9.20, pack: 2, category: 'standard', image: 'img/LQ0004.jpg' },
+            { line: 'PAINT', name: 'PAINT - Lenzuolo Sotto con Angoli Singolo (1P)', code: 'LQ0005', price: 7.50, pack: 2, category: 'standard', image: 'img/LQ0005.jpg' },
+
+            // --- LINEA PAINT (Federe & Quilt) ---
+            { line: 'PAINT', name: 'PAINT - Coppia Federe 50x80', code: 'LM0068', price: 6.90, pack: 2, category: 'standard', image: 'img/LM0068.jpg' },
+            { line: 'PAINT', name: 'PAINT - Quilt Double Trapuntato Matrimoniale (2P)', code: 'LE0607', price: 44.90, pack: 1, category: 'standard', image: 'img/LE0607.jpg' },
+            { line: 'PAINT', name: 'PAINT - Quilt Double Trapuntato Piazza e Mezza (1+1/2P)', code: 'LE0624', price: 39.90, pack: 1, category: 'standard', image: 'img/LE0624.jpg' },
+            { line: 'PAINT', name: 'PAINT - Quilt Double Trapuntato Singolo (1P)', code: 'LE0625', price: 34.90, pack: 1, category: 'standard', image: 'img/LE0625.jpg' },
 
             // --- LINEA GLAMOUR ---
             { line: 'GLAMOUR', name: 'GLAMOUR - Accappatoio Adulto S/M/L/XL/XXL', code: 'BA0041', price: 15.55, pack: 1, category: 'glamour_accappatoio', image: 'img/BA0041.jpg' },
@@ -276,13 +300,13 @@
             { line: 'GLAMOUR', name: 'GLAMOUR - Tappeto Bagno 50x80', code: 'AX0250', price: 4.20, pack: 1, category: 'glamour_tappeto', image: 'img/AX0250.jpg' },
 
             // --- LINEA INCANTO ---
-            { line: 'INCANTO', name: 'Parure Copripiumino 2P', code: 'LF0725', price: 39.90, pack: 2, category: 'incanto_copripiumino', image: 'img/LF0725.jpg' },
-            { line: 'INCANTO', name: 'Parure Copripiumino 1+1/2P', code: 'LF0726', price: 34.90, pack: 1, category: 'incanto_copripiumino', image: 'img/LF0726.jpg' },
-            { line: 'INCANTO', name: 'Parure Copripiumino 1P', code: 'LF0727', price: 26.90, pack: 2, category: 'incanto_copripiumino', image: 'img/LF0727.jpg' },
-            { line: 'INCANTO', name: 'Completo Letto 2P', code: 'LN1544', price: 39.90, pack: 2, category: 'incanto_letto', image: 'img/LN1544.jpg' },
-            { line: 'INCANTO', name: 'Completo Letto 1+1/2P', code: 'LN1545', price: 34.90, pack: 1, category: 'incanto_letto', image: 'img/LN1545.jpg' },
-            { line: 'INCANTO', name: 'Completo Letto 1P', code: 'LN1546', price: 26.90, pack: 2, category: 'incanto_letto', image: 'img/LN1546.jpg' },
-            { line: 'INCANTO', name: 'Coppia Federe 50x80', code: 'LM0140', price: 9.90, pack: 2, category: 'incanto_letto', image: 'img/LM0140.jpg' },
+            { line: 'INCANTO', name: 'INCANTO - Parure Copripiumino 2P', code: 'LF0725', price: 39.90, pack: 2, category: 'incanto_copripiumino', image: 'img/LF0725.jpg' },
+            { line: 'INCANTO', name: 'INCANTO - Parure Copripiumino 1+1/2P', code: 'LF0726', price: 34.90, pack: 1, category: 'incanto_copripiumino', image: 'img/LF0726.jpg' },
+            { line: 'INCANTO', name: 'INCANTO - Parure Copripiumino 1P', code: 'LF0727', price: 26.90, pack: 2, category: 'incanto_copripiumino', image: 'img/LF0727.jpg' },
+            { line: 'INCANTO', name: 'INCANTO - Completo Letto 2P', code: 'LN1544', price: 39.90, pack: 2, category: 'incanto_letto', image: 'img/LN1544.jpg' },
+            { line: 'INCANTO', name: 'INCANTO - Completo Letto 1+1/2P', code: 'LN1545', price: 34.90, pack: 1, category: 'incanto_letto', image: 'img/LN1545.jpg' },
+            { line: 'INCANTO', name: 'INCANTO - Completo Letto 1P', code: 'LN1546', price: 26.90, pack: 2, category: 'incanto_letto', image: 'img/LN1546.jpg' },
+            { line: 'INCANTO', name: 'INCANTO - Coppia Federe 50x80', code: 'LM0140', price: 9.90, pack: 2, category: 'incanto_letto', image: 'img/LM0140.jpg' },
 
             // --- LINEA BECOOL ---
             { line: 'BECOOL', name: 'BeCool - Lenzuolo Sopra Rinfrescante 2P', code: 'LP0028', price: 24.70, pack: 2, category: 'becool', image: 'img/LP0028.jpg' },
