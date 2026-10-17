@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @media print {
-            /* Nasconde gli elementi dell'interfaccia non necessari alla stampa */
             header, 
             .no-print, 
             button, 
@@ -36,7 +35,6 @@
                 padding: 0 !important;
             }
 
-            /* Mantiene visibile ed in evidenza il riepilogo ordine */
             #cartSection, #pdfContent { 
                 display: block !important;
                 visibility: visible !important;
@@ -127,20 +125,20 @@
             </div>
         </section>
 
-        <!-- Filtri Rapidi per Linea (Stile Categorie Amazon) -->
+        <!-- Filtri Rapidi per Linea (Diventano VERDI se selezionati) -->
         <section class="no-print space-y-2">
             <h2 class="text-sm font-bold text-slate-700 flex items-center">
                 <i class="fa-solid fa-filter text-indigo-600 mr-2"></i> 2. Scegli Linea o Categoria Prodotto
             </h2>
             <div class="flex flex-wrap gap-2" id="lineFiltersContainer">
-                <button onclick="setLineFilter('ALL')" class="line-btn text-xs font-bold px-3.5 py-2 rounded-lg bg-indigo-600 text-white shadow-sm transition">Tutte le Linee</button>
-                <button onclick="setLineFilter('PAINT')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Paint</button>
-                <button onclick="setLineFilter('GLAMOUR')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Glamour</button>
-                <button onclick="setLineFilter('INCANTO')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Incanto</button>
-                <button onclick="setLineFilter('BECOOL')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">BeCool</button>
-                <button onclick="setLineFilter('WIMBLEDON')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Wimbledon</button>
-                <button onclick="setLineFilter('BABY_ANIMALS')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Baby Animals</button>
-                <button onclick="setLineFilter('ACCESSORI_LETTO')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Accessori Letto</button>
+                <button onclick="setLineFilter('ALL', this)" class="line-btn text-xs font-bold px-3.5 py-2 rounded-lg bg-emerald-600 text-white shadow-sm transition">Tutte le Linee</button>
+                <button onclick="setLineFilter('PAINT', this)" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Paint</button>
+                <button onclick="setLineFilter('GLAMOUR', this)" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Glamour</button>
+                <button onclick="setLineFilter('INCANTO', this)" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Incanto</button>
+                <button onclick="setLineFilter('BECOOL', this)" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">BeCool</button>
+                <button onclick="setLineFilter('WIMBLEDON', this)" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Wimbledon</button>
+                <button onclick="setLineFilter('BABY_ANIMALS', this)" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Baby Animals</button>
+                <button onclick="setLineFilter('ACCESSORI_LETTO', this)" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Accessori Letto</button>
             </div>
         </section>
 
@@ -234,13 +232,13 @@
 
     </main>
 
-    <!-- MODALE SELEZIONE VARIANTI & QUANTITÀ (STILE SCHEDA ARTICOLO) -->
+    <!-- MODALE SELEZIONE VARIANTI & QUANTITÀ -->
     <div id="productModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 no-print">
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col max-h-[90vh]">
             <!-- Modal Header -->
             <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
                 <div>
-                    <span id="modalLineBadge" class="text-[10px] bg-indigo-600 text-white font-bold px-2 py-0.5 rounded uppercase"></span>
+                    <span id="modalLineBadge" class="text-[10px] bg-emerald-600 text-white font-bold px-2 py-0.5 rounded uppercase"></span>
                     <h3 id="modalProductName" class="text-sm font-bold mt-1">Nome Prodotto</h3>
                     <p id="modalProductCode" class="text-xs text-slate-300">Codice</p>
                 </div>
@@ -259,8 +257,8 @@
                             <div id="modalProductPrice" class="text-base font-extrabold text-slate-900">€ 0,00</div>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-indigo-900 mb-1"><i class="fa-solid fa-percent text-indigo-600 mr-1"></i> Sconto % Articolo</label>
-                            <input type="number" id="modalDiscountInput" min="0" max="100" step="0.5" placeholder="Es. 10" class="w-full text-sm font-bold border border-indigo-300 bg-indigo-50/50 rounded-lg p-2 text-indigo-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <label class="block text-xs font-bold text-slate-900 mb-1"><i class="fa-solid fa-percent text-emerald-600 mr-1"></i> Sconto % Articolo</label>
+                            <input type="number" id="modalDiscountInput" min="0" max="100" step="0.5" placeholder="Es. 10" class="w-full text-sm font-bold border border-slate-300 bg-slate-50 rounded-lg p-2 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                         </div>
                     </div>
                 </div>
@@ -290,7 +288,7 @@
             <!-- Modal Footer -->
             <div class="p-4 bg-slate-50 border-t flex justify-end space-x-2">
                 <button onclick="closeModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-xs font-bold hover:bg-slate-300 transition">Annulla</button>
-                <button onclick="addModalItemsToOrder()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition flex items-center shadow-sm">
+                <button onclick="addModalItemsToOrder()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition flex items-center shadow-sm">
                     <i class="fa-solid fa-cart-plus mr-1.5"></i> Aggiungi all'Ordine
                 </button>
             </div>
@@ -447,20 +445,22 @@
             const now = new Date();
             const dateStr = now.toLocaleDateString('it-IT');
             const timeStr = now.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('headerDateTime').innerText = `${dateStr} -${timeStr}`;
-            document.getElementById('docDate').innerText = `Data: ${dateStr} -${timeStr}`;
+            document.getElementById('headerDateTime').innerText = `${dateStr} - ${timeStr}`;
+            document.getElementById('docDate').innerText = `Data: ${dateStr} - ${timeStr}`;
         }
 
-        function setLineFilter(line) {
+        function setLineFilter(line, btnElement) {
             currentLineFilter = line;
             
-            // Aggiorna stile bottoni linea
+            // Rimuove il verde da tutti i bottoni e rimette lo stile neutro
             document.querySelectorAll('.line-btn').forEach(btn => {
-                btn.classList.remove('bg-indigo-600', 'text-white');
-                btn.classList.add('bg-white', 'border', 'border-slate-300', 'text-slate-700');
+                btn.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-white', 'border', 'border-slate-300', 'text-slate-700', 'hover:bg-slate-50');
             });
-            event.target.classList.remove('bg-white', 'border', 'border-slate-300', 'text-slate-700');
-            event.target.classList.add('bg-indigo-600', 'text-white');
+            
+            // Imposta il bottone cliccato sul colore verde smeraldo
+            btnElement.classList.remove('bg-white', 'border', 'border-slate-300', 'text-slate-700', 'hover:bg-slate-50');
+            btnElement.classList.add('bg-emerald-600', 'text-white', 'shadow-sm');
 
             filterProducts();
         }
@@ -488,7 +488,6 @@
 
             let html = '';
             list.forEach(p => {
-                // Trova l'indice reale nel vettore generale productsData
                 const realIndex = productsData.findIndex(item => item.code === p.code && item.name === p.name);
                 const img = p.image || 'https://via.placeholder.com/300?text=Riviera+Basic';
                 
@@ -500,6 +499,260 @@
                                 <span class="absolute top-2 left-2 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-sm">${p.line}</span>
                             </div>
                             <div class="p-3.5">
-                                <p class="text-[11px] font-bold text-indigo-600 uppercase tracking-wide">Cod. ${p.code}</p>
+                                <p class="text-[11px] font-bold text-emerald-600 uppercase tracking-wide">Cod. ${p.code}</p>
                                 <h3 class="text-xs font-bold text-slate-800 leading-snug mt-1 line-clamp-2">${p.name}</h3>
-                                <p class="text
+                                <p class="text-[11px] text-slate-500 mt-1">Imballo min: <strong>${p.pack} PZ</strong></p>
+                            </div>
+                        </div>
+                        <div class="p-3.5 pt-0 flex items-center justify-between mt-2 border-t pt-2.5 bg-slate-50/50">
+                            <div>
+                                <span class="text-[10px] text-slate-400 block uppercase">Listino</span>
+                                <span class="text-sm font-extrabold text-slate-900">€ ${p.price.toFixed(2).replace('.', ',')}</span>
+                            </div>
+                            <button onclick="openModal(${realIndex})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition flex items-center shadow-sm">
+                                <i class="fa-solid fa-plus mr-1"></i> Ordina
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+        }
+
+        function openModal(index) {
+            currentProductIndex = index;
+            const p = productsData[index];
+
+            document.getElementById('modalLineBadge').innerText = p.line;
+            document.getElementById('modalProductName').innerText = p.name;
+            document.getElementById('modalProductCode').innerText = `Codice: ${p.code}`;
+            document.getElementById('modalProductPrice').innerText = `€ ${p.price.toFixed(2).replace('.', ',')}`;
+            
+            const imgEl = document.getElementById('modalProductImage');
+            imgEl.src = p.image || 'https://via.placeholder.com/150?text=Riviera';
+
+            document.getElementById('modalDiscountInput').value = '';
+
+            const pack = p.pack || 1;
+            document.getElementById('modalPackRule').innerText = pack > 1 ? `Minimo e multipli di ${pack} pz` : 'Pezzi singoli';
+
+            const colors = colorMap[p.category] || colorMap['standard'];
+            let html = '';
+            colors.forEach((col, idx) => {
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2 px-3 font-medium text-slate-700">${col}</td>
+                        <td class="py-2 px-3 text-center">
+                            <input type="number" data-color="${col}" min="0" step="${pack}" placeholder="" class="modal-qty-input w-24 text-center text-xs font-bold border border-slate-300 rounded p-1.5 focus:ring-2 focus:ring-emerald-500 focus:outline-none" onkeydown="handleModalKeydown(event, ${idx})">
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('modalVariantsTableBody').innerHTML = html;
+            document.getElementById('productModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.add('hidden');
+            currentProductIndex = null;
+        }
+
+        function handleModalKeydown(event, currentIndex) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.modal-qty-input');
+                const nextInput = inputs[currentIndex + 1];
+                if (nextInput) {
+                    nextInput.focus();
+                    nextInput.select();
+                } else {
+                    addModalItemsToOrder();
+                }
+            }
+        }
+
+        function addModalItemsToOrder() {
+            if (currentProductIndex === null) return;
+            const p = productsData[currentProductIndex];
+
+            const pack = p.pack || 1;
+            const discountInputVal = parseFloat(document.getElementById('modalDiscountInput').value) || 0;
+            const qtyInputs = document.querySelectorAll('.modal-qty-input');
+            let addedCount = 0;
+
+            qtyInputs.forEach(input => {
+                if (input.value === "" || input.value === null) return;
+                let qty = parseInt(input.value) || 0;
+                const color = input.getAttribute('data-color');
+
+                if (qty > 0) {
+                    if (qty < pack) {
+                        alert(`La quantità per "${color}" è inferiore al minimo stabilito (${pack} pz). Regolata al minimo.`);
+                        qty = pack;
+                    } else if (qty % pack !== 0) {
+                        qty = Math.ceil(qty / pack) * pack;
+                        alert(`La quantità per "${color}" è stata adeguata al multiplo di imballo (${pack} pz): ${qty} pz.`);
+                    }
+
+                    items.push({
+                        code: p.code,
+                        article: p.name,
+                        color: color,
+                        qty: qty,
+                        price: p.price,
+                        discountPercent: discountInputVal
+                    });
+
+                    addedCount++;
+                }
+            });
+
+            if (addedCount === 0) {
+                alert("Inserisci almeno una quantità su una variante.");
+                return;
+            }
+
+            renderTable();
+            closeModal();
+        }
+
+        function removeItem(index) {
+            items.splice(index, 1);
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('orderTableBody');
+            
+            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
+            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
+            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400">Nessun articolo aggiunto all'ordine. Seleziona un prodotto dalla vetrina sopra.</td></tr>`;
+                document.getElementById('totalPieces').innerText = "0";
+                document.getElementById('grandTotal').innerText = "€ 0,00";
+                document.getElementById('cartCountBadge').innerText = "0";
+                return;
+            }
+
+            let html = '';
+            let totalQty = 0;
+            let grandTotal = 0;
+
+            items.forEach((item, index) => {
+                totalQty += item.qty;
+                const discount = item.discountPercent || 0;
+                const effectivePrice = discount > 0 ? item.price * (1 - discount / 100) : item.price;
+                const itemTotal = effectivePrice * item.qty;
+                grandTotal += itemTotal;
+
+                let priceDisplay = `€ ${item.price.toFixed(2).replace('.', ',')}`;
+                if (discount > 0) {
+                    priceDisplay = `<span class="line-through text-slate-400 text-[10px] block">€ ${item.price.toFixed(2).replace('.', ',')}</span><span class="text-emerald-700 font-bold">€ ${effectivePrice.toFixed(2).replace('.', ',')}</span>`;
+                }
+
+                html += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2.5 px-2 font-semibold text-slate-900">${item.code}</td>
+                        <td class="py-2.5 px-2 font-medium text-slate-800">${item.article}</td>
+                        <td class="py-2.5 px-2 font-medium">${item.color}</td>
+                        <td class="py-2.5 px-2 text-center font-bold text-slate-900">${item.qty}</td>
+                        <td class="py-2.5 px-2 text-right">${priceDisplay}</td>
+                        <td class="py-2.5 px-2 text-center font-bold text-emerald-800">${discount > 0 ? discount + '%' : '-'}</td>
+                        <td class="py-2.5 px-2 text-right font-semibold text-slate-900">€ ${itemTotal.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-2.5 px-2 text-center no-print">
+                            <button onclick="removeItem(${index})" class="text-rose-500 hover:text-rose-700">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            document.getElementById('totalPieces').innerText = totalQty;
+            document.getElementById('grandTotal').innerText = `€ ${grandTotal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('cartCountBadge').innerText = totalQty;
+        }
+
+        function scrollToCart() {
+            document.getElementById('cartSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetOrder() {
+            if (confirm("Sei sicuro di voler azzerare il carrello dell'ordine?")) {
+                items = [];
+                renderTable();
+            }
+        }
+
+        function buildOrderSummaryText() {
+            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
+            const city = document.getElementById('clientCity').value || '-';
+            const vat = document.getElementById('clientVat').value || '-';
+            const now = new Date();
+            
+            let summary = `*ORDINE RIVIERA BASIC*\n`;
+            summary += `*Rappresentante:* Cacciola Daniele\n`;
+            summary += `----------------------------------\n`;
+            summary += `*Cliente:* ${client}\n`;
+            summary += `*Città:* ${city}\n`;
+            summary += `*P.IVA/SDI:* ${vat}\n`;
+            summary += `*Data e Ora:* ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}\n`;
+            summary += `----------------------------------\n`;
+            summary += `*ARTICOLI IN ORDINE:*\n\n`;
+
+            let totalPz = 0;
+            let totalEuro = 0;
+
+            items.forEach(i => {
+                const disc = i.discountPercent || 0;
+                const effPrice = disc > 0 ? i.price * (1 - disc / 100) : i.price;
+                const totLine = effPrice * i.qty;
+                let discText = disc > 0 ? ` (Sconto ${disc}%)` : '';
+                
+                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo Netto: € ${effPrice.toFixed(2).replace('.', ',')}${discText} | Tot: € ${totLine.toFixed(2).replace('.', ',')}\n\n`;
+                totalPz += i.qty;
+                totalEuro += totLine;
+            });
+
+            summary += `----------------------------------\n`;
+            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
+            summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
+
+            return summary;
+        }
+
+        function sendWhatsApp() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
+                return;
+            }
+            const text = encodeURIComponent(buildOrderSummaryText());
+            window.open(`https://api.whatsapp.com/send?phone=393392822146&text=${text}`, '_blank');
+        }
+
+        function sendEmail() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di inviare l'email.");
+                return;
+            }
+            const client = document.getElementById('clientName').value || 'Cliente';
+            const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
+            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
+            window.location.href = `mailto:cacciola74@gmail.com?subject=${subject}&body=${body}`;
+        }
+
+        function exportPDF() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di stampare.");
+                return;
+            }
+            window.print();
+        }
+    </script>
+</body>
+</html>
