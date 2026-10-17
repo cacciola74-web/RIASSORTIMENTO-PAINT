@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <!-- Barra di Ricerca Immediata Stile Amazon -->
+            <!-- Barra di Ricerca Immediata -->
             <div class="flex-1 max-w-lg min-w-[260px]">
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
@@ -220,14 +220,8 @@
                 <button onclick="resetOrder()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-4 py-3 rounded-lg transition mr-auto">
                     <i class="fa-solid fa-rotate-left mr-1"></i> Svuota Ordine
                 </button>
-                <button onclick="sendWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
-                    <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Invia WhatsApp + PDF
-                </button>
-                <button onclick="sendEmail()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
-                    <i class="fa-solid fa-envelope text-lg mr-2"></i> Invia Email + PDF
-                </button>
-                <button onclick="exportPDF()" class="bg-slate-700 hover:bg-slate-800 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
-                    <i class="fa-solid fa-file-pdf text-lg mr-2"></i> Stampa / PDF
+                <button onclick="exportAndSharePDF()" class="bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-sm px-6 py-3 rounded-lg shadow-md transition flex items-center">
+                    <i class="fa-solid fa-file-pdf text-lg mr-2"></i> Stampa / Scarica ed Invia PDF
                 </button>
             </div>
         </section>
@@ -692,44 +686,6 @@
             }
         }
 
-        function buildOrderSummaryText(isEmail = false) {
-            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
-            const city = document.getElementById('clientCity').value || '-';
-            const vat = document.getElementById('clientVat').value || '-';
-            const now = new Date();
-            
-            let summary = isEmail ? `ORDINE RIVIERA BASIC\n` : `*ORDINE RIVIERA BASIC*\n`;
-            summary += `Rappresentante: Cacciola Daniele\n`;
-            summary += `----------------------------------\n`;
-            summary += `Cliente: ${client}\n`;
-            summary += `Città: ${city}\n`;
-            summary += `Cod. Univoco/P.IVA: ${vat}\n`;
-            summary += `Data: ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}\n`;
-            summary += `----------------------------------\n`;
-            summary += `ARTICOLI IN ORDINE:\n\n`;
-
-            let totalPz = 0;
-            let totalEuro = 0;
-
-            items.forEach(i => {
-                const disc = i.discountPercent || 0;
-                const effPrice = disc > 0 ? i.price * (1 - disc / 100) : i.price;
-                const totLine = effPrice * i.qty;
-                let discText = disc > 0 ? ` (Sconto ${disc}%)` : '';
-                
-                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo: € ${effPrice.toFixed(2).replace('.', ',')}${discText} | Tot: € ${totLine.toFixed(2).replace('.', ',')}\n\n`;
-                totalPz += i.qty;
-                totalEuro += totLine;
-            });
-
-            summary += `----------------------------------\n`;
-            summary += `TOTALE PEZZI: ${totalPz}\n`;
-            summary += `TOTALE NETTO: € ${totalEuro.toFixed(2).replace('.', ',')}\n\n`;
-            summary += `(Allegare il file PDF scaricato nella cartella Download)`;
-
-            return summary;
-        }
-
         function generateCleanPDFHtml() {
             const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
             const city = document.getElementById('clientCity').value || '-';
@@ -809,7 +765,12 @@
             return container;
         }
 
-        function downloadOrderPDF() {
+        async function exportAndSharePDF() {
+            if (items.length === 0) {
+                alert("Aggiungi almeno un articolo prima di stampare o generare il PDF.");
+                return;
+            }
+
             const client = document.getElementById('clientName').value || 'Cliente';
             const filename = `Ordine_Riviera_${client.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
             const element = generateCleanPDFHtml();
@@ -822,40 +783,33 @@
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save();
-        }
-
-        function sendWhatsApp() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
-                return;
+            // Generazione PDF
+            const pdfWorker = html2pdf().set(opt).from(element);
+            
+            // Tentativo di condivisione nativa se disponibile (su Mobile)
+            if (navigator.share && navigator.canShare) {
+                try {
+                    const pdfBlob = await pdfWorker.output('blob');
+                    const file = new File([pdfBlob], filename, { type: 'application/pdf' });
+                    
+                    if (navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            files: [file],
+                            title: `Ordine Riviera Basic - ${client}`,
+                            text: `In allegato l'ordine per ${client}.`
+                        });
+                        return;
+                    }
+                } catch (err) {
+                    console.log("Condivisione non completata:", err);
+                }
             }
 
-            downloadOrderPDF();
-            const text = encodeURIComponent(buildOrderSummaryText(false));
-            window.open(`https://api.whatsapp.com/send?phone=393392822146&text=${text}`, '_blank');
-        }
-
-        function sendEmail() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di inviare l'email.");
-                return;
-            }
-
-            const client = document.getElementById('clientName').value || 'Cliente';
-            const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
-            const body = encodeURIComponent(buildOrderSummaryText(true));
-
-            downloadOrderPDF();
-            window.location.href = `mailto:cacciola74@gmail.com?subject=${subject}&body=${body}`;
-        }
-
-        function exportPDF() {
-            if (items.length === 0) {
-                alert("Aggiungi almeno un articolo prima di stampare.");
-                return;
-            }
-            window.print();
+            // Fallback standard: Scarica ed apri la finestra di stampa
+            pdfWorker.save();
+            setTimeout(() => {
+                window.print();
+            }, 800);
         }
     </script>
 </body>
