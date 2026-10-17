@@ -27,8 +27,8 @@
                 color: #000000 !important;
                 padding: 0 !important; 
                 margin: 0 !important;
-                overflow: visible !important;
-                height: auto !important;
+                overflow: hidden !important;
+                height: 100% !important;
             }
 
             main {
@@ -43,7 +43,7 @@
                 position: relative !important;
                 width: 100% !important;
                 margin: 0 !important;
-                padding: 10px !important;
+                padding: 5px !important;
                 border: none !important;
                 box-shadow: none !important;
                 background: #ffffff !important;
@@ -57,9 +57,9 @@
 
             #pdfContent th, #pdfContent td {
                 border-bottom: 1px solid #000000 !important;
-                padding: 6px 4px !important;
+                padding: 5px 3px !important;
                 color: #000000 !important;
-                font-size: 11px !important;
+                font-size: 10px !important;
             }
 
             #pdfContent tr {
@@ -593,18 +593,14 @@
                         alert(`La quantità per "${color}" è stata adeguata al multiplo di imballo (${pack} pz): ${qty} pz.`);
                     }
 
-                    // CONTROLLO DUPLICATI: cerca se l'articolo con lo stesso codice e variante esiste già nell'ordine
                     const existingItemIndex = items.findIndex(item => item.code === p.code && item.color === color);
 
                     if (existingItemIndex !== -1) {
-                        // Se esiste già, aggiorna la quantità sommando quella nuova
                         items[existingItemIndex].qty += qty;
-                        // Aggiorna lo sconto con l'ultimo valore inserito se presente
                         if (discountInputVal > 0) {
                             items[existingItemIndex].discountPercent = discountInputVal;
                         }
                     } else {
-                        // Altrimenti inserisce la nuova variante
                         items.push({
                             code: p.code,
                             article: p.name,
@@ -718,50 +714,50 @@
 
                 rows += `
                     <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 6px; font-weight: bold;">${item.code}</td>
-                        <td style="padding: 6px;">${item.article}</td>
-                        <td style="padding: 6px;">${item.color}</td>
-                        <td style="padding: 6px; text-align: center;">${item.qty}</td>
-                        <td style="padding: 6px; text-align: right;">€ ${item.price.toFixed(2).replace('.', ',')}</td>
-                        <td style="padding: 6px; text-align: center;">${discount > 0 ? discount + '%' : '-'}</td>
-                        <td style="padding: 6px; text-align: right; font-weight: bold;">€ ${itemTotal.toFixed(2).replace('.', ',')}</td>
+                        <td style="padding: 5px; font-weight: bold;">${item.code}</td>
+                        <td style="padding: 5px;">${item.article}</td>
+                        <td style="padding: 5px;">${item.color}</td>
+                        <td style="padding: 5px; text-align: center;">${item.qty}</td>
+                        <td style="padding: 5px; text-align: right;">€ ${item.price.toFixed(2).replace('.', ',')}</td>
+                        <td style="padding: 5px; text-align: center;">${discount > 0 ? discount + '%' : '-'}</td>
+                        <td style="padding: 5px; text-align: right; font-weight: bold;">€ ${itemTotal.toFixed(2).replace('.', ',')}</td>
                     </tr>
                 `;
             });
 
             const container = document.createElement('div');
-            container.style.padding = '20px';
+            container.style.padding = '15px';
             container.style.fontFamily = 'sans-serif';
             container.style.color = '#000000';
             container.style.backgroundColor = '#ffffff';
 
             container.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #312e81; padding-bottom: 10px; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #312e81; padding-bottom: 8px; margin-bottom: 10px;">
                     <div>
-                        <h1 style="margin: 0; color: #312e81; font-size: 22px;">RIVIERA BASIC</h1>
-                        <p style="margin: 3px 0 0 0; color: #555; font-size: 12px; font-weight: bold;">Rappresentante Cacciola Daniele - Copia Commissione</p>
+                        <h1 style="margin: 0; color: #312e81; font-size: 20px;">RIVIERA BASIC</h1>
+                        <p style="margin: 2px 0 0 0; color: #555; font-size: 11px; font-weight: bold;">Rappresentante Cacciola Daniele - Copia Commissione</p>
                     </div>
-                    <div style="text-align: right; font-size: 11px; color: #666;">
+                    <div style="text-align: right; font-size: 10px; color: #666;">
                         Data: ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}
                     </div>
                 </div>
 
-                <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; font-size: 12px; margin-bottom: 15px; display: flex; justify-content: space-between;">
+                <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 4px; font-size: 11px; margin-bottom: 10px; display: flex; justify-content: space-between;">
                     <div><strong>Cliente:</strong> ${client}</div>
                     <div><strong>Città:</strong> ${city}</div>
                     <div><strong>Cod. Univoco/P.IVA:</strong> ${vat}</div>
                 </div>
 
-                <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 10px;">
                     <thead>
                         <tr style="background-color: #f1f5f9; text-align: left; border-bottom: 2px solid #cbd5e1;">
-                            <th style="padding: 8px 6px;">Codice</th>
-                            <th style="padding: 8px 6px;">Articolo / Descrizione</th>
-                            <th style="padding: 8px 6px;">Variante Colore</th>
-                            <th style="padding: 8px 6px; text-align: center;">PZ</th>
-                            <th style="padding: 8px 6px; text-align: right;">Prezzo List.</th>
-                            <th style="padding: 8px 6px; text-align: center;">Sconto %</th>
-                            <th style="padding: 8px 6px; text-align: right;">Totale €</th>
+                            <th style="padding: 6px 4px;">Codice</th>
+                            <th style="padding: 6px 4px;">Articolo / Descrizione</th>
+                            <th style="padding: 6px 4px;">Variante Colore</th>
+                            <th style="padding: 6px 4px; text-align: center;">PZ</th>
+                            <th style="padding: 6px 4px; text-align: right;">Prezzo List.</th>
+                            <th style="padding: 6px 4px; text-align: center;">Sconto %</th>
+                            <th style="padding: 6px 4px; text-align: right;">Totale €</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -769,9 +765,9 @@
                     </tbody>
                 </table>
 
-                <div style="margin-top: 20px; border-top: 2px solid #312e81; padding-top: 10px; text-align: right; font-size: 13px;">
+                <div style="margin-top: 15px; border-top: 2px solid #312e81; padding-top: 8px; text-align: right; font-size: 12px;">
                     <p style="margin: 2px 0;"><strong>Totale Pezzi:</strong> ${totalQty}</p>
-                    <p style="margin: 4px 0 0 0; font-size: 16px; color: #312e81;"><strong>Totale Netto: € ${grandTotal.toFixed(2).replace('.', ',')}</strong></p>
+                    <p style="margin: 3px 0 0 0; font-size: 15px; color: #312e81;"><strong>Totale Netto: € ${grandTotal.toFixed(2).replace('.', ',')}</strong></p>
                 </div>
             `;
 
@@ -789,17 +785,15 @@
             const element = generateCleanPDFHtml();
 
             const opt = {
-                margin:       10,
+                margin:       8,
                 filename:     filename,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, logging: false },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // Generazione PDF
             const pdfWorker = html2pdf().set(opt).from(element);
             
-            // Tentativo di condivisione nativa se disponibile (su Mobile)
             if (navigator.share && navigator.canShare) {
                 try {
                     const pdfBlob = await pdfWorker.output('blob');
@@ -818,7 +812,6 @@
                 }
             }
 
-            // Fallback standard: Scarica ed apri la finestra di stampa
             pdfWorker.save();
             setTimeout(() => {
                 window.print();
