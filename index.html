@@ -6,6 +6,8 @@
     <title>Riviera Basic - Catalogo Ordini</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Libreria per la generazione del file PDF lato client -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         @media print {
             header, 
@@ -119,13 +121,13 @@
                     <input type="text" id="clientCity" placeholder="Es. Catania" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">P.IVA / Cod. Univoco / SDI</label>
-                    <input type="text" id="clientVat" placeholder="IT0123456789" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Codice Univoco / P.IVA</label>
+                    <input type="text" id="clientVat" placeholder="Es. BA6ET11" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
             </div>
         </section>
 
-        <!-- Filtri Rapidi per Linea (Diventano VERDI se selezionati) -->
+        <!-- Filtri Rapidi per Linea -->
         <section class="no-print space-y-2">
             <h2 class="text-sm font-bold text-slate-700 flex items-center">
                 <i class="fa-solid fa-filter text-indigo-600 mr-2"></i> 2. Scegli Linea o Categoria Prodotto
@@ -142,7 +144,7 @@
             </div>
         </section>
 
-        <!-- GRIGLIA PRODOTTI STILE E-COMMERCE (AMAZON GRID) -->
+        <!-- GRIGLIA PRODOTTI STILE E-COMMERCE -->
         <section class="no-print">
             <div class="flex justify-between items-center mb-3">
                 <h2 class="text-sm font-bold text-slate-700 flex items-center">
@@ -174,7 +176,7 @@
                 <div class="mb-6 bg-slate-50 p-3 rounded border border-slate-200 text-xs grid grid-cols-3 gap-2">
                     <div><strong>Cliente:</strong> <span id="pdfClientName">-</span></div>
                     <div><strong>Città:</strong> <span id="pdfClientCity">-</span></div>
-                    <div><strong>P.IVA/SDI:</strong> <span id="pdfClientVat">-</span></div>
+                    <div><strong>Cod. Univoco/P.IVA:</strong> <span id="pdfClientVat">-</span></div>
                 </div>
 
                 <!-- Tabella Articoli -->
@@ -219,10 +221,10 @@
                     <i class="fa-solid fa-rotate-left mr-1"></i> Svuota Ordine
                 </button>
                 <button onclick="sendWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
-                    <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Invia WhatsApp
+                    <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Invia WhatsApp + Scarica PDF
                 </button>
                 <button onclick="sendEmail()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
-                    <i class="fa-solid fa-envelope text-lg mr-2"></i> Invia Email
+                    <i class="fa-solid fa-envelope text-lg mr-2"></i> Invia Email + Scarica PDF
                 </button>
                 <button onclick="exportPDF()" class="bg-slate-700 hover:bg-slate-800 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
                     <i class="fa-solid fa-file-pdf text-lg mr-2"></i> Stampa / PDF
@@ -452,13 +454,11 @@
         function setLineFilter(line, btnElement) {
             currentLineFilter = line;
             
-            // Rimuove il verde da tutti i bottoni e rimette lo stile neutro
             document.querySelectorAll('.line-btn').forEach(btn => {
                 btn.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm');
                 btn.classList.add('bg-white', 'border', 'border-slate-300', 'text-slate-700', 'hover:bg-slate-50');
             });
             
-            // Imposta il bottone cliccato sul colore verde smeraldo
             btnElement.classList.remove('bg-white', 'border', 'border-slate-300', 'text-slate-700', 'hover:bg-slate-50');
             btnElement.classList.add('bg-emerald-600', 'text-white', 'shadow-sm');
 
@@ -700,7 +700,7 @@
             summary += `----------------------------------\n`;
             summary += `*Cliente:* ${client}\n`;
             summary += `*Città:* ${city}\n`;
-            summary += `*P.IVA/SDI:* ${vat}\n`;
+            summary += `*Cod. Univoco/P.IVA:* ${vat}\n`;
             summary += `*Data e Ora:* ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}\n`;
             summary += `----------------------------------\n`;
             summary += `*ARTICOLI IN ORDINE:*\n\n`;
@@ -726,13 +726,36 @@
             return summary;
         }
 
+        // Funzione per generare e scaricare automaticamente il PDF
+        function downloadOrderPDF(callback) {
+            const client = document.getElementById('clientName').value || 'Cliente';
+            const filename = `Ordine_Riviera_${client.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+            const element = document.getElementById('pdfContent');
+
+            const opt = {
+                margin:       10,
+                filename:     filename,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                if (callback) callback();
+            });
+        }
+
         function sendWhatsApp() {
             if (items.length === 0) {
                 alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
                 return;
             }
-            const text = encodeURIComponent(buildOrderSummaryText());
-            window.open(`https://api.whatsapp.com/send?phone=393392822146&text=${text}`, '_blank');
+
+            // Genera e scarica il PDF e contemporaneamente apre WhatsApp
+            downloadOrderPDF(() => {
+                const text = encodeURIComponent(buildOrderSummaryText());
+                window.open(`https://api.whatsapp.com/send?phone=393392822146&text=${text}`, '_blank');
+            });
         }
 
         function sendEmail() {
@@ -740,10 +763,15 @@
                 alert("Aggiungi almeno un articolo prima di inviare l'email.");
                 return;
             }
+
             const client = document.getElementById('clientName').value || 'Cliente';
             const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
             const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
-            window.location.href = `mailto:cacciola74@gmail.com?subject=${subject}&body=${body}`;
+
+            // Genera e scarica il PDF e apre l'applicazione Email
+            downloadOrderPDF(() => {
+                window.location.href = `mailto:cacciola74@gmail.com?subject=${subject}&body=${body}`;
+            });
         }
 
         function exportPDF() {
