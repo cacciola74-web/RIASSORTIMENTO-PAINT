@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riviera Basic - Shop & Modulo Ordini</title>
+    <title>Riviera Basic - Catalogo Ordini</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @media print {
-            header, section, .no-print, button, select, input, .product-grid { 
+            header, section, .no-print, button, select, input { 
                 display: none !important; 
             }
-            
             html, body { 
                 background: #ffffff !important; 
                 color: #000000 !important;
@@ -19,7 +18,6 @@
                 margin: 0 !important;
                 overflow: visible !important;
             }
-            
             #pdfContent { 
                 display: block !important;
                 visibility: visible !important;
@@ -31,12 +29,10 @@
                 box-shadow: none !important;
                 background: #ffffff !important;
             }
-
             #pdfContent table {
                 width: 100% !important;
                 border-collapse: collapse !important;
             }
-
             #pdfContent th, #pdfContent td {
                 border-bottom: 1px solid #cbd5e1 !important;
                 padding: 8px 4px !important;
@@ -45,36 +41,48 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12">
+<body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-16">
 
-    <!-- Header / Navbar Top -->
-    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-40 no-print">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-bold tracking-wide flex items-center">
-                    <i class="fa-solid fa-store mr-2 text-indigo-300"></i>RIVIERA BASIC
-                </h1>
-                <p class="text-xs text-indigo-200">
-                    <span id="headerDateTime">Data e ora...</span> | <strong>Rappresentante Cacciola Daniele</strong>
-                </p>
+    <!-- Header / Navbar Stile Amazon -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40 no-print">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 p-2 rounded-lg text-white font-bold text-lg">
+                    <i class="fa-solid fa-store"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight">RIVIERA BASIC</h1>
+                    <p class="text-xs text-slate-400">Rappresentante: <strong>Cacciola Daniele</strong> | <span id="headerDateTime">Caricamento...</span></p>
+                </div>
             </div>
+
+            <!-- Barra di Ricerca Immediata Stile Amazon -->
+            <div class="flex-1 max-w-lg min-w-[260px]">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Cerca per articolo, descrizione o codice (es. LN0506, Parure...)" class="w-full text-sm text-slate-900 bg-white rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-inner">
+                </div>
+            </div>
+
             <div class="flex items-center space-x-2">
-                <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded transition flex items-center">
+                <a href="https://drive.google.com/file/d/1kXXvTK8EOgx14xJqBNuBR1bvXYwsFRuG/view?usp=sharing" target="_blank" class="text-xs bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg transition flex items-center shadow-sm">
                     <i class="fa-solid fa-file-pdf mr-1.5"></i> Catalogo PDF
                 </a>
-                <button onclick="scrollToCart()" class="text-xs bg-amber-500 hover:bg-amber-600 text-indigo-950 font-bold px-3 py-2 rounded transition flex items-center">
+                <button onclick="scrollToCart()" class="text-xs bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-2 rounded-lg transition flex items-center shadow-sm">
                     <i class="fa-solid fa-cart-shopping mr-1.5"></i> Ordine (<span id="cartCountBadge">0</span>)
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 mt-6 space-y-6">
+    <main class="max-w-7xl mx-auto px-4 mt-6 space-y-6">
 
-        <!-- Dati Cliente -->
-        <section class="bg-white p-5 rounded-xl shadow-md no-print border border-slate-200">
-            <h2 class="text-base font-semibold text-slate-700 mb-3 border-b pb-2 flex items-center">
-                <i class="fa-solid fa-user-tag text-indigo-600 mr-2"></i> Dati Anagrafici Cliente
+        <!-- Sezione Dati Cliente -->
+        <section class="bg-white p-5 rounded-xl shadow-sm no-print border border-slate-200">
+            <h2 class="text-sm font-bold text-slate-700 mb-3 border-b pb-2 flex items-center">
+                <i class="fa-solid fa-user-tag text-indigo-600 mr-2"></i> 1. Informazioni Anagrafiche Cliente
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
@@ -92,38 +100,39 @@
             </div>
         </section>
 
-        <!-- Filtro Linea / Categoria -->
-        <section class="bg-white p-4 rounded-xl shadow-md no-print border border-slate-200 flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-filter text-indigo-600"></i>
-                <span class="text-sm font-bold text-slate-700">Filtra per Linea:</span>
-            </div>
-            <div class="flex-1 min-w-[240px]">
-                <select id="lineSelect" onchange="renderProductGrid()" class="w-full text-sm font-semibold border border-indigo-300 rounded-lg p-2.5 bg-indigo-50/50 text-indigo-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                    <option value="ALL">-- Tutte le Linee Prodotti --</option>
-                    <option value="PAINT">LINEA PAINT (Parure, Completi Letto, Lenzuola, Federe & Quilt)</option>
-                    <option value="GLAMOUR">LINEA GLAMOUR (Bagno, Accappatoi, Tappeti)</option>
-                    <option value="INCANTO">LINEA INCANTO (Parure Copripiumino, Letto, Federe)</option>
-                    <option value="BECOOL">LINEA BECOOL (Lenzuola Rinfrescanti)</option>
-                    <option value="WIMBLEDON">LINEA WIMBLEDON (Spugna & Junior)</option>
-                    <option value="BABY_ANIMALS">LINEA BABY ANIMALS (Junior)</option>
-                    <option value="ACCESSORI_LETTO">LINEA ACCESSORI LETTO (Topper, Piumini, Guanciali)</option>
-                </select>
+        <!-- Filtri Rapidi per Linea (Stile Categorie Amazon) -->
+        <section class="no-print space-y-2">
+            <h2 class="text-sm font-bold text-slate-700 flex items-center">
+                <i class="fa-solid fa-filter text-indigo-600 mr-2"></i> 2. Scegli Linea o Categoria Prodotto
+            </h2>
+            <div class="flex flex-wrap gap-2" id="lineFiltersContainer">
+                <button onclick="setLineFilter('ALL')" class="line-btn text-xs font-bold px-3.5 py-2 rounded-lg bg-indigo-600 text-white shadow-sm transition">Tutte le Linee</button>
+                <button onclick="setLineFilter('PAINT')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Paint</button>
+                <button onclick="setLineFilter('GLAMOUR')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Glamour</button>
+                <button onclick="setLineFilter('INCANTO')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Incanto</button>
+                <button onclick="setLineFilter('BECOOL')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">BeCool</button>
+                <button onclick="setLineFilter('WIMBLEDON')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Wimbledon</button>
+                <button onclick="setLineFilter('BABY_ANIMALS')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Baby Animals</button>
+                <button onclick="setLineFilter('ACCESSORI_LETTO')" class="line-btn text-xs font-medium px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Accessori Letto</button>
             </div>
         </section>
 
-        <!-- VETRINA PRODOTTI (SHOPIFY STYLE GRID) -->
+        <!-- GRIGLIA PRODOTTI STILE E-COMMERCE (AMAZON GRID) -->
         <section class="no-print">
-            <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
-                <i class="fa-solid fa-boxes-packing text-indigo-600 mr-2"></i> Vetrina Catalogo Prodotti
-            </h2>
-            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                <!-- Schede generate da JavaScript -->
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-sm font-bold text-slate-700 flex items-center">
+                    <i class="fa-solid fa-boxes-stacked text-indigo-600 mr-2"></i> Catalogo Articoli Disponibili
+                </h2>
+                <span id="productCountLabel" class="text-xs text-slate-500 font-medium">Mostro tutti i prodotti</span>
+            </div>
+            
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Generato via JavaScript -->
             </div>
         </section>
 
         <!-- TABELLA RIEPILOGO ORDINE / PDF -->
-        <section id="cartSection" class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+        <section id="cartSection" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
             <div id="pdfContent">
                 <!-- Testata PDF -->
                 <div class="flex justify-between items-start border-b pb-4 mb-4">
@@ -179,18 +188,18 @@
                 </div>
             </div>
 
-            <!-- Pulsanti di Azione -->
+            <!-- Pulsanti di Azione Ordine -->
             <div class="mt-6 flex flex-wrap gap-3 justify-end pt-4 border-t no-print">
-                <button onclick="resetForm()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-4 py-3 rounded-lg transition mr-auto">
+                <button onclick="resetOrder()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-4 py-3 rounded-lg transition mr-auto">
                     <i class="fa-solid fa-rotate-left mr-1"></i> Svuota Ordine
                 </button>
-                <button onclick="sendWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+                <button onclick="sendWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
                     <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Invia WhatsApp
                 </button>
-                <button onclick="sendEmail()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+                <button onclick="sendEmail()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
                     <i class="fa-solid fa-envelope text-lg mr-2"></i> Invia Email
                 </button>
-                <button onclick="exportPDF()" class="bg-slate-700 hover:bg-slate-800 text-white font-medium text-sm px-5 py-3 rounded-lg shadow transition flex items-center">
+                <button onclick="exportPDF()" class="bg-slate-700 hover:bg-slate-800 text-white font-medium text-sm px-5 py-3 rounded-lg shadow-sm transition flex items-center">
                     <i class="fa-solid fa-file-pdf text-lg mr-2"></i> Stampa / PDF
                 </button>
             </div>
@@ -198,17 +207,17 @@
 
     </main>
 
-    <!-- MODALE SELEZIONE VARIANTI & QUANTITÀ -->
+    <!-- MODALE SELEZIONE VARIANTI & QUANTITÀ (STILE SCHEDA ARTICOLO) -->
     <div id="productModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 no-print">
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col max-h-[90vh]">
             <!-- Modal Header -->
-            <div class="p-4 bg-indigo-900 text-white flex justify-between items-center">
+            <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
                 <div>
-                    <span id="modalLineBadge" class="text-[10px] bg-indigo-700 text-indigo-100 font-bold px-2 py-0.5 rounded uppercase"></span>
-                    <h3 id="modalProductName" class="text-base font-bold mt-1">Nome Prodotto</h3>
-                    <p id="modalProductCode" class="text-xs text-indigo-200">Codice</p>
+                    <span id="modalLineBadge" class="text-[10px] bg-indigo-600 text-white font-bold px-2 py-0.5 rounded uppercase"></span>
+                    <h3 id="modalProductName" class="text-sm font-bold mt-1">Nome Prodotto</h3>
+                    <p id="modalProductCode" class="text-xs text-slate-300">Codice</p>
                 </div>
-                <button onclick="closeModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1">
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-lg font-bold p-1">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -216,14 +225,14 @@
             <!-- Modal Content -->
             <div class="p-5 overflow-y-auto space-y-4 flex-1">
                 <div class="flex items-center space-x-4 border-b pb-4">
-                    <img id="modalProductImage" src="" alt="Prodotto" class="w-24 h-24 object-cover rounded-lg border">
+                    <img id="modalProductImage" src="" alt="Prodotto" class="w-20 h-20 object-cover rounded-lg border bg-slate-100" onerror="this.src='https://via.placeholder.com/150?text=Riviera'">
                     <div class="flex-1 space-y-2">
                         <div>
                             <span class="text-xs text-slate-500">Prezzo Listino:</span>
-                            <div id="modalProductPrice" class="text-lg font-bold text-slate-800">€ 0,00</div>
+                            <div id="modalProductPrice" class="text-base font-extrabold text-slate-900">€ 0,00</div>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-indigo-900 mb-1"><i class="fa-solid fa-percent text-indigo-600 mr-1"></i> Sconto % sull'Articolo</label>
+                            <label class="block text-xs font-bold text-indigo-900 mb-1"><i class="fa-solid fa-percent text-indigo-600 mr-1"></i> Sconto % Articolo</label>
                             <input type="number" id="modalDiscountInput" min="0" max="100" step="0.5" placeholder="Es. 10" class="w-full text-sm font-bold border border-indigo-300 bg-indigo-50/50 rounded-lg p-2 text-indigo-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                         </div>
                     </div>
@@ -232,7 +241,7 @@
                 <div>
                     <div class="flex justify-between items-center mb-2">
                         <span class="text-xs font-bold text-slate-700 uppercase">Seleziona Quantità per Colore:</span>
-                        <span id="modalPackRule" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-semibold"></span>
+                        <span id="modalPackRule" class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold"></span>
                     </div>
 
                     <div class="border rounded-lg overflow-hidden max-h-56 overflow-y-auto">
@@ -254,8 +263,8 @@
             <!-- Modal Footer -->
             <div class="p-4 bg-slate-50 border-t flex justify-end space-x-2">
                 <button onclick="closeModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-xs font-bold hover:bg-slate-300 transition">Annulla</button>
-                <button onclick="addModalItemsToOrder()" class="px-5 py-2 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition flex items-center">
-                    <i class="fa-solid fa-plus mr-1.5"></i> Aggiungi all'Ordine
+                <button onclick="addModalItemsToOrder()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition flex items-center shadow-sm">
+                    <i class="fa-solid fa-cart-plus mr-1.5"></i> Aggiungi all'Ordine
                 </button>
             </div>
         </div>
@@ -263,57 +272,144 @@
 
     <script>
         const productsData = [
-            // --- LINEA PAINT (Parure Copripiumino) ---
-            { line: 'PAINT', name: 'PAINT - Parure Copripiumino Matrimoniale (2P)', code: 'LF0179', price: 30.90, pack: 1, category: 'standard', image: 'img/IMG_0996.jpeg' },
-            { line: 'PAINT', name: 'PAINT - Parure Copripiumino Piazza e Mezza (1+1/2P)', code: 'LF0180', price: 26.90, pack:1, category: 'standard', image: 'img/IMG_0996.jpeg' },
-            { line: 'PAINT', name: 'PAINT - Parure Copripiumino Singolo (1P)', code: 'LF0181', price: 20.90, pack: 1, category: 'standard', image: 'img/IMG_0996.jpeg' },
-
-            // --- LINEA PAINT (Completi Letto - con foto IMG_0998.jpeg) ---
-            { line: 'PAINT', name: 'PAINT - King Size (Lenz. sopra + sotto angoli + 2 federe)', code: 'LN1862', price: 32.90, pack: 1, category: 'standard', image: 'img/IMG_0998.jpeg' },
-            { line: 'PAINT', name: 'PAINT - Completo Letto Matrimoniale (2P)', code: 'LN0506', price: 28.90, pack: 1, category: 'standard', image: 'img/IMG_0998.jpeg' },
-            { line: 'PAINT', name: 'PAINT - Completo Letto Piazza e Mezza Francese', code: 'LN0508', price: 27.50, pack: 1, category: 'standard', image: 'img/IMG_0998.jpeg' },
-            { line: 'PAINT', name: 'PAINT - Completo Letto Piazza e Mezza (1+1/2P)', code: 'LN0507', price: 22.90, pack: 1, category: 'standard', image: 'img/IMG_0998.jpeg' },
-            { line: 'PAINT', name: 'PAINT - Completo Letto Singolo (1P)', code: 'LN0509', price: 18.90, pack: 2, category: 'standard', image: 'img/IMG_0998.jpeg' },
-
-            // --- LINEA GLAMOUR ---
-            { line: 'GLAMOUR', name: 'GLAMOUR - Accappatoio Adulto S/M/L/XL/XXL', code: 'BA0041', price: 15.55, pack: 1, category: 'glamour_accappatoio', image: 'img/BA0041.jpg' },
-            { line: 'GLAMOUR', name: 'GLAMOUR - Accappatoio Adulto XXXL', code: 'BA0041-3XL', price: 15.55, pack: 1, category: 'glamour_accappatoio_3xl', image: 'img/BA0041-3XL.jpg' },
-            { line: 'GLAMOUR', name: 'GLAMOUR - Set 1+1 40x60/60x110 (Asciugamano + Ospite)', code: 'BB0189', price: 4.90, pack: 1, category: 'glamour_set', image: 'img/BB0189.jpg' },
-            { line: 'GLAMOUR', name: 'GLAMOUR - Telo Bagno 100x150', code: 'BE0044', price: 8.51, pack: 1, category: 'glamour_set', image: 'img/BE0044.jpg' },
-            { line: 'GLAMOUR', name: 'GLAMOUR - Tappeto Bagno 50x80', code: 'AX0250', price: 4.20, pack: 1, category: 'glamour_tappeto', image: 'img/AX0250.jpg' },
-
             // --- LINEA INCANTO ---
-            { line: 'INCANTO', name: 'INCANTO - Parure Copripiumino 2P', code: 'LF0725', price: 39.90, pack: 2, category: 'incanto_copripiumino', image: 'img/LF0725.jpg' },
-            { line: 'INCANTO', name: 'INCANTO - Parure Copripiumino 1+1/2P', code: 'LF0726', price: 34.90, pack: 1, category: 'incanto_copripiumino', image: 'img/LF0726.jpg' },
-            { line: 'INCANTO', name: 'INCANTO - Parure Copripiumino 1P', code: 'LF0727', price: 26.90, pack: 2, category: 'incanto_copripiumino', image: 'img/LF0727.jpg' },
-            { line: 'INCANTO', name: 'INCANTO - Completo Letto 2P', code: 'LN1544', price: 39.90, pack: 2, category: 'incanto_letto', image: 'img/LN1544.jpg' },
-            { line: 'INCANTO', name: 'INCANTO - Completo Letto 1+1/2P', code: 'LN1545', price: 34.90, pack: 1, category: 'incanto_letto', image: 'img/LN1545.jpg' },
-            { line: 'INCANTO', name: 'INCANTO - Completo Letto 1P', code: 'LN1546', price: 26.90, pack: 2, category: 'incanto_letto', image: 'img/LN1546.jpg' },
-            { line: 'INCANTO', name: 'INCANTO - Coppia Federe 50x80', code: 'LM0140', price: 9.90, pack: 2, category: 'incanto_letto', image: 'img/LM0140.jpg' },
+            { line: 'INCANTO', group: 'INCANTO: PARURE COPRIPIUMINO', name: 'INCANTO - Parure Copripiumino 2P', code: 'LF0725', price: 39.90, pack: 2, category: 'incanto_copripiumino', image: 'img/LF0725.jpg' },
+            { line: 'INCANTO', group: 'INCANTO: PARURE COPRIPIUMINO', name: 'INCANTO - Parure Copripiumino 1+1/2P', code: 'LF0726', price: 34.90, pack: 1, category: 'incanto_copripiumino', image: 'img/LF0726.jpg' },
+            { line: 'INCANTO', group: 'INCANTO: PARURE COPRIPIUMINO', name: 'INCANTO - Parure Copripiumino 1P', code: 'LF0727', price: 26.90, pack: 2, category: 'incanto_copripiumino', image: 'img/LF0727.jpg' },
+            { line: 'INCANTO', group: 'INCANTO: COMPLETO LETTO', name: 'INCANTO - Completo Letto 2P', code: 'LN1544', price: 39.90, pack: 2, category: 'incanto_letto', image: 'img/LN1544.jpg' },
+            { line: 'INCANTO', group: 'INCANTO: COMPLETO LETTO', name: 'INCANTO - Completo Letto 1+1/2P', code: 'LN1545', price: 34.90, pack: 1, category: 'incanto_letto', image: 'img/LN1545.jpg' },
+            { line: 'INCANTO', group: 'INCANTO: COMPLETO LETTO', name: 'INCANTO - Completo Letto 1P', code: 'LN1546', price: 26.90, pack: 2, category: 'incanto_letto', image: 'img/LN1546.jpg' },
+            { line: 'INCANTO', group: 'INCANTO: COPPIA FEDERE', name: 'INCANTO - Coppia Federe 50x80', code: 'LM0140', price: 9.90, pack: 2, category: 'incanto_letto', image: 'img/LM0140.jpg' },
 
             // --- LINEA BECOOL ---
-            { line: 'BECOOL', name: 'BeCool - Lenzuolo Sopra Rinfrescante 2P', code: 'LP0028', price: 24.70, pack: 2, category: 'becool', image: 'img/LP0028.jpg' },
-            { line: 'BECOOL', name: 'BeCool - Sotto con Angoli Rinfrescante 2P', code: 'LQ0048', price: 17.80, pack: 2, category: 'becool', image: 'img/LQ0048.jpg' }
+            { line: 'BECOOL', group: 'BECOOL: LENZUOLO SOPRA', name: 'BeCool - Lenzuolo Sopra Rinfrescante 2P', code: 'LP0028', price: 24.70, pack: 2, category: 'becool', image: 'img/LP0028.jpg' },
+            { line: 'BECOOL', group: 'BECOOL: LENZUOLO SOPRA', name: 'BeCool - Lenzuolo Sopra Rinfrescante 1+1/2P', code: 'LP0029', price: 18.90, pack: 2, category: 'becool', image: 'img/LP0029.jpg' },
+            { line: 'BECOOL', group: 'BECOOL: LENZUOLO SOPRA', name: 'BeCool - Lenzuolo Sopra Rinfrescante 1P', code: 'LP0030', price: 17.40, pack: 2, category: 'becool', image: 'img/LP0030.jpg' },
+            { line: 'BECOOL', group: 'BECOOL: SOTTO ANGOLI', name: 'BeCool - Sotto con Angoli Rinfrescante 2P', code: 'LQ0048', price: 17.80, pack: 2, category: 'becool', image: 'img/LQ0048.jpg' },
+            { line: 'BECOOL', group: 'BECOOL: SOTTO ANGOLI', name: 'BeCool - Sotto con Angoli Rinfrescante 1+1/2P', code: 'LQ0049', price: 15.60, pack: 2, category: 'becool', image: 'img/LQ0049.jpg' },
+            { line: 'BECOOL', group: 'BECOOL: SOTTO ANGOLI', name: 'BeCool - Sotto con Angoli Rinfrescante 1P', code: 'LQ0050', price: 14.40, pack: 2, category: 'becool', image: 'img/LQ0050.jpg' },
+            { line: 'BECOOL', group: 'BECOOL: FEDERE', name: 'BeCool - Coppia Federe Rinfrescante 50X80+3', code: 'LM0144', price: 13.20, pack: 2, category: 'becool', image: 'img/LM0144.jpg' },
+
+            // --- LINEA BABY ANIMALS ---
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO', name: 'BABY ANIMALS - Accappatoio Junior 0-2 Anni', code: 'CM5654-0/2', price: 8.90, pack: 1, category: 'baby_animals', image: 'img/CM5654.jpg' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO', name: 'BABY ANIMALS - Accappatoio Junior 2-4 Anni', code: 'CM5654-2/4', price: 8.90, pack: 1, category: 'baby_animals', image: 'img/CM5654.jpg' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO', name: 'BABY ANIMALS - Accappatoio Junior 4-6 Anni', code: 'CM5654-4/6', price: 8.90, pack: 1, category: 'baby_animals', image: 'img/CM5654.jpg' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: ACCAPPATOIO', name: 'BABY ANIMALS - Accappatoio Junior 6-8 Anni', code: 'CM5654-6/8', price: 8.90, pack: 1, category: 'baby_animals', image: 'img/CM5654.jpg' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Set 1+1 Junior 30x50+50x90', code: 'BB0361', price: 3.80, pack: 1, category: 'baby_animals', image: 'img/BB0361.jpg' },
+            { line: 'BABY_ANIMALS', group: 'BABY ANIMALS: SET & TELO', name: 'BABY ANIMALS - Telo Bagno 70x140 CM', code: 'BE0093', price: 5.40, pack: 1, category: 'baby_animals', image: 'img/BE0093.jpg' },
+
+            // --- LINEA WIMBLEDON ---
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO', name: 'WIMBLEDON - Accappatoio Adulto S', code: 'BA0010-S', price: 18.50, pack: 1, category: 'wimbledon_adulto', image: 'img/BA0010.jpg' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO', name: 'WIMBLEDON - Accappatoio Adulto M', code: 'BA0010-M', price: 18.50, pack: 1, category: 'wimbledon_adulto', image: 'img/BA0010.jpg' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO', name: 'WIMBLEDON - Accappatoio Adulto L', code: 'BA0010-L', price: 18.50, pack: 1, category: 'wimbledon_adulto', image: 'img/BA0010.jpg' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO', name: 'WIMBLEDON - Accappatoio Adulto XL', code: 'BA0010-XL', price: 18.50, pack: 1, category: 'wimbledon_adulto', image: 'img/BA0010.jpg' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO', name: 'WIMBLEDON - Accappatoio Adulto XXL', code: 'BA0010-XXL', price: 18.50, pack: 1, category: 'wimbledon_adulto', image: 'img/BA0010.jpg' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 6-8 Anni', code: 'BA0021-6/8', price: 14.90, pack: 1, category: 'wimbledon_junior', image: 'img/BA0021.jpg' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 8-10 Anni', code: 'BA0021-8/10', price: 14.90, pack: 1, category: 'wimbledon_junior', image: 'img/BA0021.jpg' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 10-12 Anni', code: 'BA0021-10/12', price: 14.90, pack: 1, category: 'wimbledon_junior', image: 'img/BA0021.jpg' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: ACCAPPATOIO JUNIOR', name: 'WIMBLEDON - Accappatoio Junior 12-14 Anni', code: 'BA0021-12/14', price: 14.90, pack: 1, category: 'wimbledon_junior', image: 'img/BA0021.jpg' },
+            { line: 'WIMBLEDON', group: 'WIMBLEDON: TELO', name: 'WIMBLEDON - Telo Bagno 100x180 CM', code: 'BE0049', price: 10.90, pack: 1, category: 'wimbledon_telo', image: 'img/BE0049.jpg' },
+
+            // --- LINEA GLAMOUR ---
+            { line: 'GLAMOUR', group: 'GLAMOUR: ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto S', code: 'BA0041-S', price: 15.55, pack: 1, category: 'glamour_accappatoio', image: 'img/BA0041.jpg' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto M', code: 'BA0041-M', price: 15.55, pack: 1, category: 'glamour_accappatoio', image: 'img/BA0041.jpg' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto L', code: 'BA0041-L', price: 15.55, pack: 1, category: 'glamour_accappatoio', image: 'img/BA0041.jpg' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XL', code: 'BA0041-XL', price: 15.55, pack: 1, category: 'glamour_accappatoio', image: 'img/BA0041.jpg' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXL', code: 'BA0041-XXL', price: 15.55, pack: 1, category: 'glamour_accappatoio', image: 'img/BA0041.jpg' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: ACCAPPATOI', name: 'GLAMOUR - Accappatoio Adulto XXXL', code: 'BA0041-3XL', price: 15.55, pack: 1, category: 'glamour_accappatoio_3xl', image: 'img/BA0041-3XL.jpg' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: SPUGNA', name: 'GLAMOUR - Set 1+1 40x60/60x110', code: 'BB0189', price: 4.90, pack: 1, category: 'glamour_set', image: 'img/BB0189.jpg' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: SPUGNA', name: 'GLAMOUR - Telo Bagno 100x150', code: 'BE0044', price: 8.51, pack: 1, category: 'glamour_set', image: 'img/BE0044.jpg' },
+            { line: 'GLAMOUR', group: 'GLAMOUR: TAPPETO', name: 'GLAMOUR - Tappeto Bagno 50x80', code: 'AX0250', price: 4.20, pack: 1, category: 'glamour_tappeto', image: 'img/AX0250.jpg' },
+
+            // --- LINEA PAINT ---
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 2P', code: 'LN0506', price: 29.90, pack: 1, category: 'standard', image: 'img/IMG_0998.jpeg' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto KING SIZE', code: 'LN1862', price: 33.50, pack: 1, category: 'king', image: 'img/IMG_0998.jpeg' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P FRANCESE', code: 'LN0508', price: 28.50, pack: 1, category: 'francese', image: 'img/IMG_0998.jpeg' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1+1/2P', code: 'LN0507', price: 23.90, pack: 1, category: 'standard', image: 'img/IMG_0998.jpeg' },
+            { line: 'PAINT', group: 'PAINT: COMPLETO LETTO', name: 'Completo Letto 1P', code: 'LN0509', price: 19.90, pack: 2, category: 'standard', image: 'img/IMG_0998.jpeg' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 2P', code: 'LF0179', price: 30.90, pack: 1, category: 'standard', image: 'img/IMG_0996.jpeg' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1+1/2P', code: 'LF0180', price: 26.90, pack: 1, category: 'standard', image: 'img/IMG_0996.jpeg' },
+            { line: 'PAINT', group: 'PAINT: PARURE COPRIPIUMINO', name: 'Parure Copripiumino 1P', code: 'LF0181', price: 20.90, pack: 1, category: 'standard', image: 'img/IMG_0996.jpeg' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 2P', code: 'LE0607', price: 44.90, pack: 2, category: 'quilt', image: 'img/LE0607.jpg' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1+1/2P', code: 'LE0624', price: 39.90, pack: 1, category: 'quilt', image: 'img/LE0624.jpg' },
+            { line: 'PAINT', group: 'PAINT: QUILT TRAPUNTATO', name: 'Quilt Double Trapuntato 1P', code: 'LE0625', price: 34.90, pack: 2, category: 'quilt', image: 'img/LE0625.jpg' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 2P', code: 'LP0001', price: 13.50, pack: 2, category: 'standard', image: 'img/LP0001.jpg' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P FRANCESE', code: 'LP0003', price: 12.90, pack: 1, category: 'francese', image: 'img/LP0003.jpg' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1+1/2P', code: 'LP0002', price: 11.50, pack: 1, category: 'standard', image: 'img/LP0002.jpg' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOPRA', name: 'Lenzuolo Sopra 1P', code: 'LP0004', price: 9.90, pack: 1, category: 'standard', image: 'img/LP0004.jpg' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P MAXI', code: 'LQ0002', price: 11.50, pack: 2, category: 'standard', image: 'img/LQ0002.jpg' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 2P', code: 'LQ0058', price: 10.50, pack: 2, category: 'standard', image: 'img/LQ0058.jpg' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli KING SIZE', code: 'LQ0054', price: 13.50, pack: 2, category: 'king', image: 'img/LQ0054.jpg' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P FRANCESE', code: 'LQ0004', price: 10.30, pack: 1, category: 'francese', image: 'img/LQ0004.jpg' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1+1/2P', code: 'LQ0003', price: 9.90, pack: 1, category: 'standard', image: 'img/LQ0003.jpg' },
+            { line: 'PAINT', group: 'PAINT: LENZUOLO SOTTO', name: 'Lenzuolo Sotto c/Angoli 1P', code: 'LQ0005', price: 7.90, pack: 2, category: 'standard', image: 'img/LQ0005.jpg' },
+            { line: 'PAINT', group: 'PAINT: COPPIA FEDERE', name: 'Coppia Federe 50X80', code: 'LM0068', price: 7.50, pack: 2, category: 'standard', image: 'img/LM0068.jpg' },
+
+            // --- LINEA ACCESSORI LETTO ---
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 175x200', code: 'LH0005', price: 19.90, pack: 4, category: 'bianco_only', image: 'img/LH0005.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 125x200', code: 'LH0006', price: 16.90, pack: 4, category: 'bianco_only', image: 'img/LH0006.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO SANITARIO', name: 'Coprimaterasso Sanitario 90x200', code: 'LH0007', price: 12.90, pack: 6, category: 'bianco_only', image: 'img/LH0007.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JERSEY', name: 'Coprimaterasso Spugna Jersey 175x200', code: 'LH0008', price: 13.50, pack: 4, category: 'bianco_only', image: 'img/LH0008.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JERSEY', name: 'Coprimaterasso Spugna Jersey 125x200', code: 'LH0009', price: 11.50, pack: 4, category: 'bianco_only', image: 'img/LH0009.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JERSEY', name: 'Coprimaterasso Spugna Jersey 90x200', code: 'LH0010', price: 9.50, pack: 6, category: 'bianco_only', image: 'img/LH0010.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD', name: 'Coprimaterasso Jacquard Rigato 170x200', code: 'LH0011', price: 16.20, pack: 4, category: 'bianco_only', image: 'img/LH0011.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD', name: 'Coprimaterasso Jacquard Rigato 120x200', code: 'LH0012', price: 14.00, pack: 4, category: 'bianco_only', image: 'img/LH0012.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO JACQUARD', name: 'Coprimaterasso Jacquard Rigato 85x200', code: 'LH0013', price: 11.00, pack: 6, category: 'bianco_only', image: 'img/LH0013.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 165x200', code: 'LH0014', price: 16.50, pack: 4, category: 'bianco_only', image: 'img/LH0014.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 125x200', code: 'LH0015', price: 14.50, pack: 4, category: 'bianco_only', image: 'img/LH0015.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D 90x200', code: 'LH0016', price: 11.30, pack: 6, category: 'bianco_only', image: 'img/LH0016.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIMATERASSO 3D', name: 'Coprimaterasso 3D Lettino c/Angoli 65x130', code: 'LH0017', price: 7.90, pack: 6, category: 'bianco_only', image: 'img/LH0017.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 175-195 cm', code: 'LH0031', price: 15.90, pack: 4, category: 'bianco_only', image: 'img/LH0031.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 125-145 cm', code: 'LH0033', price: 12.50, pack: 4, category: 'bianco_only', image: 'img/LH0033.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO STRETCH', name: 'Salvamaterasso Stretch 90-100 cm', code: 'LH0032', price: 9.90, pack: 6, category: 'bianco_only', image: 'img/LH0032.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO', name: 'Salvamaterasso Termo Regolatore 160x200', code: 'LH0034', price: 37.90, pack: 2, category: 'avorio_only', image: 'img/LH0034.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO', name: 'Salvamaterasso Termo Regolatore 120x200', code: 'LH0035', price: 31.50, pack: 1, category: 'avorio_only', image: 'img/LH0035.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'SALVAMATERASSO TERMO', name: 'Salvamaterasso Termo Regolatore 90x200', code: 'LH0036', price: 25.50, pack: 2, category: 'avorio_only', image: 'img/LH0036.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER', name: 'Topper Four Season 180x200+5', code: 'LH0027', price: 79.90, pack: 2, category: 'bianco_only', image: 'img/LH0027.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER', name: 'Topper Four Season 160x200+5', code: 'LH0028', price: 69.00, pack: 2, category: 'bianco_only', image: 'img/LH0028.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER', name: 'Topper Four Season 120x200+5', code: 'LH0029', price: 56.90, pack: 2, category: 'bianco_only', image: 'img/LH0029.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER', name: 'Topper Four Season 90x200+5', code: 'LH0030', price: 44.90, pack: 2, category: 'bianco_only', image: 'img/LH0030.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 180x200+5', code: 'LH0019', price: 59.90, pack: 2, category: 'bianco_only', image: 'img/LH0019.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 160x200+5', code: 'LH0020', price: 47.90, pack: 2, category: 'bianco_only', image: 'img/LH0020.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 120x200+5', code: 'LH0021', price: 44.90, pack: 2, category: 'bianco_only', image: 'img/LH0021.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'TOPPER PERCALLE', name: 'Topper Percalle 90x200+5', code: 'LH0022', price: 35.90, pack: 2, category: 'bianco_only', image: 'img/LH0022.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Memory Viscogel 45x75', code: 'LJ0002', price: 28.50, pack: 2, category: 'bianco_only', image: 'img/LJ0002.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Memory 42x72 H13', code: 'LJ0005', price: 15.50, pack: 8, category: 'bianco_only', image: 'img/LJ0005.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Soft Poliestere 50x80 H18', code: 'LJ0003', price: 13.50, pack: 8, category: 'bianco_only', image: 'img/LJ0003.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'GUANCIALI', name: 'Guanciale Nuvola Poliestere 50x80 H17', code: 'LJ0004', price: 6.10, pack: 8, category: 'bianco_only', image: 'img/LJ0004.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Coppia Copriguanciale Cotone Jacquard Rigato 50x80', code: 'LM0073', price: 7.90, pack: 12, category: 'bianco_only', image: 'img/LM0073.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Coppia Copriguanciale Spugna Jersey 50x80', code: 'LM0072', price: 6.50, pack: 12, category: 'bianco_only', image: 'img/LM0072.jpg' },
+            { line: 'ACCESSORI_LETTO', group: 'COPRIGUANCIALI', name: 'Copriguanciale 3D 50x80', code: 'LM0074', price: 5.40, pack: 12, category: 'bianco_only', image: 'img/LM0074.jpg' }
         ];
 
         const colorMap = {
-            'standard': ["0101 Bianco", "0201 Avorio", "2901 Tofu", "3001 Mandorla", "0301 New Tortora", "0401 Glacé", "2301 Cammello", "0501 Perla", "0601 Acciaio", "2801 Carbone", "3301 Celeste", "1401 C. da Zucchero", "1901 Turchese", "1501 Denim", "2001 New Ottanio", "1601 Navy", "2101 Militare", "2701 Muschio", "3401 Bosco", "2401 Crema", "2201 Senape", "1001 Malva", "0901 Rosa Antico", "2601 Carota", "3101 Coccio", "2501 Loto", "1201 Bordeaux", "3201 Prugna"],
+            'incanto_copripiumino': ["0101 Bianco- Perla", "0201 Avorio -Tortora", "0301 Malva -Avorio", "0401 Ottanio -Tortora", "0501 Senape -Avorio", "0601 Muschio-Avorio"],
+            'incanto_letto': ["0101 Bianco", "0201 Avorio", "0301 Perla", "0401 Tortora", "0501 Ottanio", "0601 Muschio", "0701 Senape", "0801 Malva"],
+            'becool': ["0101 Bianco", "0201 Avorio", "0301 Perla", "0701 Malva", "0501 Salvia", "0801 C. da Zucchero"],
+            'standard': ["0101 BIANCO", "0201 AVORIO", "2901 TOFU", "3001 MANDORLA", "0301 NEW TORTORA", "0401 GLACÉ", "2301 CAMMELLO", "0501 PERLA", "0601 ACCIAIO", "2801 CARBONE", "3301 CELESTE", "1401 C. ZUCCHERO", "1901 TURCHESE", "1501 DENIM", "2001 NEW OTTANIO", "1601 NAVY", "2101 MILITARE", "2701 MUSCHIO", "3401 BOSCO", "2401 CREMA", "2201 SENAPE", "1001 MALVA", "0901 ROSA ANTICO", "2601 CAROTA", "3101 COCCIO", "2501 LOTO", "1201 BORDEAUX"],
+            'francese': ["0101 BIANCO", "0301 NEW TORTORA", "0501 PERLA", "0601 ACCIAIO", "1501 DENIM", "1001 MALVA"],
+            'king': ["0101 BIANCO", "0201 AVORIO", "0301 NEW TORTORA", "0501 PERLA", "1401 C. ZUCCHERO", "2701 MUSCHIO", "1001 MALVA"],
+            'quilt': ["0101 AVORIO/GRIGIO PERLA", "0201 TORTORA/AVORIO", "0301 CAMMELLO/GLACÉ", "0401 ACCIAIO/NEW TORTORA", "0501 CARBONE/CAMMELLO", "0601 C. DA ZUCCHERO/DENIM", "0701 MUSCHIO/TURCHESE", "0801 LOTO/MALVA", "0901 CAROTA/NEW TORTORA", "1001 BORDEAUX/GLACÉ"],
             'glamour_set': ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "1101 RUGGINO", "0501 ROSA", "1201 BORDEAUX", "0801 MALVA", "1301 AMETISTA"],
             'glamour_accappatoio': ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0401 GRIGIO SCURO", "1001 BLU SCURO", "0901 AZZURRO", "1401 OTTANIO", "0701 VERDE", "1701 MILITARE", "1601 SENAPE", "0501 ROSA", "0801 MALVA", "1201 BORDEAUX"],
             'glamour_accappatoio_3xl': ["0106 BIANCO", "1506 AVORIO", "0306 TORTORA", "0406 GRIGIO SCURO", "1006 BLU SCURO", "0706 VERDE"],
             'glamour_tappeto': ["0101 BIANCO", "1501 AVORIO", "0301 TORTORA", "0201 GRIGIO CHIARO", "0701 VERDE", "0801 MALVA", "1101 RUGGINO"],
-            'incanto_copripiumino': ["0101 Bianco- Perla", "0201 Avorio -Tortora", "0301 Malva -Avorio", "0401 Ottanio -Tortora", "0501 Senape -Avorio", "0601 Muschio-Avorio"],
-            'incanto_letto': ["0101 Bianco", "0201 Avorio", "0301 Perla", "0401 Tortora", "0501 Ottanio", "0601 Muschio", "0701 Senape", "0801 Malva"],
-            'becool': ["0101 Bianco", "0201 Avorio", "0301 Perla", "0701 Malva", "0501 Salvia", "0801 C. da Zucchero"]
+            'wimbledon_adulto': ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"],
+            'wimbledon_junior': ["1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1501 MALVA"],
+            'wimbledon_telo': ["0101 BIANCO", "0301 CORDA", "1901 PERLA", "0401 FUMO", "2401 DENIM", "1301 BLUETTE", "2301 POLVERE", "1101 TIFFANY", "2201 SALVIA", "1701 OLIVA", "1801 ZAFFERANO", "2101 BORDEAUX", "2001 CIPRIA", "1501 MALVA", "0901 FUXIA"],
+            'baby_animals': ["SHARK", "SHEEP", "RABBIT", "DINO", "UNICORN", "GIRAFFE"],
+            'bianco_only': ["0101 BIANCO"],
+            'avorio_only': ["0101 AVORIO"]
         };
 
         let items = [];
-        let currentSelectedProduct = null;
+        let currentLineFilter = 'ALL';
+        let currentProductIndex = null;
 
         document.addEventListener('DOMContentLoaded', function() {
             updateDateTime();
             setInterval(updateDateTime, 1000);
-            renderProductGrid();
+            renderProductGrid(productsData);
 
             document.getElementById('clientName').addEventListener('input', renderTable);
             document.getElementById('clientCity').addEventListener('input', renderTable);
@@ -328,35 +424,67 @@
             document.getElementById('docDate').innerText = `Data: ${dateStr} - ${timeStr}`;
         }
 
-        function renderProductGrid() {
-            const grid = document.getElementById('productGrid');
-            const selectedLine = document.getElementById('lineSelect').value;
+        function setLineFilter(line) {
+            currentLineFilter = line;
+            
+            // Aggiorna stile bottoni linea
+            document.querySelectorAll('.line-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-white', 'border', 'border-slate-300', 'text-slate-700');
+            });
+            event.target.classList.remove('bg-white', 'border', 'border-slate-300', 'text-slate-700');
+            event.target.classList.add('bg-indigo-600', 'text-white');
 
-            const filtered = (selectedLine === 'ALL') ? productsData : productsData.filter(p => p.line === selectedLine);
+            filterProducts();
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            let filtered = productsData.filter(p => {
+                const matchLine = (currentLineFilter === 'ALL' || p.line === currentLineFilter);
+                const matchQuery = p.name.toLowerCase().includes(query) || p.code.toLowerCase().includes(query) || p.group.toLowerCase().includes(query);
+                return matchLine && matchQuery;
+            });
+
+            renderProductGrid(filtered);
+        }
+
+        function renderProductGrid(list) {
+            const grid = document.getElementById('productGrid');
+            document.getElementById('productCountLabel').innerText = `Trovati ${list.length} articoli`;
+
+            if (list.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400 bg-white rounded-xl border border-slate-200">Nessun articolo corrisponde ai criteri di ricerca.</div>`;
+                return;
+            }
 
             let html = '';
-            filtered.forEach((p, index) => {
-                const img = p.image || 'https://via.placeholder.com/400x300?text=Riviera+Basic';
+            list.forEach(p => {
+                // Trova l'indice reale nel vettore generale productsData
+                const realIndex = productsData.findIndex(item => item.code === p.code && item.name === p.name);
+                const img = p.image || 'https://via.placeholder.com/300?text=Riviera+Basic';
+                
                 html += `
                     <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition border border-slate-200 overflow-hidden flex flex-col justify-between group">
                         <div>
                             <div class="relative overflow-hidden aspect-video bg-slate-100">
-                                <img src="${img}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(p.name)}';" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                                <span class="absolute top-2 left-2 bg-indigo-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-sm">${p.line}</span>
+                                <img src="${img}" onerror="this.onerror=null;this.src='https://via.placeholder.com/300?text=${encodeURIComponent(p.name)}';" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                <span class="absolute top-2 left-2 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-sm">${p.line}</span>
                             </div>
-                            <div class="p-4">
-                                <p class="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">Cod. ${p.code}</p>
-                                <h3 class="text-sm font-bold text-slate-800 leading-snug mt-0.5 line-clamp-2">${p.name}</h3>
-                                <p class="text-xs text-slate-500 mt-1">Preimballo: <strong>${p.pack} PZ</strong></p>
+                            <div class="p-3.5">
+                                <p class="text-[11px] font-bold text-indigo-600 uppercase tracking-wide">Cod. ${p.code}</p>
+                                <h3 class="text-xs font-bold text-slate-800 leading-snug mt-1 line-clamp-2">${p.name}</h3>
+                                <p class="text-[11px] text-slate-500 mt-1">Imballo min: <strong>${p.pack} PZ</strong></p>
                             </div>
                         </div>
-                        <div class="p-4 pt-0 flex items-center justify-between mt-2 border-t pt-3">
+                        <div class="p-3.5 pt-0 flex items-center justify-between mt-2 border-t pt-2.5 bg-slate-50/50">
                             <div>
                                 <span class="text-[10px] text-slate-400 block uppercase">Listino</span>
-                                <span class="text-base font-extrabold text-slate-900">€ ${p.price.toFixed(2).replace('.', ',')}</span>
+                                <span class="text-sm font-extrabold text-slate-900">€ ${p.price.toFixed(2).replace('.', ',')}</span>
                             </div>
-                            <button onclick="openModal(${index})" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition flex items-center">
-                                <i class="fa-solid fa-cart-plus mr-1"></i> Ordina
+                            <button onclick="openModal(${realIndex})" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition flex items-center shadow-sm">
+                                <i class="fa-solid fa-plus mr-1"></i> Ordina
                             </button>
                         </div>
                     </div>
@@ -366,33 +494,31 @@
             grid.innerHTML = html;
         }
 
-        function openModal(productIndex) {
-            currentSelectedProduct = productsData[productIndex];
-            
-            document.getElementById('modalLineBadge').innerText = currentSelectedProduct.line;
-            document.getElementById('modalProductName').innerText = currentSelectedProduct.name;
-            document.getElementById('modalProductCode').innerText = `Codice: ${currentSelectedProduct.code}`;
-            document.getElementById('modalProductPrice').innerText = `€ ${currentSelectedProduct.price.toFixed(2).replace('.', ',')}`;
+        function openModal(index) {
+            currentProductIndex = index;
+            const p = productsData[index];
+
+            document.getElementById('modalLineBadge').innerText = p.line;
+            document.getElementById('modalProductName').innerText = p.name;
+            document.getElementById('modalProductCode').innerText = `Codice: ${p.code}`;
+            document.getElementById('modalProductPrice').innerText = `€ ${p.price.toFixed(2).replace('.', ',')}`;
             
             const imgEl = document.getElementById('modalProductImage');
-            imgEl.src = currentSelectedProduct.image || 'https://via.placeholder.com/400x300?text=Riviera+Basic';
-            imgEl.onerror = function() {
-                this.src = 'https://via.placeholder.com/400x300?text=' + encodeURIComponent(currentSelectedProduct.name);
-            };
+            imgEl.src = p.image || 'https://via.placeholder.com/150?text=Riviera';
 
             document.getElementById('modalDiscountInput').value = '';
 
-            const pack = currentSelectedProduct.pack || 1;
-            document.getElementById('modalPackRule').innerText = pack > 1 ? `Min. e multipli di ${pack} pz` : 'Pezzi singoli';
+            const pack = p.pack || 1;
+            document.getElementById('modalPackRule').innerText = pack > 1 ? `Minimo e multipli di ${pack} pz` : 'Pezzi singoli';
 
-            const colors = colorMap[currentSelectedProduct.category] || colorMap['standard'];
+            const colors = colorMap[p.category] || colorMap['standard'];
             let html = '';
             colors.forEach((col, idx) => {
                 html += `
                     <tr class="border-b hover:bg-slate-50">
                         <td class="py-2 px-3 font-medium text-slate-700">${col}</td>
                         <td class="py-2 px-3 text-center">
-                            <input type="number" data-color="${col}" min="0" step="${pack}" placeholder="" class="modal-qty-input w-20 text-center text-xs font-bold border border-slate-300 rounded p-1 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <input type="number" data-color="${col}" min="0" step="${pack}" placeholder="" class="modal-qty-input w-24 text-center text-xs font-bold border border-slate-300 rounded p-1.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none" onkeydown="handleModalKeydown(event, ${idx})">
                         </td>
                     </tr>
                 `;
@@ -404,13 +530,28 @@
 
         function closeModal() {
             document.getElementById('productModal').classList.add('hidden');
-            currentSelectedProduct = null;
+            currentProductIndex = null;
+        }
+
+        function handleModalKeydown(event, currentIndex) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.modal-qty-input');
+                const nextInput = inputs[currentIndex + 1];
+                if (nextInput) {
+                    nextInput.focus();
+                    nextInput.select();
+                } else {
+                    addModalItemsToOrder();
+                }
+            }
         }
 
         function addModalItemsToOrder() {
-            if (!currentSelectedProduct) return;
+            if (currentProductIndex === null) return;
+            const p = productsData[currentProductIndex];
 
-            const pack = currentSelectedProduct.pack || 1;
+            const pack = p.pack || 1;
             const discountInputVal = parseFloat(document.getElementById('modalDiscountInput').value) || 0;
             const qtyInputs = document.querySelectorAll('.modal-qty-input');
             let addedCount = 0;
@@ -422,19 +563,19 @@
 
                 if (qty > 0) {
                     if (qty < pack) {
-                        alert(`La quantità per "${color}" è inferiore al minimo (${pack} pz). Regolata al minimo.`);
+                        alert(`La quantità per "${color}" è inferiore al minimo stabilito (${pack} pz). Regolata al minimo.`);
                         qty = pack;
                     } else if (qty % pack !== 0) {
                         qty = Math.ceil(qty / pack) * pack;
-                        alert(`Adeguata al multiplo di imballo (${pack} pz): ${qty} pz per "${color}".`);
+                        alert(`La quantità per "${color}" è stata adeguata al multiplo di imballo (${pack} pz): ${qty} pz.`);
                     }
 
                     items.push({
-                        code: currentSelectedProduct.code,
-                        article: currentSelectedProduct.name,
+                        code: p.code,
+                        article: p.name,
                         color: color,
                         qty: qty,
-                        price: currentSelectedProduct.price,
+                        price: p.price,
                         discountPercent: discountInputVal
                     });
 
@@ -515,11 +656,48 @@
             document.getElementById('cartSection').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function resetForm() {
-            if (confirm("Sei sicuro di voler svuotare il carrello dell'ordine?")) {
+        function resetOrder() {
+            if (confirm("Sei sicuro di voler azzerare il carrello dell'ordine?")) {
                 items = [];
                 renderTable();
             }
+        }
+
+        function buildOrderSummaryText() {
+            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
+            const city = document.getElementById('clientCity').value || '-';
+            const vat = document.getElementById('clientVat').value || '-';
+            const now = new Date();
+            
+            let summary = `*ORDINE RIVIERA BASIC*\n`;
+            summary += `*Rappresentante:* Cacciola Daniele\n`;
+            summary += `----------------------------------\n`;
+            summary += `*Cliente:* ${client}\n`;
+            summary += `*Città:* ${city}\n`;
+            summary += `*P.IVA/SDI:* ${vat}\n`;
+            summary += `*Data e Ora:* ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}\n`;
+            summary += `----------------------------------\n`;
+            summary += `*ARTICOLI IN ORDINE:*\n\n`;
+
+            let totalPz = 0;
+            let totalEuro = 0;
+
+            items.forEach(i => {
+                const disc = i.discountPercent || 0;
+                const effPrice = disc > 0 ? i.price * (1 - disc / 100) : i.price;
+                const totLine = effPrice * i.qty;
+                let discText = disc > 0 ? ` (Sconto ${disc}%)` : '';
+                
+                summary += `• [${i.code}] ${i.article}\n  Variante: ${i.color}\n  Q.tà: ${i.qty} pz | Prezzo Netto: € ${effPrice.toFixed(2).replace('.', ',')}${discText} | Tot: € ${totLine.toFixed(2).replace('.', ',')}\n\n`;
+                totalPz += i.qty;
+                totalEuro += totLine;
+            });
+
+            summary += `----------------------------------\n`;
+            summary += `*TOTALE PEZZI:* ${totalPz}\n`;
+            summary += `*TOTALE NETTO:* € ${totalEuro.toFixed(2).replace('.', ',')}`;
+
+            return summary;
         }
 
         function sendWhatsApp() {
@@ -527,12 +705,8 @@
                 alert("Aggiungi almeno un articolo prima di inviare l'ordine.");
                 return;
             }
-            const client = document.getElementById('clientName').value || 'Cliente';
-            let text = `*ORDINE RIVIERA BASIC*\nCliente: ${client}\n------------------\n`;
-            items.forEach(i => {
-                text += `• [${i.code}] ${i.article} (${i.color}) - Q.tà: ${i.qty}\n`;
-            });
-            window.open(`https://api.whatsapp.com/send?phone=393392822146&text=${encodeURIComponent(text)}`, '_blank');
+            const text = encodeURIComponent(buildOrderSummaryText());
+            window.open(`https://api.whatsapp.com/send?phone=393392822146&text=${text}`, '_blank');
         }
 
         function sendEmail() {
@@ -541,7 +715,9 @@
                 return;
             }
             const client = document.getElementById('clientName').value || 'Cliente';
-            window.location.href = `mailto:cacciola74@gmail.com?subject=Ordine Riviera Basic - ${client}&body=In allegato o riepilogo ordine.`;
+            const subject = encodeURIComponent(`Ordine Riviera Basic - ${client}`);
+            const body = encodeURIComponent(buildOrderSummaryText().replace(/\*/g, ''));
+            window.location.href = `mailto:cacciola74@gmail.com?subject=${subject}&body=${body}`;
         }
 
         function exportPDF() {
