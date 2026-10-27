@@ -695,7 +695,7 @@
             }
         }
 
-        // Funzione PDF basata su tabelle HTML classiche (compatibile al 100% con PC Windows e mobile)
+        // Generatore PDF robusto con inserimento temporaneo nel DOM (Compatibile Windows e Mobile)
         function generateCleanPDFHtml() {
             const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
             const city = document.getElementById('clientCity').value || '-';
@@ -727,6 +727,9 @@
             });
 
             const container = document.createElement('div');
+            container.style.position = 'absolute';
+            container.style.left = '-9999px';
+            container.style.top = '0';
             container.style.width = '700px';
             container.style.padding = '20px';
             container.style.fontFamily = 'Arial, sans-serif';
@@ -792,7 +795,9 @@
 
             const client = document.getElementById('clientName').value || 'Cliente';
             const filename = `Ordine_Riviera_${client.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+            
             const element = generateCleanPDFHtml();
+            document.body.appendChild(element);
 
             const opt = {
                 margin:       10,
@@ -813,6 +818,7 @@
                         const file = new File([pdfBlob], filename, { type: 'application/pdf' });
                         
                         if (navigator.canShare({ files: [file] })) {
+                            document.body.removeChild(element);
                             await navigator.share({
                                 files: [file],
                                 title: `Ordine Riviera Basic - ${client}`,
@@ -825,9 +831,13 @@
                     }
                 }
 
-                pdfWorker.save();
+                await pdfWorker.save();
+                document.body.removeChild(element);
             } catch (error) {
                 console.error("Errore generazione PDF:", error);
+                if (document.body.contains(element)) {
+                    document.body.removeChild(element);
+                }
                 window.print();
             }
         }
