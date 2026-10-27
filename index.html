@@ -695,6 +695,95 @@
             }
         }
 
+        // Funzione PDF basata su tabelle HTML classiche (compatibile al 100% con PC Windows e mobile)
+        function generateCleanPDFHtml() {
+            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
+            const city = document.getElementById('clientCity').value || '-';
+            const vat = document.getElementById('clientVat').value || '-';
+            const now = new Date();
+
+            let rows = '';
+            let totalQty = 0;
+            let grandTotal = 0;
+
+            items.forEach(item => {
+                totalQty += item.qty;
+                const discount = item.discountPercent || 0;
+                const effectivePrice = discount > 0 ? item.price * (1 - discount / 100) : item.price;
+                const itemTotal = effectivePrice * item.qty;
+                grandTotal += itemTotal;
+
+                rows += `
+                    <tr style="border-bottom: 1px solid #dddddd;">
+                        <td style="padding: 6px; font-weight: bold; font-size: 11px;">${item.code}</td>
+                        <td style="padding: 6px; font-size: 11px;">${item.article}</td>
+                        <td style="padding: 6px; font-size: 11px;">${item.color}</td>
+                        <td style="padding: 6px; text-align: center; font-size: 11px; font-weight: bold;">${item.qty}</td>
+                        <td style="padding: 6px; text-align: right; font-size: 11px;">€ ${item.price.toFixed(2).replace('.', ',')}</td>
+                        <td style="padding: 6px; text-align: center; font-size: 11px;">${discount > 0 ? discount + '%' : '-'}</td>
+                        <td style="padding: 6px; text-align: right; font-weight: bold; font-size: 11px;">€ ${itemTotal.toFixed(2).replace('.', ',')}</td>
+                    </tr>
+                `;
+            });
+
+            const container = document.createElement('div');
+            container.style.width = '700px';
+            container.style.padding = '20px';
+            container.style.fontFamily = 'Arial, sans-serif';
+            container.style.color = '#000000';
+            container.style.backgroundColor = '#ffffff';
+
+            container.innerHTML = `
+                <table style="width: 100%; border-collapse: collapse; border-bottom: 2px solid #312e81; margin-bottom: 15px; padding-bottom: 10px;">
+                    <tr>
+                        <td style="vertical-align: top; padding-bottom: 10px;">
+                            <h1 style="margin: 0; color: #312e81; font-size: 20px;">RIVIERA BASIC</h1>
+                            <p style="margin: 3px 0 0 0; color: #555555; font-size: 11px; font-weight: bold;">Rappresentante Cacciola Daniele - Copia Commissione</p>
+                        </td>
+                        <td style="text-align: right; vertical-align: top; font-size: 11px; color: #666666; padding-bottom: 10px;">
+                            Data: ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}
+                        </td>
+                    </tr>
+                </table>
+
+                <table style="width: 100%; border-collapse: collapse; background-color: #f8fafc; border: 1px solid #e2e8f0; margin-bottom: 15px; font-size: 11px;">
+                    <tr>
+                        <td style="padding: 8px;"><strong>Cliente:</strong> ${client}</td>
+                        <td style="padding: 8px;"><strong>Città:</strong> ${city}</td>
+                        <td style="padding: 8px;"><strong>Cod. Univoco/P.IVA:</strong> ${vat}</td>
+                    </tr>
+                </table>
+
+                <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                    <thead>
+                        <tr style="background-color: #f1f5f9; text-align: left; border-bottom: 2px solid #cbd5e1;">
+                            <th style="padding: 8px 6px;">Codice</th>
+                            <th style="padding: 8px 6px;">Articolo / Descrizione</th>
+                            <th style="padding: 8px 6px;">Variante Colore</th>
+                            <th style="padding: 8px 6px; text-align: center;">PZ</th>
+                            <th style="padding: 8px 6px; text-align: right;">Prezzo List.</th>
+                            <th style="padding: 8px 6px; text-align: center;">Sconto %</th>
+                            <th style="padding: 8px 6px; text-align: right;">Totale €</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+
+                <table style="width: 100%; border-collapse: collapse; margin-top: 20px; border-top: 2px solid #312e81;">
+                    <tr>
+                        <td style="text-align: right; padding-top: 10px; font-size: 12px;">
+                            <p style="margin: 2px 0;"><strong>Totale Pezzi:</strong> ${totalQty}</p>
+                            <p style="margin: 5px 0 0 0; font-size: 15px; color: #312e81;"><strong>Totale Netto: € ${grandTotal.toFixed(2).replace('.', ',')}</strong></p>
+                        </td>
+                    </tr>
+                </table>
+            `;
+
+            return container;
+        }
+
         async function exportAndSharePDF() {
             if (items.length === 0) {
                 alert("Aggiungi almeno un articolo prima di stampare o generare il PDF.");
@@ -703,13 +792,7 @@
 
             const client = document.getElementById('clientName').value || 'Cliente';
             const filename = `Ordine_Riviera_${client.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
-            
-            // Aggiorna i dati anagrafici nel blocco PDF visibile
-            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
-            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
-            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
-
-            const element = document.getElementById('pdfContent');
+            const element = generateCleanPDFHtml();
 
             const opt = {
                 margin:       10,
@@ -722,8 +805,6 @@
             try {
                 const pdfWorker = html2pdf().set(opt).from(element);
                 
-                // La condivisione nativa viene eseguita SOLO su dispositivi mobili (Smartphone/Tablet)
-                // In questo modo su PC Windows il PDF viene scaricato regolarmente nei Download senza errori di allegato
                 const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
                 if (isMobile && navigator.share && navigator.canShare) {
@@ -744,7 +825,6 @@
                     }
                 }
 
-                // Download diretto del file su PC e fallback
                 pdfWorker.save();
             } catch (error) {
                 console.error("Errore generazione PDF:", error);
