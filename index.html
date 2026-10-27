@@ -221,7 +221,7 @@
                     <i class="fa-solid fa-rotate-left mr-1"></i> Svuota Ordine
                 </button>
                 <button onclick="exportAndSharePDF()" class="bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-sm px-6 py-3 rounded-lg shadow-md transition flex items-center">
-                    <i class="fa-solid fa-file-pdf text-lg mr-2"></i> Stampa / Scarica ed Invia PDF
+                    <i class="fa-solid fa-file-pdf mr-2"></i> Stampa / Scarica ed Invia PDF
                 </button>
             </div>
         </section>
@@ -709,7 +709,6 @@
             document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
             document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
 
-            // Utilizziamo direttamente l'elemento HTML esistente e collegato al DOM (#pdfContent)
             const element = document.getElementById('pdfContent');
 
             const opt = {
@@ -723,7 +722,11 @@
             try {
                 const pdfWorker = html2pdf().set(opt).from(element);
                 
-                if (navigator.share && navigator.canShare) {
+                // La condivisione nativa viene eseguita SOLO su dispositivi mobili (Smartphone/Tablet)
+                // In questo modo su PC Windows il PDF viene scaricato regolarmente nei Download senza errori di allegato
+                const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+                if (isMobile && navigator.share && navigator.canShare) {
                     try {
                         const pdfBlob = await pdfWorker.output('blob');
                         const file = new File([pdfBlob], filename, { type: 'application/pdf' });
@@ -741,6 +744,7 @@
                     }
                 }
 
+                // Download diretto del file su PC e fallback
                 pdfWorker.save();
             } catch (error) {
                 console.error("Errore generazione PDF:", error);
