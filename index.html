@@ -593,18 +593,14 @@
                         alert(`La quantità per "${color}" è stata adeguata al multiplo di imballo (${pack} pz): ${qty} pz.`);
                     }
 
-                    // CONTROLLO DUPLICATI: cerca se l'articolo con lo stesso codice e variante esiste già nell'ordine
                     const existingItemIndex = items.findIndex(item => item.code === p.code && item.color === color);
 
                     if (existingItemIndex !== -1) {
-                        // Se esiste già, aggiorna la quantità sommando quella nuova
                         items[existingItemIndex].qty += qty;
-                        // Aggiorna lo sconto con l'ultimo valore inserito se presente
                         if (discountInputVal > 0) {
                             items[existingItemIndex].discountPercent = discountInputVal;
                         }
                     } else {
-                        // Altrimenti inserisce la nuova variante
                         items.push({
                             code: p.code,
                             article: p.name,
@@ -788,41 +784,45 @@
             const filename = `Ordine_Riviera_${client.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
             const element = generateCleanPDFHtml();
 
+            // Configurazione ottimizzata per evitare fogli bianchi su dispositivi mobili (iOS/Android)
             const opt = {
                 margin:       10,
                 filename:     filename,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, logging: false },
+                image:        { type: 'jpeg', quality: 0.95 },
+                html2canvas:  { scale: 1.5, logging: false, useCORS: true },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // Generazione PDF
-            const pdfWorker = html2pdf().set(opt).from(element);
-            
-            // Tentativo di condivisione nativa se disponibile (su Mobile)
-            if (navigator.share && navigator.canShare) {
+            // Piccolo ritardo per consentire al DOM di renderizzare correttamente gli elementi prima del canvas
+            setTimeout(async () => {
                 try {
-                    const pdfBlob = await pdfWorker.output('blob');
-                    const file = new File([pdfBlob], filename, { type: 'application/pdf' });
+                    const pdfWorker = html2pdf().set(opt).from(element);
                     
-                    if (navigator.canShare({ files: [file] })) {
-                        await navigator.share({
-                            files: [file],
-                            title: `Ordine Riviera Basic - ${client}`,
-                            text: `In allegato l'ordine per ${client}.`
-                        });
-                        return;
+                    if (navigator.share && navigator.canShare) {
+                        try {
+                            const pdfBlob = await pdfWorker.output('blob');
+                            const file = new File([pdfBlob], filename, { type: 'application/pdf' });
+                            
+                            if (navigator.canShare({ files: [file] })) {
+                                await navigator.share({
+                                    files: [file],
+                                    title: `Ordine Riviera Basic - ${client}`,
+                                    text: `In allegato l'ordine per ${client}.`
+                                });
+                                return;
+                            }
+                        } catch (err) {
+                            console.log("Condivisione nativa saltata:", err);
+                        }
                     }
-                } catch (err) {
-                    console.log("Condivisione non completata:", err);
-                }
-            }
 
-            // Fallback standard: Scarica ed apri la finestra di stampa
-            pdfWorker.save();
-            setTimeout(() => {
-                window.print();
-            }, 800);
+                    // Fallback se la condivisione non è supportata
+                    pdfWorker.save();
+                } catch (error) {
+                    console.error("Errore generazione PDF, passaggio a stampa standard:", error);
+                    window.print();
+                }
+            }, 300);
         }
     </script>
 </body>
