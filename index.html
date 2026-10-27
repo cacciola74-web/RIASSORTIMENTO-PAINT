@@ -6,8 +6,6 @@
     <title>Riviera Basic - Catalogo Ordini</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Libreria per la generazione del file PDF lato client -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         @media print {
             header, 
@@ -37,13 +35,20 @@
                 padding: 0 !important;
             }
 
-            #cartSection, #pdfContent { 
+            #cartSection {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            #pdfContent { 
                 display: block !important;
                 visibility: visible !important;
                 position: relative !important;
                 width: 100% !important;
                 margin: 0 !important;
-                padding: 10px !important;
+                padding: 0 !important;
                 border: none !important;
                 box-shadow: none !important;
                 background: #ffffff !important;
@@ -695,98 +700,7 @@
             }
         }
 
-        // Generatore PDF robusto con inserimento temporaneo nel DOM (Compatibile Windows e Mobile)
-        function generateCleanPDFHtml() {
-            const client = document.getElementById('clientName').value || 'Cliente Non Specificato';
-            const city = document.getElementById('clientCity').value || '-';
-            const vat = document.getElementById('clientVat').value || '-';
-            const now = new Date();
-
-            let rows = '';
-            let totalQty = 0;
-            let grandTotal = 0;
-
-            items.forEach(item => {
-                totalQty += item.qty;
-                const discount = item.discountPercent || 0;
-                const effectivePrice = discount > 0 ? item.price * (1 - discount / 100) : item.price;
-                const itemTotal = effectivePrice * item.qty;
-                grandTotal += itemTotal;
-
-                rows += `
-                    <tr style="border-bottom: 1px solid #dddddd;">
-                        <td style="padding: 6px; font-weight: bold; font-size: 11px;">${item.code}</td>
-                        <td style="padding: 6px; font-size: 11px;">${item.article}</td>
-                        <td style="padding: 6px; font-size: 11px;">${item.color}</td>
-                        <td style="padding: 6px; text-align: center; font-size: 11px; font-weight: bold;">${item.qty}</td>
-                        <td style="padding: 6px; text-align: right; font-size: 11px;">€ ${item.price.toFixed(2).replace('.', ',')}</td>
-                        <td style="padding: 6px; text-align: center; font-size: 11px;">${discount > 0 ? discount + '%' : '-'}</td>
-                        <td style="padding: 6px; text-align: right; font-weight: bold; font-size: 11px;">€ ${itemTotal.toFixed(2).replace('.', ',')}</td>
-                    </tr>
-                `;
-            });
-
-            const container = document.createElement('div');
-            container.style.position = 'absolute';
-            container.style.left = '-9999px';
-            container.style.top = '0';
-            container.style.width = '700px';
-            container.style.padding = '20px';
-            container.style.fontFamily = 'Arial, sans-serif';
-            container.style.color = '#000000';
-            container.style.backgroundColor = '#ffffff';
-
-            container.innerHTML = `
-                <table style="width: 100%; border-collapse: collapse; border-bottom: 2px solid #312e81; margin-bottom: 15px; padding-bottom: 10px;">
-                    <tr>
-                        <td style="vertical-align: top; padding-bottom: 10px;">
-                            <h1 style="margin: 0; color: #312e81; font-size: 20px;">RIVIERA BASIC</h1>
-                            <p style="margin: 3px 0 0 0; color: #555555; font-size: 11px; font-weight: bold;">Rappresentante Cacciola Daniele - Copia Commissione</p>
-                        </td>
-                        <td style="text-align: right; vertical-align: top; font-size: 11px; color: #666666; padding-bottom: 10px;">
-                            Data: ${now.toLocaleDateString('it-IT')} ${now.toLocaleTimeString('it-IT')}
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%; border-collapse: collapse; background-color: #f8fafc; border: 1px solid #e2e8f0; margin-bottom: 15px; font-size: 11px;">
-                    <tr>
-                        <td style="padding: 8px;"><strong>Cliente:</strong> ${client}</td>
-                        <td style="padding: 8px;"><strong>Città:</strong> ${city}</td>
-                        <td style="padding: 8px;"><strong>Cod. Univoco/P.IVA:</strong> ${vat}</td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
-                    <thead>
-                        <tr style="background-color: #f1f5f9; text-align: left; border-bottom: 2px solid #cbd5e1;">
-                            <th style="padding: 8px 6px;">Codice</th>
-                            <th style="padding: 8px 6px;">Articolo / Descrizione</th>
-                            <th style="padding: 8px 6px;">Variante Colore</th>
-                            <th style="padding: 8px 6px; text-align: center;">PZ</th>
-                            <th style="padding: 8px 6px; text-align: right;">Prezzo List.</th>
-                            <th style="padding: 8px 6px; text-align: center;">Sconto %</th>
-                            <th style="padding: 8px 6px; text-align: right;">Totale €</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${rows}
-                    </tbody>
-                </table>
-
-                <table style="width: 100%; border-collapse: collapse; margin-top: 20px; border-top: 2px solid #312e81;">
-                    <tr>
-                        <td style="text-align: right; padding-top: 10px; font-size: 12px;">
-                            <p style="margin: 2px 0;"><strong>Totale Pezzi:</strong> ${totalQty}</p>
-                            <p style="margin: 5px 0 0 0; font-size: 15px; color: #312e81;"><strong>Totale Netto: € ${grandTotal.toFixed(2).replace('.', ',')}</strong></p>
-                        </td>
-                    </tr>
-                </table>
-            `;
-
-            return container;
-        }
-
+        // Funzione di stampa/salvataggio PDF nativa e infallibile per Windows e Mobile
         async function exportAndSharePDF() {
             if (items.length === 0) {
                 alert("Aggiungi almeno un articolo prima di stampare o generare il PDF.");
@@ -794,52 +708,23 @@
             }
 
             const client = document.getElementById('clientName').value || 'Cliente';
-            const filename = `Ordine_Riviera_${client.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
             
-            const element = generateCleanPDFHtml();
-            document.body.appendChild(element);
+            // Aggiorna i dati anagrafici prima della stampa
+            document.getElementById('pdfClientName').innerText = document.getElementById('clientName').value || '-';
+            document.getElementById('pdfClientCity').innerText = document.getElementById('clientCity').value || '-';
+            document.getElementById('pdfClientVat').innerText = document.getElementById('clientVat').value || '-';
 
-            const opt = {
-                margin:       10,
-                filename:     filename,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, logging: false, useCORS: true },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
+            const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-            try {
-                const pdfWorker = html2pdf().set(opt).from(element);
-                
-                const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-                if (isMobile && navigator.share && navigator.canShare) {
-                    try {
-                        const pdfBlob = await pdfWorker.output('blob');
-                        const file = new File([pdfBlob], filename, { type: 'application/pdf' });
-                        
-                        if (navigator.canShare({ files: [file] })) {
-                            document.body.removeChild(element);
-                            await navigator.share({
-                                files: [file],
-                                title: `Ordine Riviera Basic - ${client}`,
-                                text: `In allegato l'ordine per ${client}.`
-                            });
-                            return;
-                        }
-                    } catch (err) {
-                        console.log("Condivisione nativa saltata:", err);
-                    }
-                }
-
-                await pdfWorker.save();
-                document.body.removeChild(element);
-            } catch (error) {
-                console.error("Errore generazione PDF:", error);
-                if (document.body.contains(element)) {
-                    document.body.removeChild(element);
-                }
+            // Su smartphone prova la condivisione nativa se disponibile, altrimenti stampa/PDF nativo
+            if (isMobile && navigator.share && navigator.canShare) {
                 window.print();
+                return;
             }
+
+            // Su PC Windows apre la schermata di stampa nativa del browser: 
+            // basta selezionare "Salva come PDF" o "Microsoft Print to PDF" dal menu per ottenere il file perfetto.
+            window.print();
         }
     </script>
 </body>
